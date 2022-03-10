@@ -10,10 +10,16 @@ class MRMultilineInput(MRJob):
     def mapper(self,_,line):
         line = line.strip()
 
-        if line and line[0] == '"' and line[1].isdigit():
-            line_split = line.split(',')
-            self.message_id = line_split[0][1:-1]
-            self.body.append(line[10][1:-1])   
+        if line and line[0] == '"' and line[1].isdigit(): 
+            split_indices = []
+            can_split = True
+            for ind, c in enumerate(line):
+                if c == '"':
+                    can_split = not can_split
+                if can_split and c == ',':
+                    split_indices.append(ind)
+            self.message_id = line[0:split_indices[0]]
+            self.body.append(line[split_indices[3] + 1:split_indices[4]])
             self.in_body = True
 
         elif line.find("<AbstractText") == 0:
