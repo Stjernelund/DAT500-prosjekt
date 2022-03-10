@@ -19,7 +19,7 @@ class MRMultilineInput(MRJob):
         elif line.find("<AbstractText") == 0:
             startIndex = line.find(">") + 1
             endIndex = line.find("<",startIndex)
-            self.body.append(line[startIndex,endIndex])
+            self.body.append(line[startIndex:endIndex])
 
         elif line.find("</Abstract") and self.in_body:
             yield self.message_id, ''.join(self.body)
@@ -31,8 +31,5 @@ class MRMultilineInput(MRJob):
             self.in_body = True
             
         
-
-
-
 if __name__ == '__main__':
     MRMultilineInput.run()
