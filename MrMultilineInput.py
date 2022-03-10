@@ -11,11 +11,9 @@ class MRMultilineInput(MRJob):
         line = line.strip()
 
         if line and line[0] == '"' and line[1].isdigit():
-            line_split = line.split('"')
-            line_split[:] = (value for value in line_split if value != ',')
-            line_split = line_split[1:]
-            self.message_id = line_split[0]
-            self.body.append(line[4])
+            line_split = line.split(',')
+            self.message_id = line_split[0][1:-1]
+            self.body.append(line[10][1:-1])   
             self.in_body = True
 
         elif line.find("<AbstractText") == 0:
