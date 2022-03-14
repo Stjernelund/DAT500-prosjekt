@@ -7,8 +7,7 @@ class MRMultilineInput(MRJob):
         self.body = []
 
     def mapper(self,_,line):
-        line = line.strip()
-
+        line = line.strip().lower()
         if line and line[0] == '"' and line[1].isdigit():
             split_indices = []
             can_split = True
@@ -22,26 +21,22 @@ class MRMultilineInput(MRJob):
             if message_id != "":
                 self.message_id = message_id
                 title_temp = line[split_indices[3] + 1:split_indices[4]]
-                title_temp = title_temp.lower()
                 title = ''.join([i for i in title_temp if i.isalpha() or i == " "])
                 self.body.append(title)
                 self.in_body = True
 
-        elif line.find("<AbstractText") == 0:
+        elif line.find("<AbstractText") == 0 and self.in_body:
             startIndex = line.find(">") + 1
             endIndex = line.find("<",startIndex)
             abs_temp = line[startIndex:endIndex]
-            abs_temp = abs_temp.lower()
             abs = ''.join([i for i in abs_temp if i.isalpha() or i == " "])
+            self.body.append(abs)
 
         elif line.find("</Abstract") and self.in_body:
             yield self.message_id, ''.join(self.body)
             self.message_id = ''
             self.body = []
             self.in_body = False
-
-        else:
-            self.in_body = True
 
 
 if __name__ == '__main__':
