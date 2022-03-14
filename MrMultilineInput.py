@@ -25,8 +25,8 @@ class MRMultilineInput(MRJob):
             if message_id != "":
                 self.message_id = message_id
                 title_temp = line[split_indices[3] + 1:split_indices[4]]
-                title = ''.join([i for i in title_temp if i.isalpha() or i == " "])
-                self.body.append(title)
+                title_str = ''.join([i for i in title_temp if i.isalpha() or i == " "])
+                self.body.append(title_str)
                 self.in_body = True
 
         elif line.find("<AbstractText") == 0:
