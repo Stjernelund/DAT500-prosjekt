@@ -18,7 +18,8 @@ class MRMultilineInput(MRJob):
                     split_indices.append(ind)
             id_split = split_indices[0]
             message_id = line[0:id_split]
-            if message_id != "":
+            message_id = ''.join([i for i in title_temp if i.isdigit()])
+            if message_id != '':
                 self.message_id = message_id
                 title_temp = line[split_indices[3] + 1:split_indices[4]]
                 title = ''.join([i for i in title_temp if i.isalpha() or i == " "])
@@ -26,6 +27,7 @@ class MRMultilineInput(MRJob):
                 self.in_body = True
 
         elif line.find("<AbstractText") == 0 and self.in_body:
+            print('in abstract')
             startIndex = line.find(">") + 1
             endIndex = line.find("<",startIndex)
             abs_temp = line[startIndex:endIndex]
