@@ -18,9 +18,11 @@ class MRMultilineInput(MRJob):
                     can_split = not can_split
                 if can_split and c == ',':
                     split_indices.append(ind)
-            self.message_id = line[0:split_indices[0]]
-            self.body.append(line[split_indices[3] + 1:split_indices[4]])
-            self.in_body = True
+            id = split_indices[0]
+            if id != "":
+                self.message_id = line[0:id[2:-2]]
+                self.body.append(line[split_indices[3] + 1:split_indices[4]])
+                self.in_body = True
 
         elif line.find("<AbstractText") == 0:
             startIndex = line.find(">") + 1
