@@ -38,6 +38,8 @@ class MRMultilineInput(MRJob):
             self.body = []
             self.in_body = False
 
+        else:
+            self.in_body = True
 
 if __name__ == '__main__':
     MRMultilineInput.run()
