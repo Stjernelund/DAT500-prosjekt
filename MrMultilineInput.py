@@ -1,6 +1,3 @@
-from email import message
-
-from matplotlib.pyplot import title
 from mrjob.job import MRJob
 
 class MRMultilineInput(MRJob):
