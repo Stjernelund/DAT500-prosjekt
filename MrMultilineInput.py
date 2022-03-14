@@ -18,7 +18,7 @@ class MRMultilineInput(MRJob):
                 if can_split and c == ',':
                     split_indices.append(ind)
             id_split = split_indices[0]
-            message_id = line[0:id_split][2:-2]
+            message_id = line[0:id_split]
             if message_id != "":
                 self.message_id = message_id
                 title_temp = line[split_indices[3] + 1:split_indices[4]]
