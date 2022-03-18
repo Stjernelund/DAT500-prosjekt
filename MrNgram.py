@@ -15,7 +15,12 @@ class MRNgram(MRJob):
         if line[0] == '"':
             print('{}'.format(line).encode())
             self.in_body = True if line[-1] == '"' else False
-            splits = line.split('"').remove('')
+            splits = [x for x in line.split('"') if x != '' and x != '\n' and x != '\t']
+            paper_id = splits[0]
+            for word in splits[1].split():
+                yield paper_id, word
+
+'''
             paper_id = splits[0]
             for word in splits[1].split():
                 yield paper_id, word
@@ -29,6 +34,7 @@ class MRNgram(MRJob):
         if self.in_body:
            for word in line.split():
                yield paper_id, word
+'''
 
     def combiner(self, paper_id, words):
         ngrams = set(nltk.ngrams(words, 2))
