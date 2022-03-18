@@ -38,6 +38,12 @@ class MRMultilineInput(MRJob):
         elif line.find("</Abstract") != -1 and self.in_body:
             self.message_id = ''
             self.in_body = False
+        
+        if line.find("<p/>") != -1:
+            self.in_body = False
+        
+        else:
+            self.in_body = True
 
     def combiner(self, message_id, words):
         yield message_id, list(words)
