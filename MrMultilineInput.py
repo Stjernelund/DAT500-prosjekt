@@ -35,7 +35,8 @@ class MRMultilineInput(MRJob):
             self.body.append(abs)
 
         elif line.find("</Abstract") != -1 and self.in_body:
-            yield self.message_id, ''.join(self.body).lower()
+            if self.message_id != '':
+                yield self.message_id, ''.join(self.body).lower()
             self.message_id = ''
             self.body = []
             self.in_body = False
