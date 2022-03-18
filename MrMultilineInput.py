@@ -41,9 +41,11 @@ class MRMultilineInput(MRJob):
             self.message_id = ''
             self.in_body = False
             self.stop = True
+            yield None, None
 
         elif not self.stop:
             self.in_body = True
+            yield None, None
 
     def combiner(self, message_id, words):
         yield message_id, list(words)
