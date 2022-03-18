@@ -2,6 +2,7 @@
 
 from mrjob.job import MRJob
 import nltk
+import sys
 
 
 class MRNgram(MRJob):
@@ -12,7 +13,7 @@ class MRNgram(MRJob):
 
     def mapper(self, _, line):
         if line[0] == '"':
-            print(line)
+            sys.stderr.write(line)
             self.in_body = True if line[-1] == '"' else False
             splits = line.split('"').remove('')
             paper_id = splits[0]
