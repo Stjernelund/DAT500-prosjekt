@@ -1,3 +1,5 @@
+#! /usr/bin/python3
+
 from mrjob.job import MRJob
 import nltk
 
