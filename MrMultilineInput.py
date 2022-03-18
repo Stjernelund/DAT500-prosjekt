@@ -27,7 +27,7 @@ class MRMultilineInput(MRJob):
                 title = ''.join([i for i in title_temp if i.isalpha() or i == " "]).lower()
                 self.in_body = True
                 for word in title:
-                    yield message_id, word
+                    yield self.message_id, word
 
         elif line.find("<AbstractText") != -1 and self.in_body:
             startIndex = line.find(">") + 1
@@ -35,7 +35,7 @@ class MRMultilineInput(MRJob):
             abs_temp = line[startIndex:endIndex]
             abs = ''.join([i for i in abs_temp if i.isalpha() or i == " "]).lower()
             for word in abs:
-                yield message_id, word
+                yield self.message_id, word
 
         elif line.find("</Abstract") != -1 and self.in_body:
             self.message_id = ''
@@ -45,11 +45,11 @@ class MRMultilineInput(MRJob):
         elif not self.stop:
             self.in_body = True
 
-    def combiner(self, paper_id, words):
-        yield paper_id, list(words)
+    def combiner(self, message_id, words):
+        yield message_id, list(words)
 
-    def reducer(self, paper_id, words):
-        yield paper_id, ''.join(words)
+    def reducer(self, message_id, words):
+        yield message_id, ''.join(words)
 
 if __name__ == '__main__':
     MRMultilineInput.run()
