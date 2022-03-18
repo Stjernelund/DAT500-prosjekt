@@ -13,32 +13,15 @@ class MRNgram(MRJob):
 
     def mapper(self, _, line):
         if line[0] == '"':
-            print('{}'.format(line).encode())
             self.in_body = True if line[-1] == '"' else False
             splits = [x for x in line.split('"') if x != '' and x != '\n' and x != '\t']
             paper_id = splits[0]
             for word in splits[1].split():
                 yield paper_id, word
 
-'''
-            paper_id = splits[0]
-            for word in splits[1].split():
-                yield paper_id, word
-
-        if line[-1] == '"':
-            self.in_body = False
-            if len(line) > 1:
-                for word in line.split():
-                    yield paper_id, word
-
-        if self.in_body:
-           for word in line.split():
-               yield paper_id, word
-'''
-
     def combiner(self, paper_id, words):
         ngrams = set(nltk.ngrams(words, 2))
-        for word in words:
+        for word in ngrams:
             yield paper_id, word
 
     def reducer(self, paper_id, words):
