@@ -12,6 +12,7 @@ class MRNgram(MRJob):
 
     def mapper(self, _, line):
         if line[0] == '"':
+            print(line)
             self.in_body = True if line[-1] == '"' else False
             splits = line.split('"').remove('')
             paper_id = splits[0]
