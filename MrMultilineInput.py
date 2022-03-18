@@ -7,7 +7,7 @@ class MRMultilineInput(MRJob):
         self.in_body = False
         self.body = []
 
-    def mapper(self,_,line):
+    def mapper(self, _, line):
         line = line.strip()
         if line and line[0] == '"' and line[1].isdigit():
             split_indices = []
