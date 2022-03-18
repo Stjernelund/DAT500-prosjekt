@@ -7,9 +7,7 @@ import sys
 
 class MRNgram(MRJob):
     def mapper_init(self):
-        self.paper_id = ''
         self.in_body = False
-        self.body = []
 
     def mapper(self, _, line):
         if line[0] == '"':
