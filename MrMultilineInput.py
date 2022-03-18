@@ -40,9 +40,13 @@ class MRMultilineInput(MRJob):
             self.in_body = False
             yield None, None
 
-        if line.find("<p/>") != -1:
+        elif line.find("<p/>") != -1:
             self.in_body = False
             yield None, None
+        
+        elif line.find('<') == -1:
+            for word in line:
+                yield self.message_id, word
 
         else:
             self.in_body = True
