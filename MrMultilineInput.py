@@ -5,12 +5,10 @@ class MRMultilineInput(MRJob):
     def mapper_init(self):
         self.message_id = ''
         self.in_body = False
-        self.stop = False
 
     def mapper(self, _, line):
         line = line.strip()
         if line and line[0] == '"' and line[1].isdigit():
-            self.stop = False
             split_indices = []
             can_split = True
             for ind, c in enumerate(line):
@@ -40,10 +38,11 @@ class MRMultilineInput(MRJob):
         elif line.find("</Abstract") != -1 and self.in_body:
             self.message_id = ''
             self.in_body = False
-            self.stop = True
-            yield None, None
-
-        elif not self.stop:
+        
+        if line.find("<p/>") != -1:
+            self.in_body = False
+        
+        else:
             self.in_body = True
             yield None, None
 
