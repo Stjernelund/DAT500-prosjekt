@@ -55,3 +55,7 @@ class MRMultilineInput(MRJob):
     def reducer(self, message_id, words):
         words = list(words)
         yield message_id, ''.join(words)
+
+
+if __name__ == '__main__':
+    MRMultilineInput.run()
