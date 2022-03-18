@@ -40,6 +40,11 @@ class MRMultilineInput(MRJob):
             self.body = []
             self.in_body = False
 
+        elif line.find('<') == -1 and self.in_body:
+            abs = ''.join([i for i in line if i.isalnum() or i == " "]).lower()
+            self.body.append(abs)
+    
+
 
 if __name__ == '__main__':
     MRMultilineInput.run()
