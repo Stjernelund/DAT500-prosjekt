@@ -38,10 +38,12 @@ class MRMultilineInput(MRJob):
         elif line.find("</Abstract") != -1 and self.in_body:
             self.message_id = ''
             self.in_body = False
+            yield None, None
         
         if line.find("<p/>") != -1:
             self.in_body = False
-        
+            yield None, None
+            
         else:
             self.in_body = True
             yield None, None
