@@ -1,5 +1,6 @@
 from mrjob.job import MRJob
 
+
 class MRMultilineInput(MRJob):
     def mapper_init(self):
         self.message_id = ''
@@ -41,6 +42,7 @@ class MRMultilineInput(MRJob):
 
         else:
             self.in_body = True
+
 
 if __name__ == '__main__':
     MRMultilineInput.run()
