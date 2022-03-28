@@ -54,13 +54,9 @@ class MRLSH(MRJob):
             abs = ''.join([i for i in line if i.isalnum() or i == " "]).lower()
             self.body.append(abs)
 
-    def mapper_ngram(self, _, line):
-        if line[0] == '"':
-            splits = line.split('"')
-            if len(splits) > 1:
-                paper_id = splits[1]
-                for word in splits[3].split():
-                    yield paper_id, word
+    def mapper_ngram(self, paper_id, text):
+        for word in text:
+            yield paper_id, word
 
     def combiner_ngram(self, paper_id, words):
         ngrams = set(nltk.ngrams(words, 2))
