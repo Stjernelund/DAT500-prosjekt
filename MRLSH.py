@@ -75,6 +75,7 @@ class MRLSH(MRJob):
         indptr = [0]
         for ngram in ngrams:
             for term in ngram:
+                term = tuple(term)
                 index = vocabulary.setdefault(term, len(vocabulary))
                 indices.append(index)
                 sparse_data.append(1)
