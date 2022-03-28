@@ -26,6 +26,7 @@ class MRMultilineInput(MRJob):
                 self.message_id = message_id
                 title_temp = line[split_indices[3] + 1:split_indices[4]]
                 title = ''.join([i for i in title_temp if i.isalnum() or i == " "]).lower()
+                title = title + ' '
                 self.body.append(title)
                 self.in_body = True
 
@@ -45,7 +46,7 @@ class MRMultilineInput(MRJob):
         elif line.find('<') == -1 and self.in_body:
             abs = ''.join([i for i in line if i.isalnum() or i == " "]).lower()
             self.body.append(abs)
-    
+
 
 
 if __name__ == '__main__':
