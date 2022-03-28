@@ -56,7 +56,8 @@ class MRLSH(MRJob):
             self.body.append(abs)
 
     def mapper_ngram(self, paper_id, text):
-        ngrams = set(nltk.ngrams(text, 2))
+        splits = text.split()
+        ngrams = set(nltk.ngrams(splits, 2))
         for word in ngrams:
             yield paper_id, word
         #splits = text.split()
