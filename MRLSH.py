@@ -75,14 +75,14 @@ class MRLSH(MRJob):
         self.indptr = [0]
 
     def mapper_onehot(self, paper_id, ngrams):
-        ngrams = set(ngrams)
+        ngrams = set(tuple(word) for word in ngrams)
         for term in ngrams:
             index = self.vocabulary.setdefault(term, len(self.vocabulary))
             self.indices.append(index)
             self.sparse_data.append(1)
         self.indptr.append(len(self.indices))
         yield paper_id, ngrams
-    
+
     def reducer_onehot(self, paper_id, ngrams):
         sparse = csr_matrix((self.sparse_data, self.indices, self.indptr), dtype=int)
 
