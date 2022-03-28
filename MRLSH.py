@@ -54,7 +54,7 @@ class MRLSH(MRJob):
             abs = ''.join([i for i in line if i.isalnum() or i == " "]).lower()
             self.body.append(abs)
         
-        def mapper_init2(self):
+    def mapper_init2(self):
             self.in_body = False
 
     def mapper_ngram(self, _, line):
