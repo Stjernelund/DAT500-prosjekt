@@ -75,8 +75,8 @@ class MRLSH(MRJob):
         self.indptr = [0]
 
     def mapper_onehot(self, paper_id, ngrams):
-        ngrams = set(tuple(word) for word in ngrams)
-        for term in ngrams:
+        ngrams_set = set(tuple(word) for word in ngrams)
+        for term in ngrams_set:
             index = self.vocabulary.setdefault(term, len(self.vocabulary))
             self.indices.append(index)
             self.sparse_data.append(1)
