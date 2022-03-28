@@ -10,7 +10,7 @@ class MRLSH(MRJob):
     def steps(self):
         return [
             MRStep(mapper_init = self.mapper_init, mapper=self.mapper_pre),
-            #MRStep(mapper_init = self.mapper_init_2, mapper = self.mapper_ngram, combiner = self.combiner_ngram, reducer=self.reducer_ngram)
+            MRStep(mapper = self.mapper_ngram, combiner = self.combiner_ngram, reducer=self.reducer_ngram)
         ]
     def mapper_init(self):
         self.message_id = ''
@@ -53,14 +53,9 @@ class MRLSH(MRJob):
         elif line.find('<') == -1 and self.in_body:
             abs = ''.join([i for i in line if i.isalnum() or i == " "]).lower()
             self.body.append(abs)
-        
-    def mapper_init_2(self):
-            self.in_body = False
 
     def mapper_ngram(self, _, line):
         if line[0] == '"':
-            self.in_body = True if line[-1] == '"' else False
-            # splits = [x for x in line.split('"') if x != '' and x != '\n' and x != '\t']
             splits = line.split('"')
             if len(splits) > 1:
                 paper_id = splits[1]
