@@ -10,8 +10,8 @@ class MRLSH(MRJob):
     def steps(self):
         return [
             MRStep(mapper_init = self.mapper_init, mapper=self.mapper_pre),
-            #MRStep(mapper = self.mapper_ngram, combiner = self.combiner_ngram, reducer=self.reducer_ngram)
-            MRStep(mapper = self.mapper_ngram)
+            MRStep(mapper = self.mapper_ngram, combiner = self.combiner_ngram, reducer=self.reducer_ngram)
+            #MRStep(mapper = self.mapper_ngram)
         ]
     def mapper_init(self):
         self.message_id = ''
@@ -56,7 +56,9 @@ class MRLSH(MRJob):
             self.body.append(abs)
 
     def mapper_ngram(self, paper_id, text):
-        yield paper_id, text
+        splits = text.split()
+        for word in splits:
+            yield paper_id, word
 
     def combiner_ngram(self, paper_id, words):
         ngrams = set(nltk.ngrams(words, 2))
