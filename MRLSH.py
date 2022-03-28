@@ -81,7 +81,7 @@ class MRLSH(MRJob):
                 sparse_data.append(1)
             indptr.append(len(indices))
         sparse = csr_matrix((sparse_data, indices, indptr), dtype=int)
-        yield None,sparse
+        yield sparse
 
 
 if __name__ == '__main__':
