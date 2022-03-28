@@ -57,7 +57,7 @@ class MRLSH(MRJob):
 
     def mapper_ngram(self, paper_id, text):
         for word in text:
-            yield word
+            yield None,word
 
     def combiner_ngram(self, paper_id, words):
         ngrams = set(nltk.ngrams(words, 2))
