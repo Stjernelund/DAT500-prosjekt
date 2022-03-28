@@ -8,8 +8,8 @@ import sys
 class MRLSH(MRJob):
     def steps(self):
         return [
-            MRStep(mapper = self.mapper_init, mapper=self.mapper_pre),
-            MRStep(mapper = self.mapper_init2, mapper = self.mapper_ngram, combiner = self.combiner_ngram, reducer=self.reducer_ngram)
+            MRStep(mapper_init = self.mapper_init, mapper=self.mapper_pre),
+            MRStep(mapper_init = self.mapper_init2, mapper = self.mapper_ngram, combiner = self.combiner_ngram, reducer=self.reducer_ngram)
         ]
     def mapper_init(self):
         self.message_id = ''
