@@ -59,12 +59,6 @@ class MRLSH(MRJob):
             abs = ''.join([i for i in line if i.isalnum() or i == " "]).lower()
             self.body.append(abs)
 
-    def mapper_init_onehot(self):
-        self.vocabulary = dict()
-        self.indices = list()
-        self.sparse_data = list()
-        self.indptr = [0]
-
     def mapper_ngram(self, paper_id, text):
         splits = text.split()
         ngrams = set(nltk.ngrams(splits, 2))
@@ -72,7 +66,13 @@ class MRLSH(MRJob):
             yield paper_id, word
 
     def reducer_ngram(self, paper_id, words):
-        yield paper_id, list(words)
+        yield paper_id, set(words)
+
+    def mapper_init_onehot(self):
+        self.vocabulary = dict()
+        self.indices = list()
+        self.sparse_data = list()
+        self.indptr = [0]
 
     def mapper_onehot(self, paper_id, ngrams):
         for term in ngrams:
