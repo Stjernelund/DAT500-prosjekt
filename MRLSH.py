@@ -68,7 +68,7 @@ class MRLSH(MRJob):
     def reducer_ngram(self, paper_id, words):
         yield None, words
     
-    def reducer_onehot(self, paper_id, ngrams):
+    def reducer_onehot(self, _, ngrams):
         vocabulary = dict()
         indices = list()
         sparse_data = list()
@@ -80,6 +80,7 @@ class MRLSH(MRJob):
                 self.sparse_data.append(1)
             self.indptr.append(len(self.indices))
         sparse = csr_matrix((self.sparse_data, self.indices, self.indptr), dtype=int)
+        yield sparse
 
 
 if __name__ == '__main__':
