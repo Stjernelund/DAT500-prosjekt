@@ -74,12 +74,12 @@ class MRLSH(MRJob):
         sparse_data = list()
         indptr = [0]
         for ngram in ngrams:
-            for term in ngrams:
-                index = self.vocabulary.setdefault(term, len(self.vocabulary))
-                self.indices.append(index)
-                self.sparse_data.append(1)
-            self.indptr.append(len(self.indices))
-        sparse = csr_matrix((self.sparse_data, self.indices, self.indptr), dtype=int)
+            for term in ngram:
+                index = vocabulary.setdefault(term, len(vocabulary))
+                indices.append(index)
+                sparse_data.append(1)
+            indptr.append(len(indices))
+        sparse = csr_matrix((sparse_data, indices, indptr), dtype=int)
         yield sparse
 
 
