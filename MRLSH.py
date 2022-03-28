@@ -66,7 +66,7 @@ class MRLSH(MRJob):
             yield paper_id, word
 
     def reducer_ngram(self, paper_id, words):
-        yield None, words
+        yield None, list(words)
     
     def reducer_onehot(self, _, ngrams):
         vocabulary = dict()
