@@ -11,7 +11,7 @@ class MRLSH(MRJob):
     def steps(self):
         return [
             MRStep(mapper_init = self.mapper_init, mapper=self.mapper_pre),
-            MRStep(mapper = self.mapper_ngram),
+            MRStep(mapper = self.mapper_ngram, reducer=self.reducer_ngram),
             MRStep(mapper_init = self.mapper_init_onehot, mapper = self.mapper_onehot, reducer=self.reducer_onehot)
         ]
     def mapper_init(self):
@@ -62,7 +62,11 @@ class MRLSH(MRJob):
     def mapper_ngram(self, paper_id, text):
         splits = text.split()
         ngrams = set(nltk.ngrams(splits, 2))
-        yield paper_id, ngrams
+        for word in ngrams:
+            yield paper_id, word
+
+    def reducer_ngram(self, paper_id, words):
+        yield paper_id, list(words)
 
     def mapper_init_onehot(self):
         self.vocabulary = dict()
@@ -71,6 +75,7 @@ class MRLSH(MRJob):
         self.indptr = [0]
 
     def mapper_onehot(self, paper_id, ngrams):
+        ngrams = set(ngrams)
         for term in ngrams:
             index = self.vocabulary.setdefault(term, len(self.vocabulary))
             self.indices.append(index)
