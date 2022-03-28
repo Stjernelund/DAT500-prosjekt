@@ -10,7 +10,7 @@ class MRLSH(MRJob):
     def steps(self):
         return [
             MRStep(mapper_init = self.mapper_init, mapper=self.mapper_pre),
-            MRStep(mapper_init = self.mapper_init2, mapper = self.mapper_ngram, combiner = self.combiner_ngram, reducer=self.reducer_ngram)
+            MRStep(mapper_init = self.mapper_init_2, mapper = self.mapper_ngram, combiner = self.combiner_ngram, reducer=self.reducer_ngram)
         ]
     def mapper_init(self):
         self.message_id = ''
@@ -54,7 +54,7 @@ class MRLSH(MRJob):
             abs = ''.join([i for i in line if i.isalnum() or i == " "]).lower()
             self.body.append(abs)
         
-    def mapper_init2(self):
+    def mapper_init_2(self):
             self.in_body = False
 
     def mapper_ngram(self, _, line):
