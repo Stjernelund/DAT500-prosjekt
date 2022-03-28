@@ -5,18 +5,22 @@ from mrjob.job import MRJob
 from mrjob.step import MRStep
 import nltk
 import sys
+from scipy.sparse import csr_matrix
 
 class MRLSH(MRJob):
     def steps(self):
         return [
             MRStep(mapper_init = self.mapper_init, mapper=self.mapper_pre),
-            MRStep(mapper = self.mapper_ngram, reducer=self.reducer_ngram)
-            #MRStep(mapper = self.mapper_ngram)
+            MRStep(mapper = self.mapper_ngram, reducer=self.reducer_ngram),
+            MRStep(mapper = self.mapper_onehot, reducer=self.reducer_onehot)
         ]
     def mapper_init(self):
         self.message_id = ''
         self.in_body = False
         self.body = []
+        self.vocabulary = dict()
+        self.indices = list()
+        self.sparse_data = list()
 
     def mapper_pre(self, _, line):
         line = line.strip()
@@ -60,18 +64,20 @@ class MRLSH(MRJob):
         ngrams = set(nltk.ngrams(splits, 2))
         for word in ngrams:
             yield paper_id, word
-        #splits = text.split()
-        #for word in splits:
-        #    yield paper_id, word
-
-    def combiner_ngram(self, paper_id, words):
-        ngrams = set(nltk.ngrams(words, 2))
-        for word in ngrams:
-            yield paper_id, word
 
     def reducer_ngram(self, paper_id, words):
         yield paper_id, list(words)
 
+    def mapper_onehot(self, paper_id, ngrams):
+        for term in ngrams:
+            index = self.vocabulary.setdefault(term, len(self.vocabulary))
+            self.indices.append(index)
+            self.sparse_data.append(1)
+        self.indptr.append(len(self.indices))
+        yield paper_id, ngrams
+    
+    def reducer_onehot(self, paper_id, ngrams):
+        sparse = csr_matrix((self.sparse_data, self.indices, self.indptr), dtype=int)
 
 if __name__ == '__main__':
     MRLSH.run()
