@@ -15,6 +15,7 @@ class MRLSH(MRJob):
             MRStep(reducer=self.reducer_onehot)
         ]
     def mapper_init(self):
+        print('init')
         self.message_id = ''
         self.in_body = False
         self.body = []
@@ -23,6 +24,7 @@ class MRLSH(MRJob):
         self.sparse_data = list()
 
     def mapper_pre(self, _, line):
+        print('pr')
         line = line.strip()
         if line and line[0] == '"' and line[1].isdigit():
             split_indices = []
@@ -60,15 +62,18 @@ class MRLSH(MRJob):
             self.body.append(abs)
 
     def mapper_ngram(self, paper_id, text):
+        print('ngramming')
         splits = text.split()
         ngrams = set(nltk.ngrams(splits, 2))
         for word in ngrams:
             yield paper_id, word
 
     def reducer_ngram(self, _, words):
+        print('listing')
         yield None, list(words)
 
     def reducer_onehot(self, _, ngrams):
+        print('onehot deez nuts')
         vocabulary = dict()
         indices = list()
         sparse_data = list()
