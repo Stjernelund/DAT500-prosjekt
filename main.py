@@ -7,5 +7,6 @@ lsh = MRLSH()
 with lsh.make_runner() as runner:
     print('kjører')
     runner.run()
-    for key, value in lsh.parse_output(runner.cat_output()):
-        print(key, value)
+    print(runner.cat_output())
+    _, value = lsh.parse_output(runner.cat_output())
+    print(value)
