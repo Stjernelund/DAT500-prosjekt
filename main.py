@@ -6,5 +6,6 @@ from MRLSH import MRLSH
 lsh = MRLSH()
 with lsh.make_runner() as runner:
     print('kjører')
-    a = runner.run()
-    print(a)
+    runner.run()
+    for key, value in lsh.parse_output(runner.cat_output()):
+        print(key, value)
