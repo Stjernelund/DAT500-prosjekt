@@ -67,7 +67,7 @@ class MRLSH(MRJob):
 
     def reducer_ngram(self, _, words):
         yield None, list(words)
-    
+
     def reducer_onehot(self, _, ngrams):
         vocabulary = dict()
         indices = list()
