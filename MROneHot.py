@@ -1,8 +1,13 @@
 from mrjob.job import MRJob
+from mrjob.step import MRStep
 from scipy.sparse import csr_matrix
 
 
 class MROneHot(MRJob):
+    def steps(self):
+        return [
+            MRStep(reducer=self.reducer_onehot)
+        ]
     def reducer_onehot(self, _, ngrams):
         vocabulary = dict()
         indices = list()
