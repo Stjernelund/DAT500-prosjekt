@@ -13,6 +13,6 @@ with lsh.make_runner() as runner:
 
 onehot = MROneHot()
 with onehot.make_runner() as runner:
-    runner._input_paths = ['part-00001', 'part-00002']
-    runner._output_dir = 'output'
+    runner._input_paths = ['part-00000']
+    runner._output_dir = 'output2'
     runner.run()
