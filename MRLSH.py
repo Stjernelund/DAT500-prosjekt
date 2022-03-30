@@ -11,7 +11,7 @@ class MRLSH(MRJob):
         return [
             MRStep(mapper_init = self.mapper_init, mapper=self.mapper_pre),
             MRStep(mapper = self.mapper_ngram, reducer=self.reducer_ngram),
-            MRStep(reducer=self.reducer_onehot)
+            # MRStep(reducer=self.reducer_onehot)
         ]
     def mapper_init(self):
         self.message_id = ''
