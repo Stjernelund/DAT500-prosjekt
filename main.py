@@ -14,7 +14,7 @@ with lsh.make_runner() as runner:
         ngrams = value
 
 
-with open('ngramsOutput.txt') as f:
+with open('ngramsOutput.txt', 'w+') as f:
     f.write(ngrams)
 
 onehot = MROneHot()
