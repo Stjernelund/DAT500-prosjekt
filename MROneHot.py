@@ -5,7 +5,7 @@ from mrjob.step import MRStep
 from scipy.sparse import csr_matrix
 
 class MROneHot(MRJob):
-    def step(self):
+    def steps(self):
         return [
             MRStep(reducer = self.reducer_onehot)
         ]
