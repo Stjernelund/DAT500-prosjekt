@@ -2,6 +2,7 @@
 
 from MRLSH import MRLSH
 from MROneHot import MROneHot
+import io
 
 
 lsh = MRLSH()
@@ -13,12 +14,9 @@ with lsh.make_runner() as runner:
         print(value)
         ngrams = value
 
-
-print(type(ngrams))
-
 onehot = MROneHot()
 with onehot.make_runner() as runner:
-    runner._stdin = ngrams
+    runner._stdin = io.BytesIO(ngrams)
     runner.run()
     for _, value in onehot.parse_output(runner.cat_output()):
         print(value)
