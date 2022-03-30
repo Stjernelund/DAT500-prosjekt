@@ -5,12 +5,13 @@ from scipy.sparse import csr_matrix
 
 
 class MROneHot(MRJob):
-    INPUT_PROTOCOL = protocol.JSONProtocol
+    INPUT_PROTOCOL = protocol.RawValueProtocol
 
     def steps(self):
         return [
             MRStep(reducer=self.reducer_onehot)
         ]
+
     def reducer_onehot(self, _, ngrams):
         vocabulary = dict()
         indices = list()
