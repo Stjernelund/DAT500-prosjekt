@@ -67,21 +67,6 @@ class MRLSH(MRJob):
     def reducer_ngram(self, _, words):
         yield None, list(words)
 
-    def reducer_onehot(self, _, ngrams):
-        vocabulary = dict()
-        indices = list()
-        sparse_data = list()
-        indptr = [0]
-        for ngram in ngrams:
-            for term in ngram:
-                term = tuple(term)
-                index = vocabulary.setdefault(term, len(vocabulary))
-                indices.append(index)
-                sparse_data.append(1)
-            indptr.append(len(indices))
-        sparse = csr_matrix((sparse_data, indices, indptr), dtype=int)
-        yield None, sparse.toarray().tolist()
-
 
 if __name__ == '__main__':
     MRLSH.run()
