@@ -2,10 +2,13 @@
 
 from mrjob.job import MRJob
 from mrjob.step import MRStep
+from mrjob import protocol
 from scipy.sparse import csr_matrix
 
 
 class MROneHot(MRJob):
+    INPUT_PROTOCOL = protocol.RawValueProtocol
+
     def steps(self):
         return [
             MRStep(reducer=self.reducer_onehot)
