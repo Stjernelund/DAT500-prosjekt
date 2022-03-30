@@ -17,3 +17,7 @@ class MROneHot(MRJob):
             indptr.append(len(indices))
         sparse = csr_matrix((sparse_data, indices, indptr), dtype=int)
         yield None, sparse.toarray().tolist()
+
+
+if __name__ == '__main__':
+    MROneHot.run()
