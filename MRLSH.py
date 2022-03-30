@@ -1,12 +1,15 @@
 #! /usr/bin/python3
 
 import numpy as np
+import mrjob.protocol as protocol
 from mrjob.job import MRJob
 from mrjob.step import MRStep
 import nltk
 from scipy.sparse import csr_matrix
 
 class MRLSH(MRJob):
+    OUTPUT_PROTOCOL = protocol.JSONProtocol
+
     def steps(self):
         return [
             MRStep(mapper_init = self.mapper_init, mapper=self.mapper_pre),

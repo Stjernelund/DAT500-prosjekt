@@ -14,6 +14,8 @@ with lsh.make_runner() as runner:
         ngrams = value
 
 
+print(type(ngrams))
+
 onehot = MROneHot()
 with onehot.make_runner() as runner:
     runner._stdin = ngrams
