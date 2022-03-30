@@ -15,7 +15,7 @@ with lsh.make_runner() as runner:
 
 
 with open('ngramsOutput.txt', 'w+') as f:
-    f.write(ngrams)
+    f.write(str(ngrams))
 
 onehot = MROneHot()
 with onehot.make_runner() as runner:
