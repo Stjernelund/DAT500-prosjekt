@@ -16,6 +16,7 @@ with lsh.make_runner() as runner:
 
 onehot = MROneHot()
 with onehot.make_runner() as runner:
-    runner.run(ngrams)
+    runner.__stdin(ngrams)
+    runner.run()
     for _, value in onehot.parse_output(runner.cat_output()):
         print(value)
