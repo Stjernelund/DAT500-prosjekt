@@ -7,7 +7,7 @@ from scipy.sparse import csr_matrix
 
 
 class MROneHot(MRJob):
-    INPUT_PROTOCOL = protocol.RawValueProtocol
+    INPUT_PROTOCOL = protocol.JSONValueProtocol
 
     def steps(self):
         return [
