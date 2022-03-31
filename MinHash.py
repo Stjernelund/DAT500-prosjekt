@@ -16,6 +16,7 @@ def minhash(data, hashfuncs):
 
     for r in range(rows):
         hashvalue = map(lambda x: x(r), hashfuncs)
+        hashvalue = list(map(int,hashvalue))
         # if data != 0 and signature > hash value, replace signature with hash value
         for c in range(cols):
             if data[r][c] == 0:
