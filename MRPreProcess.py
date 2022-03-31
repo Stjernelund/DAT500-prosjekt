@@ -12,6 +12,7 @@ class MRPreProcess(MRJob):
             MRStep(mapper_init = self.mapper_init, mapper=self.mapper_pre),
             MRStep(mapper = self.mapper_ngram, reducer=self.reducer_ngram),
         ]
+
     def mapper_init(self):
         self.message_id = ''
         self.in_body = False
