@@ -5,6 +5,7 @@ from mrjob.job import MRJob
 from mrjob.step import MRStep
 from mrjob.protocol import JSONValueProtocol
 from MinHash import GetSignatureMatrix
+import json
 
 class MRLSH(MRJob):
     def steps(self):
@@ -16,7 +17,7 @@ class MRLSH(MRJob):
         remove = ['n', 'u', 'l', '\t']
         for b in binary_matrix:
             b = ''.join(c for c in b if not c in remove)
-            yield None, GetSignatureMatrix(np.array(b))
+            yield None, GetSignatureMatrix(json.loads(b))
 
 
 if __name__ == '__main__':
