@@ -6,16 +6,15 @@ from mrjob.protocol import JSONValueProtocol
 from scipy.sparse import csr_matrix
 import re
 
+
 class MROneHot(MRJob):
     def steps(self):
-        return [
-            MRStep(reducer = self.reducer_onehot)
-        ]
+        return [MRStep(reducer=self.reducer_onehot)]
 
     def reducer_onehot(self, paper_ids, ngrams):
-        vocabulary = dict()
-        indices = list()
-        sparse_data = list()
+        vocabulary = {}
+        indices = []
+        sparse_data = []
         indptr = [0]
         for matrix in ngrams:
             flat_1 = re.findall(r"\[(.+?)\]", matrix)
@@ -30,5 +29,6 @@ class MROneHot(MRJob):
         sparse = csr_matrix((sparse_data, indices, indptr), dtype=int)
         yield paper_ids, sparse.toarray().tolist()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     MROneHot.run()
