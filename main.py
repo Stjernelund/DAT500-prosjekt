@@ -23,5 +23,4 @@ with lsh.make_runner() as runner:
     runner._output_dir = "output3"
     runner.run()
     for _, value in lsh.parse_output(runner.cat_output()):
-        pass
-        # print(value)
+        print(value)
