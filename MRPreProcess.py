@@ -11,7 +11,6 @@ class MRPreProcess(MRJob):
         return [
             MRStep(mapper_init = self.mapper_init, mapper=self.mapper_pre),
             MRStep(mapper = self.mapper_ngram, reducer=self.reducer_ngram),
-            # MRStep(reducer=self.reducer_onehot)
         ]
     def mapper_init(self):
         self.message_id = ''
@@ -64,23 +63,8 @@ class MRPreProcess(MRJob):
         for word in ngrams:
             yield paper_id, word
 
-    def reducer_ngram(self, _, words):
-        yield None, list(words)
-
-    def reducer_onehot(self, _, ngrams):
-        vocabulary = dict()
-        indices = list()
-        sparse_data = list()
-        indptr = [0]
-        for ngram in ngrams:
-            for term in ngram:
-                term = tuple(term)
-                index = vocabulary.setdefault(term, len(vocabulary))
-                indices.append(index)
-                sparse_data.append(1)
-            indptr.append(len(indices))
-        sparse = csr_matrix((sparse_data, indices, indptr), dtype=int)
-        yield None, sparse.toarray().tolist()
+    def reducer_ngram(self, paper_id, words):
+        yield list(paper_id), list(words)
 
 
 if __name__ == '__main__':

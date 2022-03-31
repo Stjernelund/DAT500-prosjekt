@@ -2,16 +2,19 @@
 
 from mrjob.job import MRJob
 from mrjob.step import MRStep
+from mrjob.protocol import JSONValueProtocol
 from scipy.sparse import csr_matrix
 import re
 
 class MROneHot(MRJob):
+    INPUT_PROTOCOL = JSONValueProtocol
+
     def steps(self):
         return [
             MRStep(reducer = self.reducer_onehot)
         ]
 
-    def reducer_onehot(self, _, ngrams):
+    def reducer_onehot(self, paper_ids, ngrams):
         vocabulary = dict()
         indices = list()
         sparse_data = list()
