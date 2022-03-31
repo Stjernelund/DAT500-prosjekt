@@ -17,8 +17,8 @@ with onehot.make_runner() as runner:
     runner._output_dir = 'output2'
     runner.run()
 
-#lsh = MRLSH()
-#with lsh.make_runner() as runner:
-#    runner._input_paths = ['output2/part-*']
-#    runner._output_dir = 'output3'
-#    runner.run()
+lsh = MRLSH()
+with lsh.make_runner() as runner:
+    runner._input_paths = ['output2/part-*']
+    runner._output_dir = 'output3'
+    runner.run()
