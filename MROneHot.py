@@ -12,7 +12,7 @@ class MROneHot(MRJob):
         ]
 
     def reducer_onehot(self, _, ngrams):
-        ngrams = np.concatenate(np.matrix(ngrams))
+        ngrams = np.concatenate(np.array(ngrams))
         vocabulary = dict()
         indices = list()
         sparse_data = list()
