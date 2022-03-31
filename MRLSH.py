@@ -15,7 +15,7 @@ class MRLSH(MRJob):
         #yield None, GetSignatureMatrix(list(np.matrix(binary_matrix)))
         remove = ['n', 'u', 'l', '\t']
         for b in binary_matrix:
-            b = [c for c in b if not c in remove]
+            b = ''.join(c for c in b if not c in remove)
             yield None, b
 
 
