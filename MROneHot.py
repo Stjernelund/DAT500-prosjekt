@@ -3,6 +3,7 @@
 from mrjob.job import MRJob
 from mrjob.step import MRStep
 from scipy.sparse import csr_matrix
+import json
 
 class MROneHot(MRJob):
     def steps(self):
@@ -11,6 +12,7 @@ class MROneHot(MRJob):
         ]
 
     def reducer_onehot(self, _, ngrams):
+        ngrams = json.loads(ngrams)
         vocabulary = dict()
         indices = list()
         sparse_data = list()
