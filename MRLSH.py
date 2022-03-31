@@ -6,7 +6,7 @@ from mrjob.step import MRStep
 from mrjob.protocol import JSONValueProtocol
 from MinHash import GetSignatureMatrix
 import json
-from sklearn.neighbors import LSHForest
+from LSH import LSH
 
 class MRLSH(MRJob):
     def steps(self):
@@ -21,10 +21,11 @@ class MRLSH(MRJob):
             yield None, GetSignatureMatrix(json.loads(b))
 
     def reduer_LSH(self, _, signature_matrix):
-        lshf = LSHForest()
-        lshf.fit(signature_matrix)
-        _, indices = lshf.kneighbors(signature_matrix[0], n_neighbors=2) 
-        yield None, indices
+        lsh = LSH(20)
+        for signature in signature_matrix:
+            lsh.add_hash(signature)
+        yield lsh.check_candidates(), lsh.buckets
+
 
 if __name__ == '__main__':
     MRLSH.run()
