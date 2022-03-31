@@ -12,7 +12,7 @@ def minhash(data, hashfuncs):
     # initialize signature matrix with maxint
     sigmatrix = []
     for i in range(sigrows):
-        sigmatrix.append([sys.maxint] * cols)
+        sigmatrix.append([sys.maxsize] * cols)
 
     for r in range(rows):
         hashvalue = map(lambda x: x(r), hashfuncs)
