@@ -11,7 +11,8 @@ class MRLSH(MRJob):
             MRStep(reducer=self.reducer_matrix),
         ]
     def reducer_matrix(self, _, binary_matrix):
-        yield None, GetSignatureMatrix(binary_matrix)
+        #yield None, GetSignatureMatrix(binary_matrix)
+        yield None, binary_matrix
 
 
 if __name__ == '__main__':
