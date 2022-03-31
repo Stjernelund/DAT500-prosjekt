@@ -7,6 +7,7 @@ def h2(x):
         return (3*x+1)%5
 
 def minhash(data, hashfuncs):
+    return data, hashfuncs
     rows, cols, sigrows = len(data), len(data[0]), len(hashfuncs)
 
     # initialize signature matrix with maxint
@@ -28,4 +29,4 @@ def minhash(data, hashfuncs):
     return sigmatrix
 
 def GetSignatureMatrix(binary_matrix):
-    return minhash(binary_matrix,[h1, h2])
+    return minhash(binary_matrix, [h1, h2])
