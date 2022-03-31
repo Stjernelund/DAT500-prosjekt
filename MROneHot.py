@@ -20,6 +20,7 @@ class MROneHot(MRJob):
             flat_1 = re.findall(r"\[(.+?)\]", matrix)
             res = [sub.split(",") for sub in flat_1]
             for term in res:
+                term = filter(None, [re.sub(r".*\(.*\).*", r"", i) for i in term])
                 #term = tuple(list(term))
                 #index = vocabulary.setdefault(term, len(vocabulary))
                 #indices.append(index)
