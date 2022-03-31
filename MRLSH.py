@@ -16,7 +16,7 @@ class MRLSH(MRJob):
         remove = ['n', 'u', 'l', '\t']
         for b in binary_matrix:
             b = ''.join(c for c in b if not c in remove)
-            yield None, b
+            yield None, GetSignatureMatrix(np.array(b))
 
 
 if __name__ == '__main__':
