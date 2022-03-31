@@ -3,9 +3,12 @@
 import numpy as np
 from mrjob.job import MRJob
 from mrjob.step import MRStep
+from mrjob import protocol
 from MinHash import GetSignatureMatrix
 
 class MRLSH(MRJob):
+    OUTPUT_PROTOCOL = protocol.RawValueProtocol
+
     def steps(self):
         return [
             MRStep(reducer=self.reducer_matrix),
