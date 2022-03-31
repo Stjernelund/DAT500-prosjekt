@@ -18,14 +18,14 @@ class MROneHot(MRJob):
         indptr = [0]
         for ngram in ngrams:
             for term in ngram:
-                term = tuple(list(term))
-                index = vocabulary.setdefault(term, len(vocabulary))
-                indices.append(index)
-                sparse_data.append(1)
-            indptr.append(len(indices))
-        sparse = csr_matrix((sparse_data, indices, indptr), dtype=int)
-        yield None, sparse.toarray().tolist()
-
+                #term = tuple(list(term))
+                #index = vocabulary.setdefault(term, len(vocabulary))
+                #indices.append(index)
+                #sparse_data.append(1)
+            #indptr.append(len(indices))
+        #sparse = csr_matrix((sparse_data, indices, indptr), dtype=int)
+        #yield None, sparse.toarray().tolist()
+                yield None, term
 
 if __name__ == '__main__':
     MROneHot.run()
