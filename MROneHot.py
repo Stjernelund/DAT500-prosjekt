@@ -17,7 +17,7 @@ class MROneHot(MRJob):
         sparse_data = list()
         indptr = [0]
         for matrix in ngrams:
-            flat_1 = re.findall(r"\[(.+?)\]", matrix)
+            flat_1 = re.findall(r'\[(.+?)\]"', matrix)
             res = [sub.split(",") for sub in flat_1]
             #for term in ngram:
                 #term = tuple(list(term))
