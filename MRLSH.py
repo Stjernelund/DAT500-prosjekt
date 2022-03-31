@@ -6,7 +6,7 @@ from mrjob.step import MRStep
 from mrjob.protocol import JSONValueProtocol
 from MinHash import GetSignatureMatrix
 import json
-from LSH import LSH
+import LSH
 
 class MRLSH(MRJob):
     def steps(self):
