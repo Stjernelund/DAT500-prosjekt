@@ -7,12 +7,14 @@ from scipy.sparse import csr_matrix
 import re
 
 class MROneHot(MRJob):
-    INPUT_PROTOCOL = JSONValueProtocol
-
     def steps(self):
         return [
+            MRStep(mapper = self.mapper),
             MRStep(reducer = self.reducer_onehot)
         ]
+
+    def mapper(self, paper_ids, ngrams):
+        yield paper_ids, ngrams
 
     def reducer_onehot(self, paper_ids, ngrams):
         vocabulary = dict()
