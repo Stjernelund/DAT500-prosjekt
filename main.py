@@ -22,3 +22,5 @@ with lsh.make_runner() as runner:
     runner._input_paths = ['output2/part-*']
     runner._output_dir = 'output3'
     runner.run()
+    for _, value in lsh.parse_output(runner.cat_output()):
+        print(value)
