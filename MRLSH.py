@@ -7,8 +7,6 @@ from mrjob.protocol import JSONValueProtocol
 from MinHash import GetSignatureMatrix
 
 class MRLSH(MRJob):
-    INPUT_PROTOCOL = JSONValueProtocol
-
     def steps(self):
         return [
             MRStep(reducer=self.reducer_matrix),
