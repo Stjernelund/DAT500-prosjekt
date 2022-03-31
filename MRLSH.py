@@ -12,7 +12,7 @@ class MRLSH(MRJob):
         ]
     def reducer_matrix(self, _, binary_matrix):
         #yield None, GetSignatureMatrix(list(np.matrix(binary_matrix)))
-        yield None, binary_matrix
+        yield None, np.matrix(binary_matrix)
 
 
 if __name__ == '__main__':
