@@ -36,4 +36,4 @@ class LSH:
                 hits = bucket_band[bucket]
                 if len(hits) > 1:
                     candidates.extend(combinations(hits, 2))
-        return set(candidates)
+        return candidates
