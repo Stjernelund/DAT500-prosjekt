@@ -3,7 +3,7 @@
 from MROneHot import MROneHot
 from mrjob import protocol
 from MRLSH import MRLSH
-from MrPreProcess import MRPreProcess
+from MRPreProcess import MRPreProcess
 
 PreProcess = MRPreProcess()
 with PreProcess.make_runner() as runner:
