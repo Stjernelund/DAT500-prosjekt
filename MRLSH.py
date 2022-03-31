@@ -3,9 +3,11 @@
 import numpy as np
 from mrjob.job import MRJob
 from mrjob.step import MRStep
+from mrjob.protocol import JSONValueProtocol
 from MinHash import GetSignatureMatrix
 
 class MRLSH(MRJob):
+    INPUT_PROTOCOL = JSONValueProtocol
 
     def steps(self):
         return [
