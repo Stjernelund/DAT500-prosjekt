@@ -22,8 +22,7 @@ class LSH:
         return np.stack(subvecs)
 
     def add_hash(self, signature):
-        return str(signature)
-        subvecs = self.make_subvecs(signature)
+        subvecs = self.make_subvecs(signature)[0]
         for i, subvec in enumerate(subvecs):
             subvec = "".join(str(c) for c in subvec)
             return subvec
