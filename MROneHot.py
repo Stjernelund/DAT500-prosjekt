@@ -21,14 +21,13 @@ class MROneHot(MRJob):
             res = [sub.split(",") for sub in flat_1]
             for term in res:
                 term = filter(None, [re.sub(r".*\(.*\).*", r"", i) for i in term])
-                #term = tuple(list(term))
-                #index = vocabulary.setdefault(term, len(vocabulary))
-                #indices.append(index)
-                #sparse_data.append(1)
-            #indptr.append(len(indices))
-        #sparse = csr_matrix((sparse_data, indices, indptr), dtype=int)
-        #yield None, sparse.toarray().tolist()
-                yield None, term
+                term = tuple(term)
+                index = vocabulary.setdefault(term, len(vocabulary))
+                indices.append(index)
+                sparse_data.append(1)
+            indptr.append(len(indices))
+        sparse = csr_matrix((sparse_data, indices, indptr), dtype=int)
+        yield None, sparse.toarray().tolist()
 
 if __name__ == '__main__':
     MROneHot.run()
