@@ -24,7 +24,7 @@ class LSH:
     def add_hash(self, signature):
         subvecs = self.make_subvecs(signature)
         for i, subvec in enumerate(subvecs):
-            return str(subvec)
+            return str(subvecs)
             subvec = "".join(str(c) for c in subvec)
             return subvec
             if subvec not in self.buckets[i].keys():
