@@ -1,9 +1,11 @@
 from itertools import combinations
 import numpy as np
 
+
 class LSH:
     buckets = []
     counter = 0
+
     def __init__(self, b):
         self.b = b
         for i in range(b):
@@ -16,13 +18,14 @@ class LSH:
         # break signature into subvectors
         subvecs = []
         for i in range(0, l, r):
-            subvecs.append(signature[i:i+r])
+            subvecs.append(signature[i : i + r])
         return np.stack(subvecs)
 
     def add_hash(self, signature):
+        return signature
         subvecs = self.make_subvecs(signature).astype(str)
         for i, subvec in enumerate(subvecs):
-            subvec = ','.join(np.array2string(subvec))
+            subvec = ",".join(np.array2string(subvec))
             if subvec not in self.buckets[i].keys():
                 self.buckets[i][subvec] = []
             self.buckets[i][subvec].append(self.counter)
