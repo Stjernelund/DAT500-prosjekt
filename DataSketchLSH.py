@@ -8,7 +8,7 @@ from mrjob import protocol
 
 class MRDataSketchLSH(MRJob):
     def steps(self):
-        return [MRStep(mapper=self.mapper)]
+        return [MRStep(mapper=self.mapper, reducer=self.reducer)]
 
     def mapper(self, _, line):
         key, line = line.split("\t")
