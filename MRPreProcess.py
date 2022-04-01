@@ -67,7 +67,7 @@ class MRPreProcess(MRJob):
             yield paper_id, word
 
     def reducer_ngram(self, paper_id, words):
-        yield list(paper_id), list(words)
+        yield paper_id, list(words)
 
 
 if __name__ == "__main__":
