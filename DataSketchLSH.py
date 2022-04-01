@@ -7,12 +7,11 @@ from mrjob import protocol
 
 
 class MRDataSketchLSH(MRJob):
-    INPUT_PROTOCOL = protocol.JSONValueProtocol
-
     def steps(self):
         return [MRStep(mapper=self.mapper)]
 
-    def mapper(self, key, line):
+    def mapper(self, _, line):
+        key, line = line.split("\t")
         yield key, line
 
 
