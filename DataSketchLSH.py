@@ -15,7 +15,7 @@ class MRDataSketchLSH(MRJob):
         m = MinHash(num_perm=128)
         for d in set(line):
             m.update(d.encode("utf8"))
-        yield key, m
+        yield key, str(m)
 
 
 if __name__ == "__main__":
