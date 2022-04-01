@@ -1,10 +1,15 @@
 #!/usr/bin/env python
+
 import sys
 
+
 def h1(x):
-        return (x+1)%5
+    return (x + 1) % 5
+
+
 def h2(x):
-        return (3*x+1)%5
+    return (3 * x + 1) % 5
+
 
 def minhash(data, hashfuncs):
     rows, cols, sigrows = len(data), len(data[0]), len(hashfuncs)
@@ -16,7 +21,7 @@ def minhash(data, hashfuncs):
 
     for r in range(rows):
         hashvalue = map(lambda x: x(r), hashfuncs)
-        hashvalue = list(map(int,hashvalue))
+        hashvalue = list(map(int, hashvalue))
         # if data != 0 and signature > hash value, replace signature with hash value
         for c in range(cols):
             if data[r][c] == 0:
@@ -26,6 +31,7 @@ def minhash(data, hashfuncs):
                     sigmatrix[i][c] = hashvalue[i]
 
     return sigmatrix
+
 
 def GetSignatureMatrix(binary_matrix):
     return minhash(binary_matrix, [h1, h2])

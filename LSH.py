@@ -1,3 +1,5 @@
+#! /usr/bin/python3
+
 from itertools import combinations
 import numpy as np
 
