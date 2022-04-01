@@ -15,9 +15,8 @@ with preprocesser.make_runner() as runner:
 
 datasketch = MRDataSketchLSH()
 with datasketch.make_runner() as runner:
-    runner.input_paths = ["output/part-*"]
-    runner.output_dir = "output4"
-    runner.hadoop_input_format = protocol.JSONValueProtocol
+    runner._input_paths = ["output/part-*"]
+    runner._output_dir = "output4"
     runner.run()
     for key, value in datasketch.parse_output(runner.cat_output()):
         print(key, value)
