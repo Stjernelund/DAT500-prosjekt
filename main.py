@@ -17,6 +17,8 @@ datasketch = MRDataSketchLSH()
 with datasketch.make_runner() as runner:
     runner._input_paths = ["output/part-*"]
     runner._output_dir = "output4"
+    runner._hadoop_input_format = protocol.JSONValueProtocol
+    print(runner.get_opts())
     runner.run()
     for key, value in datasketch.parse_output(runner.cat_output()):
         print(key, value)
