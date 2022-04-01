@@ -12,7 +12,10 @@ class MRDataSketchLSH(MRJob):
 
     def mapper(self, _, line):
         key, line = line.split("\t")
-        yield key, line
+        m = MinHash(num_perm=128)
+        for d in set(line):
+            m.update(d.encode("utf8"))
+        yield key, m
 
 
 if __name__ == "__main__":
