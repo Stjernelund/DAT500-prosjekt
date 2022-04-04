@@ -23,7 +23,7 @@ with datasketch.make_runner() as runner:
     for key, value in datasketch.parse_output(runner.cat_output()):
         print(key, value)
 """
-shutil.rmtree("outputB2")
+shutil.rmtree("output2")
 onehot = MROneHot()
 with onehot.make_runner() as runner:
     runner._input_paths = ["outputB/part-*"]
