@@ -10,7 +10,7 @@ class MRDataSketchLSH(MRJob):
     mrjobs = []
 
     def steps(self):
-        return [MRStep(mapper=self.mapper)]
+        return [MRStep(mapper=self.mapper, combiner=self.combiner)]
 
     def mapper(self, _, line):
         key, line = line.split("\t")
