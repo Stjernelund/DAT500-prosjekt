@@ -21,7 +21,7 @@ class MRLSH(MRJob):
 
     def reduer_LSH(self, _, signature_matrix):
         lsh = LSH.LSH(2)
-        for signature in signature_matrix:
+        for signature in np.concatenate(signature_matrix):
             lsh.add_hash(signature)
         yield lsh.check_candidates(), lsh.buckets
 
