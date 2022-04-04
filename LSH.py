@@ -27,7 +27,7 @@ class LSH:
         subvecs = self.make_subvecs(signature).astype(str)
         remove = ["n", "u", "l", "\t"]
         for i, subvec in enumerate(subvecs):
-            subvec = "".join(str(x) for x in subvec if x not in remove)
+            subvec = "".join(str(x) for x in subvec if str(x) not in remove)
             if subvec not in self.buckets[i].keys():
                 self.buckets[i][subvec] = []
             self.buckets[i][subvec].append(self.counter)
