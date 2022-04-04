@@ -5,6 +5,7 @@ from mrjob.job import MRJob
 from mrjob.step import MRStep
 from mrjob import protocol
 import ast
+import json
 
 
 class MRDataSketchLSH(MRJob):
@@ -42,9 +43,8 @@ class MRDataSketchLSH(MRJob):
             found.remove(key)
             if found:
                 similar[key] = found
-        with open("similar.txt", "w+") as f:
-            for key, value in similar.items():
-                f.write(key + "\t" + str(value) + "\n")
+        with open("similar.txt", "w+") as output:
+            json.dump(similar, output)
 
 
 if __name__ == "__main__":
