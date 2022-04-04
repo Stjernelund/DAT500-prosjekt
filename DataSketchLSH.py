@@ -18,7 +18,7 @@ class MRDataSketchLSH(MRJob):
         for d in line:
             m.update(d.encode("utf8"))
         self.mrjobs.append((key, m))
-        yield None, str(set(line))
+        yield None, str(type(line))
 
     def reducer(self, _, values):
         yield None, list(values)
