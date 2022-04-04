@@ -25,9 +25,9 @@ class LSH:
 
     def add_hash(self, signature):
         subvecs = self.make_subvecs(signature).astype(str)
-        rm = ['\n']
+        remove = ["n", "u", "l", "\t"]
         for i, subvec in enumerate(subvecs):
-            subvec = "".join(x for x in subvec if x not in rm )
+            subvec = "".join(x for x in subvec if x not in remove )
             if subvec not in self.buckets[i].keys():
                 self.buckets[i][subvec] = []
             self.buckets[i][subvec].append(self.counter)
