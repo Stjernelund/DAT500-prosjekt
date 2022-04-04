@@ -17,13 +17,7 @@ class MRDataSketchLSH(MRJob):
         m = MinHash(num_perm=128)
         for d in set(line):
             m.update(d.encode("utf8"))
-        yield key, m.hashvalues
-
-    def reducer(self, key, m):
-        lsh = MinHashLSH(threshold=0.5)
-        for hash in m:
-            lsh.insert(key, hash)
-        self.mrjobs.append(tuple(key, lsh))
+        self.mrjobs.append((key, m))
         yield list(key), None
 
 
