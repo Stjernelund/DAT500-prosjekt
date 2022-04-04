@@ -20,6 +20,12 @@ class MRDataSketchLSH(MRJob):
         self.mrjobs.append((key, m))
         yield key, None
 
+    def make_LSH(self):
+        lsh = MinHashLSH(threshold=0.5)
+        for key, m in self.mrjobs:
+            lsh.insert(key, m)
+        return lsh
+
 
 if __name__ == "__main__":
     MRDataSketchLSH.run()
