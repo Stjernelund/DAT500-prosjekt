@@ -20,8 +20,8 @@ class MRLSH(MRJob):
             yield None, GetSignatureMatrix(json.loads(b))
 
     def reduer_LSH(self, _, signature_matrix):
-        lsh = LSH.LSH(2)
         signatures = [row for matrix in signature_matrix for row in matrix]
+        lsh = LSH.LSH(len(signatures//2))
         for signature in signatures:
             lsh.add_hash(signature)
         yield lsh.check_candidates(), lsh.buckets
