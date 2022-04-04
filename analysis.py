@@ -20,7 +20,7 @@ def analyse():
         total = counter / 2
         print(f"Total number of papers: {total}.")
 
-    print(f"Percentage of papers with similarity: {len(data.keys()) / counter * 100}%.")
+    print(f"Percentage of papers with similarity: {len(data.keys()) / total * 100}%.")
 
 
 if __name__ == "__main__":
