@@ -20,7 +20,7 @@ class MRDataSketchLSH(MRJob):
         self.mrjobs.append((key, m))
         yield None, key
 
-    def combiner(self, key, _):
+    def combiner(self, _, values):
         yield None, list(key)
 
     def make_LSH(self):
