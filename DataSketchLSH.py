@@ -10,12 +10,16 @@ import ast
 class MRDataSketchLSH(MRJob):
     mrjobs = []
 
+    def __init__(self, threshold, num_prem):
+        self.threshold = threshold
+        self.num_prem = num_prem
+
     def steps(self):
         return [MRStep(mapper=self.mapper, reducer=self.reducer)]
 
     def mapper(self, _, line):
         key, line = line.split("\t")
-        m = MinHash(num_perm=128)
+        m = MinHash(num_perm=self.num_prem)
         for d in ast.literal_eval(line):
             m.update(str(d).encode("utf8"))
         self.mrjobs.append((key, m))
@@ -25,7 +29,7 @@ class MRDataSketchLSH(MRJob):
         yield None, list(values)
 
     def make_LSH(self):
-        lsh = MinHashLSH(threshold=0.5, num_perm=128)
+        lsh = MinHashLSH(threshold=self.threshold, num_perm=self.num_prem)
         for key, m in self.mrjobs:
             lsh.insert(key, m)
         return lsh
