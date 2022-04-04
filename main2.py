@@ -10,6 +10,7 @@ import shutil
 
 start = time.time()
 
+"""
 try:
     shutil.rmtree("outputB")
 except FileNotFoundError:
@@ -19,6 +20,7 @@ with preprocesser.make_runner() as runner:
     runner._input_paths = ["papers.csv"]
     runner._output_dir = "outputB"
     runner.run()
+"""
 
 preprostime = time.time()
 print(preprostime - start)
@@ -38,5 +40,5 @@ print(minhashtime - preprostime)
 lsh = datasketch.make_LSH()
 
 print(time.time() - minhashtime)
-item = datasketch.get_item(1)
+key, item = datasketch.get(1)
 print(lsh.query(item))

@@ -19,6 +19,7 @@ class MRDataSketchLSH(MRJob):
         for d in ast.literal_eval(line):
             m.update(str(d).encode("utf8"))
         self.mrjobs.append((key, m))
+        yield None, key
 
     def reducer(self, _, values):
         yield None, list(values)
@@ -30,7 +31,7 @@ class MRDataSketchLSH(MRJob):
         return lsh
 
     def get_item(self, index):
-        return self.mrjobs[index][1]
+        return self.mrjobs[index][0], self.mrjobs[index][1]
 
 
 if __name__ == "__main__":
