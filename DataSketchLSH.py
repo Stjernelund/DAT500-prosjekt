@@ -43,7 +43,7 @@ class MRDataSketchLSH(MRJob):
             found.remove(key)
             if found:
                 similar[key] = found
-        with open("similar.txt", "w+") as output:
+        with open("similar.json", "w+") as output:
             json.dump(similar, output)
 
 

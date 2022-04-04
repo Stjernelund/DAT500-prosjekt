@@ -8,41 +8,47 @@ from DataSketchLSH import MRDataSketchLSH
 import time
 import shutil
 
-start = time.time()
 
-"""
-try:
-    shutil.rmtree("outputBpaper2")
-except FileNotFoundError:
-    pass
-preprocesser = MRPreProcess()
-with preprocesser.make_runner() as runner:
-    runner._input_paths = ["papers2.csv"]
-    runner._output_dir = "outputBpaper2"
-    runner.run()
-"""
+def main():
+    start = time.time()
 
-preprostime = time.time()
-print(f"Preprocessing: {preprostime - start} seconds.")
+    """
+    try:
+        shutil.rmtree("outputBpaper2")
+    except FileNotFoundError:
+        pass
+    preprocesser = MRPreProcess()
+    with preprocesser.make_runner() as runner:
+        runner._input_paths = ["papers2.csv"]
+        runner._output_dir = "outputBpaper2"
+        runner.run()
+    """
 
-try:
-    shutil.rmtree("outputB2")
-except FileNotFoundError:
-    pass
+    preprostime = time.time()
+    print(f"Preprocessing: {preprostime - start} seconds.")
 
-datasketch = MRDataSketchLSH()
-with datasketch.make_runner() as runner:
-    runner._input_paths = ["outputB/part-*"]
-    runner._output_dir = "outputB2"
-    runner.run()
+    try:
+        shutil.rmtree("outputB2")
+    except FileNotFoundError:
+        pass
 
-minhashtime = time.time()
-print(f"Hashing: {minhashtime - preprostime} seconds.")
+    datasketch = MRDataSketchLSH()
+    with datasketch.make_runner() as runner:
+        runner._input_paths = ["outputB/part-*"]
+        runner._output_dir = "outputB2"
+        runner.run()
 
-lsh = datasketch.make_LSH()
-lshtime = time.time()
-print(f"LSH: {lshtime - minhashtime} seconds.")
+    minhashtime = time.time()
+    print(f"Hashing: {minhashtime - preprostime} seconds.")
 
-datasketch.find_similar(lsh)
-print(f"Similarity: {time.time() - lshtime} seconds.")
-print(f"Total time: {time.time() - start} seconds.")
+    lsh = datasketch.make_LSH()
+    lshtime = time.time()
+    print(f"LSH: {lshtime - minhashtime} seconds.")
+
+    datasketch.find_similar(lsh)
+    print(f"Similarity: {time.time() - lshtime} seconds.")
+    print(f"Total time: {time.time() - start} seconds.")
+
+
+if __name__ == "__main__":
+    main()
