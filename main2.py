@@ -10,14 +10,16 @@ import shutil
 
 start = time.time()
 
-"""
-shutil.rmtree('outputB')
+
+shutil.rmtree("outputB")
 preprocesser = MRPreProcess()
 with preprocesser.make_runner() as runner:
-    runner._input_paths = ["papers.csv"]
+    runner._input_paths = ["papers2.csv"]
     runner._output_dir = "outputB"
     runner.run()
-"""
+    for key, value in preprocesser.parse_output(runner.cat_output()):
+        print(key, value)
+
 
 preprostime = time.time()
 print(preprostime - start)
