@@ -12,6 +12,7 @@ with preprocesser.make_runner() as runner:
     runner._output_dir = "outputB"
     runner.run()
 
+print("lager minhash")
 
 datasketch = MRDataSketchLSH()
 with datasketch.make_runner() as runner:
@@ -19,5 +20,9 @@ with datasketch.make_runner() as runner:
     runner._output_dir = "outputB2"
     runner.run()
 
+print("lager lsh")
 lsh = datasketch.make_LSH()
-print(lsh.query(datasketch.get_item(-1)))
+
+item = datasketch(datasketch.get_item(1))
+print(item)
+print(lsh.query(item))
