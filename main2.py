@@ -10,8 +10,10 @@ import shutil
 
 start = time.time()
 
-
-shutil.rmtree("outputB")
+try:
+    shutil.rmtree("outputB")
+except FileNotFoundError:
+    pass
 preprocesser = MRPreProcess()
 with preprocesser.make_runner() as runner:
     runner._input_paths = ["papers2.csv"]
@@ -24,7 +26,10 @@ with preprocesser.make_runner() as runner:
 preprostime = time.time()
 print(preprostime - start)
 
-shutil.rmtree("outputB2")
+try:
+    shutil.rmtree("outputB2")
+except FileNotFoundError:
+    pass
 datasketch = MRDataSketchLSH()
 with datasketch.make_runner() as runner:
     runner._input_paths = ["outputB/part-*"]
