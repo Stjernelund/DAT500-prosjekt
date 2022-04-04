@@ -23,7 +23,7 @@ with preprocesser.make_runner() as runner:
 """
 
 preprostime = time.time()
-print(preprostime - start)
+print(f"Preprocessing: {preprostime - start} seconds.")
 
 try:
     shutil.rmtree("outputB2")
@@ -37,9 +37,12 @@ with datasketch.make_runner() as runner:
     runner.run()
 
 minhashtime = time.time()
-print(minhashtime - preprostime)
-lsh = datasketch.make_LSH()
+print(f"Hashing: {minhashtime - preprostime} seconds.")
 
-print(time.time() - minhashtime)
+lsh = datasketch.make_LSH()
+lshtime = time.time()
+print(f"LSH: {lshtime - minhashtime} seconds.")
 
 print(datasketch.find_similar(lsh))
+print(f"Similarity: {time.time() - lshtime} seconds.")
+print(f"Total time: {time.time() - start} seconds.")
