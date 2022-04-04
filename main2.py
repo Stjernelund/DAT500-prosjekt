@@ -41,4 +41,4 @@ lsh = datasketch.make_LSH()
 
 print(time.time() - minhashtime)
 key, item = datasketch.get(-1)
-print(lsh.query(item))
+print(key, lsh.query(item))
