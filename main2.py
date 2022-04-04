@@ -31,8 +31,6 @@ except FileNotFoundError:
     pass
 
 datasketch = MRDataSketchLSH()
-datasketch.set_options(0.5, 32)
-
 with datasketch.make_runner() as runner:
     runner._input_paths = ["outputB/part-*"]
     runner._output_dir = "outputB2"

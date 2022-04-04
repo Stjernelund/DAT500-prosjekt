@@ -9,8 +9,8 @@ import ast
 
 class MRDataSketchLSH(MRJob):
     mrjobs = []
-    num_prem = None
-    threshold = None
+    num_prem = 32
+    threshold = 0.5
 
     def steps(self):
         return [MRStep(mapper=self.mapper, reducer=self.reducer)]
@@ -34,10 +34,6 @@ class MRDataSketchLSH(MRJob):
 
     def get(self, index):
         return self.mrjobs[index][0], self.mrjobs[index][1]
-
-    def set_options(self, threshold, num_prem):
-        self.threshold = threshold
-        self.num_prem = num_prem
 
 
 if __name__ == "__main__":
