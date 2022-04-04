@@ -26,6 +26,9 @@ class MRDataSketchLSH(MRJob):
             lsh.insert(key, m)
         return lsh
 
+    def get_item(self, index):
+        return self.mrjobs[index][1]
+
 
 if __name__ == "__main__":
     MRDataSketchLSH.run()
