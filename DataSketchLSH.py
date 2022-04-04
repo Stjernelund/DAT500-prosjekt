@@ -18,10 +18,14 @@ class MRDataSketchLSH(MRJob):
         for d in set(line):
             m.update(d.encode("utf8"))
         self.mrjobs.append((key, m))
-        yield key, None
+        yield None, key
+
+    def combiner(self, key, _):
+        yield None, list(key)
 
     def make_LSH(self):
         lsh = MinHashLSH(threshold=0.5)
+        print(len(self.mrjobs))
         for key, m in self.mrjobs:
             lsh.insert(key, m)
         return lsh
