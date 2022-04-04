@@ -25,7 +25,7 @@ class MRDataSketchLSH(MRJob):
         yield None, list(values)
 
     def make_LSH(self):
-        lsh = MinHashLSH(threshold=0.99, num_perm=128)
+        lsh = MinHashLSH(threshold=0.5, num_perm=128)
         for key, m in self.mrjobs:
             lsh.insert(key, m)
         return lsh
