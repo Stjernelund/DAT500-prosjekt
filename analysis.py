@@ -17,7 +17,8 @@ def analyse():
         for line in input:
             amount = line.count("\\")
             counter += amount
-        print(f"Total number of papers: {counter}.")
+        total = counter / 2
+        print(f"Total number of papers: {total}.")
 
     print(f"Percentage of papers with similarity: {len(data.keys()) / counter * 100}%.")
 
