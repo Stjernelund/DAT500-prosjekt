@@ -43,6 +43,6 @@ lsh = datasketch.make_LSH()
 lshtime = time.time()
 print(f"LSH: {lshtime - minhashtime} seconds.")
 
-print(datasketch.find_similar(lsh))
+datasketch.find_similar(lsh)
 print(f"Similarity: {time.time() - lshtime} seconds.")
 print(f"Total time: {time.time() - start} seconds.")

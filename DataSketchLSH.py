@@ -10,7 +10,7 @@ import ast
 class MRDataSketchLSH(MRJob):
     mrjobs = []
     num_prem = 32
-    threshold = 0.2
+    threshold = 0.5
 
     def steps(self):
         return [MRStep(mapper=self.mapper, reducer=self.reducer)]
@@ -42,7 +42,9 @@ class MRDataSketchLSH(MRJob):
             found.remove(key)
             if found:
                 similar[key] = found
-        return similar
+        with open("similar.txt", "wr") as f:
+            for key, value in similar.items():
+                f.write(key + "\t" + str(value) + "\n")
 
 
 if __name__ == "__main__":
