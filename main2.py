@@ -29,7 +29,11 @@ try:
     shutil.rmtree("outputB2")
 except FileNotFoundError:
     pass
-datasketch = MRDataSketchLSH(0.5, 64)
+
+datasketch = MRDataSketchLSH()
+datasketch.threshold = 0.5
+datasketch.num_prem = 32
+
 with datasketch.make_runner() as runner:
     runner._input_paths = ["outputB/part-*"]
     runner._output_dir = "outputB2"
