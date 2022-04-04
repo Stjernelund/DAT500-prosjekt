@@ -9,6 +9,8 @@ import ast
 
 class MRDataSketchLSH(MRJob):
     mrjobs = []
+    num_prem = None
+    threshold = None
 
     def steps(self):
         return [MRStep(mapper=self.mapper, reducer=self.reducer)]
