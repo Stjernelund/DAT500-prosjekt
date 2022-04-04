@@ -4,6 +4,7 @@ from datasketch import MinHash, MinHashLSH
 from mrjob.job import MRJob
 from mrjob.step import MRStep
 from mrjob import protocol
+import ast
 
 
 class MRDataSketchLSH(MRJob):
@@ -15,10 +16,9 @@ class MRDataSketchLSH(MRJob):
     def mapper(self, _, line):
         key, line = line.split("\t")
         m = MinHash(num_perm=128)
-        for d in line:
+        for d in ast.literal_eval(line):
             m.update(d.encode("utf8"))
         self.mrjobs.append((key, m))
-        yield None, str(type(line))
 
     def reducer(self, _, values):
         yield None, list(values)
