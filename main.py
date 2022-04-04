@@ -12,7 +12,7 @@ with preprocesser.make_runner() as runner:
     runner._output_dir = "output"
     runner.run()
 
-
+"""
 datasketch = MRDataSketchLSH()
 with datasketch.make_runner() as runner:
     runner._input_paths = ["output/part-*"]
@@ -20,7 +20,6 @@ with datasketch.make_runner() as runner:
     runner.run()
     for key, value in datasketch.parse_output(runner.cat_output()):
         print(key, value)
-
 """
 
 onehot = MROneHot()
@@ -36,4 +35,3 @@ with lsh.make_runner() as runner:
     runner.run()
     for _, value in lsh.parse_output(runner.cat_output()):
         print(value)
-"""
