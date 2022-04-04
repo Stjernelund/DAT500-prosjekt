@@ -24,7 +24,7 @@ with datasketch.make_runner() as runner:
     runner._output_dir = "outputB2"
     runner.run()
 
-minhashtime = time.time()s
+minhashtime = time.time()
 print(minhashtime - preprostime)
 lsh = datasketch.make_LSH()
 
