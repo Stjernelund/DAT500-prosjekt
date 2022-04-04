@@ -42,7 +42,7 @@ class MRDataSketchLSH(MRJob):
             found.remove(key)
             if found:
                 similar[key] = found
-        with open("similar.txt", "wr") as f:
+        with open("similar.txt", "w+") as f:
             for key, value in similar.items():
                 f.write(key + "\t" + str(value) + "\n")
 
