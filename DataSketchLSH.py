@@ -10,7 +10,7 @@ import ast
 class MRDataSketchLSH(MRJob):
     mrjobs = []
     num_prem = 32
-    threshold = 0.5
+    threshold = 0.2
 
     def steps(self):
         return [MRStep(mapper=self.mapper, reducer=self.reducer)]
@@ -34,6 +34,15 @@ class MRDataSketchLSH(MRJob):
 
     def get(self, index):
         return self.mrjobs[index][0], self.mrjobs[index][1]
+
+    def find_similar(self):
+        similar = {}
+        for key, job in self.mrjobs:
+            found = self.lsh.query(job)
+            found.remove(key)
+            if found:
+                similar[key] = found
+        return similar
 
 
 if __name__ == "__main__":
