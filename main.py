@@ -7,14 +7,14 @@ from MRPreProcess import MRPreProcess
 from DataSketchLSH import MRDataSketchLSH
 import shutil
 
-"""
+shutil.rmtree("output")
 preprocesser = MRPreProcess()
 with preprocesser.make_runner() as runner:
     runner._input_paths = ["papers.csv"]
     runner._output_dir = "output"
     runner.run()
 
-
+"""
 datasketch = MRDataSketchLSH()
 with datasketch.make_runner() as runner:
     runner._input_paths = ["output/part-*"]
@@ -26,7 +26,7 @@ with datasketch.make_runner() as runner:
 shutil.rmtree("output2")
 onehot = MROneHot()
 with onehot.make_runner() as runner:
-    runner._input_paths = ["outputB/part-*"]
+    runner._input_paths = ["output/part-*"]
     runner._output_dir = "output2"
     runner.run()
 
