@@ -11,7 +11,7 @@ start = time.time()
 
 preprocesser = MRPreProcess()
 with preprocesser.make_runner() as runner:
-    runner._input_paths = ["papers2.csv"]
+    runner._input_paths = ["papers.csv"]
     runner._output_dir = "outputB"
     runner.run()
 
