@@ -23,7 +23,7 @@ class MRLSH(MRJob):
         lsh = LSH.LSH(2)
         for signature in signature_matrix:
             lsh.add_hash(signature)
-            yield None,signature
+            yield None,signature.astype(str)
         #yield lsh.check_candidates(), lsh.buckets
 
 
