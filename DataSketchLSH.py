@@ -21,7 +21,7 @@ class MRDataSketchLSH(MRJob):
         yield None, key
 
     def combiner(self, _, values):
-        yield None, list(key)
+        yield None, list(values)
 
     def make_LSH(self):
         lsh = MinHashLSH(threshold=0.5)
