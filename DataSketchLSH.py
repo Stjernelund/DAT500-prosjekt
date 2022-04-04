@@ -7,6 +7,8 @@ from mrjob import protocol
 
 
 class MRDataSketchLSH(MRJob):
+    mrjobs = []
+
     def steps(self):
         return [MRStep(mapper=self.mapper, reducer=self.reducer)]
 
@@ -21,7 +23,8 @@ class MRDataSketchLSH(MRJob):
         lsh = MinHashLSH(threshold=0.5)
         for hash in m:
             lsh.insert(key, hash)
-        yield list(key), lsh
+        self.mrjobs.append(tuple(key, lsh))
+        yield list(key), None
 
 
 if __name__ == "__main__":
