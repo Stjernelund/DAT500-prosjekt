@@ -11,7 +11,7 @@ import shutil
 start = time.time()
 
 """
-shutil.rmtree('outputB')
+shutil.rmtree('/outputB')
 preprocesser = MRPreProcess()
 with preprocesser.make_runner() as runner:
     runner._input_paths = ["papers.csv"]
@@ -22,7 +22,7 @@ with preprocesser.make_runner() as runner:
 preprostime = time.time()
 print(preprostime - start)
 
-shutil.rmtree("outputB2")
+shutil.rmtree("/outputB2")
 datasketch = MRDataSketchLSH()
 with datasketch.make_runner() as runner:
     runner._input_paths = ["outputB/part-*"]
