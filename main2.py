@@ -20,3 +20,6 @@ with datasketch.make_runner() as runner:
     runner.run()
     for key, value in datasketch.parse_output(runner.cat_output()):
         print(key, value)
+
+
+print(datasketch.mrjobs)
