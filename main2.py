@@ -34,6 +34,5 @@ print(minhashtime - preprostime)
 lsh = datasketch.make_LSH()
 
 print(time.time() - minhashtime)
-item = datasketch.get_item(1)
-print(item)
-print(lsh.query(item))
+# item = datasketch.get_item(1)
+print(lsh.query(datasketch.first))
