@@ -24,11 +24,11 @@ class LSH:
         return np.stack(subvecs)
 
     def add_hash(self, signature):
+        signature.remove("\n")
         subvecs = self.make_subvecs(signature).astype(str)
         remove = ["n", "u", "l", "\t"]
         for i, subvec in enumerate(subvecs):
             subvec = ",".join(str(x) for x in subvec)
-            subvec.strip()
             if subvec not in self.buckets[i].keys():
                 self.buckets[i][subvec] = []
             self.buckets[i][subvec].append(self.counter)
