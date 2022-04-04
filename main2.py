@@ -20,4 +20,4 @@ with datasketch.make_runner() as runner:
     runner.run()
 
 lsh = datasketch.make_LSH()
-print(lsh.queury("32316751"))
+print(lsh.query("32316751"))
