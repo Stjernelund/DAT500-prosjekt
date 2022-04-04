@@ -40,4 +40,4 @@ lsh = datasketch.make_LSH()
 
 print(time.time() - minhashtime)
 
-print(datasketch.find_similar())
+print(datasketch.find_similar(lsh))

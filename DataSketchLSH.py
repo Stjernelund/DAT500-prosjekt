@@ -35,10 +35,10 @@ class MRDataSketchLSH(MRJob):
     def get(self, index):
         return self.mrjobs[index][0], self.mrjobs[index][1]
 
-    def find_similar(self):
+    def find_similar(self, lsh):
         similar = {}
         for key, job in self.mrjobs:
-            found = self.lsh.query(job)
+            found = lsh.query(job)
             found.remove(key)
             if found:
                 similar[key] = found
