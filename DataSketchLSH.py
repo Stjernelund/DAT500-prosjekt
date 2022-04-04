@@ -18,8 +18,8 @@ class MRDataSketchLSH(MRJob):
         m = MinHash(num_perm=128)
         for d in set(line):
             m.update(d.encode("utf8"))
-            yield None, d
         self.mrjobs.append((key, m))
+        yield None, set(line)
 
     def reducer(self, _, values):
         yield None, list(values)
