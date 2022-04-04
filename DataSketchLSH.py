@@ -33,6 +33,10 @@ class MRDataSketchLSH(MRJob):
     def get(self, index):
         return self.mrjobs[index][0], self.mrjobs[index][1]
 
+    def set_options(self, threshold, num_prem):
+        self.threshold = threshold
+        self.num_prem = num_prem
+
 
 if __name__ == "__main__":
     MRDataSketchLSH.run()

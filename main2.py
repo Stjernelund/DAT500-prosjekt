@@ -31,8 +31,7 @@ except FileNotFoundError:
     pass
 
 datasketch = MRDataSketchLSH()
-datasketch.threshold = 0.5
-datasketch.num_prem = 32
+datasketch.set_options(0.5, 32)
 
 with datasketch.make_runner() as runner:
     runner._input_paths = ["outputB/part-*"]
