@@ -30,7 +30,7 @@ class MRDataSketchLSH(MRJob):
             lsh.insert(key, m)
         return lsh
 
-    def get_item(self, index):
+    def get(self, index):
         return self.mrjobs[index][0], self.mrjobs[index][1]
 
 
