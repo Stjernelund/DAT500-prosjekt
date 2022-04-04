@@ -10,6 +10,7 @@ import shutil
 
 start = time.time()
 
+"""
 try:
     shutil.rmtree("outputBpaper2")
 except FileNotFoundError:
@@ -19,6 +20,7 @@ with preprocesser.make_runner() as runner:
     runner._input_paths = ["papers2.csv"]
     runner._output_dir = "outputBpaper2"
     runner.run()
+"""
 
 preprostime = time.time()
 print(preprostime - start)
@@ -30,7 +32,7 @@ except FileNotFoundError:
 
 datasketch = MRDataSketchLSH()
 with datasketch.make_runner() as runner:
-    runner._input_paths = ["outputBpaper2/part-*"]
+    runner._input_paths = ["outputB/part-*"]
     runner._output_dir = "outputB2"
     runner.run()
 
