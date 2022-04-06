@@ -12,7 +12,6 @@ import shutil
 def main():
     start = time.time()
 
-    """
     try:
         shutil.rmtree("output")
     except FileNotFoundError:
@@ -22,7 +21,6 @@ def main():
         runner._input_paths = ["papers.csv"]
         runner._output_dir = "output"
         runner.run()
-    """
 
     preprostime = time.time()
     print(f"Preprocessing: {preprostime - start} seconds.")
