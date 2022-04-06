@@ -10,8 +10,10 @@ import json
 
 class MRDataSketchLSH(MRJob):
     mrjobs = []
-    num_prem = 32
-    threshold = 0.5
+    num_prem = 128
+
+    def __init__(self, threshold):
+        self.threshold = threshold
 
     def steps(self):
         return [MRStep(mapper=self.mapper, reducer=self.reducer)]
