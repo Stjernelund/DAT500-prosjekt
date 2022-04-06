@@ -11,6 +11,7 @@ import shutil
 
 def main():
     start = time.time()
+    threshold = 20
 
     try:
         shutil.rmtree("output")
@@ -26,15 +27,15 @@ def main():
     print(f"Preprocessing: {preprostime - start} seconds.")
 
     try:
-        shutil.rmtree("output")
+        shutil.rmtree(f"output2_t{int(threshold)}")
     except FileNotFoundError:
         pass
 
     datasketch = MRDataSketchLSH()
-    datasketch.init(threshold=0.2)
+    datasketch.init(threshold)
     with datasketch.make_runner() as runner:
         runner._input_paths = ["output/part-*"]
-        runner._output_dir = f"output2_t{int(datasketch.threshold*100)}"
+        runner._output_dir = f"output2_t{threshold}"
         runner.run()
 
     minhashtime = time.time()
