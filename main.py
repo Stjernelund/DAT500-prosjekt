@@ -11,8 +11,9 @@ import shutil
 
 def main():
     start = time.time()
-    threshold = 20
+    threshold = 0.2
 
+    """
     try:
         shutil.rmtree("output")
     except FileNotFoundError:
@@ -22,12 +23,13 @@ def main():
         runner._input_paths = ["papers.csv"]
         runner._output_dir = "output"
         runner.run()
+    """
 
     preprostime = time.time()
     print(f"Preprocessing: {preprostime - start} seconds.")
 
     try:
-        shutil.rmtree(f"output2_t{threshold}")
+        shutil.rmtree(f"output2_t{int(threshold * 100)}")
     except FileNotFoundError:
         pass
 
@@ -35,7 +37,7 @@ def main():
     datasketch.init(threshold)
     with datasketch.make_runner() as runner:
         runner._input_paths = ["output/part-*"]
-        runner._output_dir = f"output2_t{threshold}"
+        runner._output_dir = f"output2_t{int(threshold * 100)}"
         runner.run()
 
     minhashtime = time.time()
