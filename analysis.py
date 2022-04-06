@@ -4,10 +4,10 @@ import json
 
 
 def main():
-    analyse()
+    analysis()
 
 
-def analyse():
+def analysis():
     with open("similar.json", "r") as input:
         data = json.load(input)
     print(f"Total number of papers with similarity: {len(data.keys()), len(data)}")
