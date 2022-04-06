@@ -35,9 +35,6 @@ class MRDataSketchLSH(MRJob):
             lsh.insert(key, m)
         return lsh
 
-    def get(self, index):
-        return self.mrjobs[index][0], self.mrjobs[index][1]
-
     def find_similar(self, lsh):
         similar = {}
         for key, job in self.mrjobs:
