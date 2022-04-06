@@ -12,7 +12,7 @@ class MRDataSketchLSH(MRJob):
     mrjobs = []
     num_prem = 128
 
-    def __init__(self, threshold):
+    def init(self, threshold):
         self.threshold = threshold
 
     def steps(self):
