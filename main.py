@@ -48,7 +48,6 @@ def main():
     datasketch.find_similar(lsh)
     similar_time = time.time()
     print(f"Similarity: {similar_time - lshtime} seconds.")
-    print(f"Total time: {similar_time - start} seconds.")
 
     try:
         shutil.rmtree(f"output3_t{int(threshold * 100)}")
@@ -63,6 +62,7 @@ def main():
             total_similar = value
             print(f"Total number of papers: {total_similar}.")
     print(f"Analysis: {time.time() - lshtime} seconds.")
+    print(f"Total time: {similar_time - start} seconds.")
 
 
 if __name__ == "__main__":

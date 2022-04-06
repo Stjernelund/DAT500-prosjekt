@@ -43,7 +43,7 @@ class MRDataSketchLSH(MRJob):
             if found:
                 similar[key] = found
         with open("similar.txt", "w+") as output:
-            for key, line in similar:
+            for key, line in similar.items():
                 output.write(f"{key}\t{line}\n")
 
 
