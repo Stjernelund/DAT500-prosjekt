@@ -33,7 +33,7 @@ def main():
     datasketch = MRDataSketchLSH(128)
     with datasketch.make_runner() as runner:
         runner._input_paths = ["output/part-*"]
-        runner._output_dir = "output2"
+        runner._output_dir = "output2_t20"
         runner.run()
 
     minhashtime = time.time()
