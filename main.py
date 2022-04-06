@@ -27,7 +27,7 @@ def main():
     print(f"Preprocessing: {preprostime - start} seconds.")
 
     try:
-        shutil.rmtree(f"output2_t{int(threshold)}")
+        shutil.rmtree(f"output2_t{threshold}")
     except FileNotFoundError:
         pass
 
