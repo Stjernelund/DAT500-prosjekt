@@ -58,7 +58,7 @@ def main():
         runner._input_paths = [f"output2_t{int(threshold * 100)}/part-00000"]
         runner._output_dir = f"output3_t{int(threshold * 100)}"
         runner.run()
-        for _, value in analysis.iter_output(runner.cat_output()):
+        for _, value in analysis.parse_output(runner.cat_output()):
             total_similar = value
             print(f"Total number of papers: {total_similar}.")
     print(f"Analysis: {time.time() - lshtime} seconds.")
