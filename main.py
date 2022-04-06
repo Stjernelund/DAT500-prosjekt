@@ -1,6 +1,6 @@
 #! /usr/bin/python3
 
-from MRanalysis import MRAnalysis
+from MRAnalysis import MRAnalysis
 from MRPreProcess import MRPreProcess
 from DataSketchLSH import MRDataSketchLSH
 import time
