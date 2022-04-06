@@ -46,8 +46,9 @@ def main():
     print(f"LSH: {lshtime - minhashtime} seconds.")
 
     datasketch.find_similar(lsh)
-    print(f"Similarity: {time.time() - lshtime} seconds.")
-    print(f"Total time: {time.time() - start} seconds.")
+    similar_time = time.time()
+    print(f"Similarity: {similar_time - lshtime} seconds.")
+    print(f"Total time: {similar_time - start} seconds.")
 
     try:
         shutil.rmtree(f"output3_t{int(threshold * 100)}")
@@ -58,9 +59,10 @@ def main():
         runner._input_paths = [f"output2_t{int(threshold * 100)}/part-00000"]
         runner._output_dir = f"output3_t{int(threshold * 100)}"
         runner.run()
-        for key, value in analysis.iter_output(runner.cat_output()):
+        for _, value in analysis.iter_output(runner.cat_output()):
             total_similar = value
             print(f"Total number of papers: {total_similar}.")
+    print(f"Analysis: {time.time() - lshtime} seconds.")
 
 
 if __name__ == "__main__":
