@@ -1,8 +1,6 @@
 #! /usr/bin/python3
 
-from MROneHot import MROneHot
-from mrjob import protocol
-from MRLSH import MRLSH
+from MRanalysis import MRAnalysis
 from MRPreProcess import MRPreProcess
 from DataSketchLSH import MRDataSketchLSH
 import time
@@ -50,6 +48,19 @@ def main():
     datasketch.find_similar(lsh)
     print(f"Similarity: {time.time() - lshtime} seconds.")
     print(f"Total time: {time.time() - start} seconds.")
+
+    try:
+        shutil.rmtree(f"output3_t{int(threshold * 100)}")
+    except FileNotFoundError:
+        pass
+    analysis = MRAnalysis()
+    with analysis.make_runner() as runner:
+        runner._input_paths = [f"output2_t{int(threshold * 100)}/part-00000"]
+        runner._output_dir = f"output3_t{int(threshold * 100)}"
+        runner.run()
+        for key, value in analysis.iter_output(runner.cat_output()):
+            total_similar = value
+            print(f"Total number of papers: {total_similar}.")
 
 
 if __name__ == "__main__":
