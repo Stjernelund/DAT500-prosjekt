@@ -9,10 +9,10 @@ class MRAnalysis(MRJob):
         return [MRStep(mapper=self.mapper_count, reducer=self.reducer_count)]
 
     def mapper_count(self, key, line):
-        yield None, 1
+        yield None, line.count("\\")
 
     def reducer_count(self, _, values):
-        yield None, sum(values)
+        yield None, sum(values) / 2  # because there are 2 slash per id
 
 
 if __name__ == "__main__":
