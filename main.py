@@ -5,23 +5,23 @@ from MRPreProcess import MRPreProcess
 from DataSketchLSH import MRDataSketchLSH
 import time
 import shutil
+import sys
 
 
 def main():
     start = time.time()
-    threshold = 0.9
+    threshold = float(sys.argv[1])
     path = f"output_t{int(threshold * 100)}"
-    """
-    try:
-        shutil.rmtree("preprocess")
-    except FileNotFoundError:
-        pass
-    preprocesser = MRPreProcess()
-    with preprocesser.make_runner() as runner:
-        runner._input_paths = ["papers.csv"]
-        runner._output_dir = "preprocess"
-        runner.run()
-    """
+    if sys.argv[2].lower().includes("t"):
+        try:
+            shutil.rmtree("preprocess")
+        except FileNotFoundError:
+            pass
+        preprocesser = MRPreProcess()
+        with preprocesser.make_runner() as runner:
+            runner._input_paths = ["papers.csv"]
+            runner._output_dir = "preprocess"
+            runner.run()
 
     preprostime = time.time()
     print(f"Preprocessing: {preprostime - start} seconds.")
