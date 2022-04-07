@@ -33,6 +33,7 @@ class SumSimilar(MRJob):
 
     def mapper(self, _, line):
         key, line = line.split("\t")
+        key = key.strip('\\"')
         line = ast.literal_eval(line)
         yield key, len(line)
 
