@@ -12,7 +12,7 @@ def main():
     start = time.time()
     threshold = float(sys.argv[1])
     path = f"output_t{int(threshold * 100)}"
-    if sys.argv[2].lower().includes("t"):
+    if "t" in sys.argv[2].lower():
         try:
             shutil.rmtree("preprocess")
         except FileNotFoundError:
