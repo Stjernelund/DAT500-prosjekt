@@ -40,7 +40,10 @@ class MRDataSketchLSH(MRJob):
             found.remove(key)
             if found:
                 similar[key] = found
-        with open(f"similar_t{int(self.threshold * 100)}.txt", "w+") as output:
+        with open(
+            f"output2_t{int(self.threshold * 100)}/similar_t{int(self.threshold * 100)}.txt",
+            "w+",
+        ) as output:
             for key, line in similar.items():
                 output.write(f"{key}\t{line}\n")
 

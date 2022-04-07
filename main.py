@@ -54,14 +54,27 @@ def main():
         shutil.rmtree(f"output3_t{int(threshold * 100)}")
     except FileNotFoundError:
         pass
-    analysis = MRAnalysis()
-    with analysis.make_runner() as runner:
+
+    MR_total = MRAnalysis.Total()
+    with MR_total.make_runner() as runner:
         runner._input_paths = [f"output2_t{int(threshold * 100)}/part-00000"]
         runner._output_dir = f"output3_t{int(threshold * 100)}"
         runner.run()
-        for _, value in analysis.parse_output(runner.cat_output()):
+        for _, value in MR_total.parse_output(runner.cat_output()):
             total = value
             print(f"Total number of papers: {total}.")
+
+    MR_similar = MRAnalysis.Similar()
+    with MR_similar.make_runner() as runner:
+        runner._input_paths = [
+            f"output2_t{int(threshold * 100)}/similar_t{int(threshold * 100)}.txt"
+        ]
+        runner._output_dir = f"output3_t{int(threshold * 100)}"
+        runner.run()
+        for _, value in MR_similar.parse_output(runner.cat_output()):
+            similar = value
+            print(f"Number of similar papers: {similar}.")
+            print(f"Similarity: {similar / total}%.")
     # print(f"Analysis: {time.time() - lshtime} seconds.")
     # print(f"Total time: {similar_time - start} seconds.")
 
