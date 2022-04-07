@@ -2,6 +2,7 @@
 
 from mrjob.job import MRJob
 from mrjob.step import MRStep
+import ast
 
 
 class Total(MRJob):
@@ -30,7 +31,9 @@ class SumSimilar(MRJob):
     def steps(self):
         return [MRStep(mapper=self.mapper)]
 
-    def mapper(self, key, line):
+    def mapper(self, _, line):
+        key, line = line.split("\t")
+        line = ast.literal_eval(line)
         yield key, len(line)
 
 
