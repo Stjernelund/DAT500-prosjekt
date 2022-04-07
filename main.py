@@ -11,7 +11,7 @@ def main():
     start = time.time()
     threshold = 0.9
     path = f"output_t{int(threshold * 100)}"
-
+    """
     try:
         shutil.rmtree("preprocess")
     except FileNotFoundError:
@@ -66,14 +66,16 @@ def main():
             similar = value
             print(f"Number of similar papers: {similar}.")
             print(f"Similarity: {similar / total * 100}%.")
+    """
 
     sum_similar = MRAnalysis.SumSimilar()
     with sum_similar.make_runner() as runner:
         runner._input_paths = [f"{path}/similar.txt"]
         runner._output_dir = f"{path}/similar_sum"
+        runner.run()
 
-    print(f"Analysis: {time.time() - lshtime} seconds.")
-    print(f"Total time: {similar_time - start} seconds.")
+    # print(f"Analysis: {time.time() - lshtime} seconds.")
+    # print(f"Total time: {similar_time - start} seconds.")
 
 
 if __name__ == "__main__":
