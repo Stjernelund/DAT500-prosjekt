@@ -41,7 +41,7 @@ class MRDataSketchLSH(MRJob):
             if found:
                 similar[key] = found
         with open(
-            f"output2_t{int(self.threshold * 100)}/similar_t{int(self.threshold * 100)}.txt",
+            f"output_t{int(self.threshold * 100)}/similar.txt",
             "w+",
         ) as output:
             for key, line in similar.items():

@@ -9,33 +9,32 @@ import shutil
 
 def main():
     start = time.time()
-    threshold = 0.2
+    threshold = 0.9
+    path = f"output_t{int(threshold * 100)}"
 
-    """
     try:
-        shutil.rmtree("output")
+        shutil.rmtree("preprocess")
     except FileNotFoundError:
         pass
     preprocesser = MRPreProcess()
     with preprocesser.make_runner() as runner:
         runner._input_paths = ["papers.csv"]
-        runner._output_dir = "output"
+        runner._output_dir = "preprocess"
         runner.run()
-    """
 
     preprostime = time.time()
     print(f"Preprocessing: {preprostime - start} seconds.")
 
     try:
-        shutil.rmtree(f"output2_t{int(threshold * 100)}")
+        shutil.rmtree(f"{path}")
     except FileNotFoundError:
         pass
 
     datasketch = MRDataSketchLSH()
     datasketch.init(threshold)
     with datasketch.make_runner() as runner:
-        runner._input_paths = ["output/part-*"]
-        runner._output_dir = f"output2_t{int(threshold * 100)}"
+        runner._input_paths = ["preprocess/part-*"]
+        runner._output_dir = f"{path}/lsh"
         runner.run()
 
     minhashtime = time.time()
@@ -49,15 +48,10 @@ def main():
     similar_time = time.time()
     print(f"Similarity: {similar_time - lshtime} seconds.")
 
-    try:
-        shutil.rmtree(f"output3_t{int(threshold * 100)}")
-    except FileNotFoundError:
-        pass
-
     MR_total = MRAnalysis.Total()
     with MR_total.make_runner() as runner:
-        runner._input_paths = [f"output2_t{int(threshold * 100)}/part-00000"]
-        runner._output_dir = f"output3_t{int(threshold * 100)}"
+        runner._input_paths = [f"{path}/lsh/part-*"]
+        runner._output_dir = f"{path}/total"
         runner.run()
         for _, value in MR_total.parse_output(runner.cat_output()):
             total = value
@@ -65,15 +59,19 @@ def main():
 
     MR_similar = MRAnalysis.Similar()
     with MR_similar.make_runner() as runner:
-        runner._input_paths = [
-            f"output2_t{int(threshold * 100)}/similar_t{int(threshold * 100)}.txt"
-        ]
-        runner._output_dir = f"output3_t{int(threshold * 100)}"
+        runner._input_paths = [f"{path}/similar.txt"]
+        runner._output_dir = f"{path}/similar_total"
         runner.run()
         for _, value in MR_similar.parse_output(runner.cat_output()):
             similar = value
             print(f"Number of similar papers: {similar}.")
-            print(f"Similarity: {similar / total}%.")
+            print(f"Similarity: {similar / total * 100}%.")
+
+    sum_similar = MRAnalysis.SumSimilar()
+    with sum_similar.make_runner() as runner:
+        runner._input_paths = [f"{path}/similar.txt"]
+        runner._output_dir = f"{path}/similar_sum"
+
     print(f"Analysis: {time.time() - lshtime} seconds.")
     print(f"Total time: {similar_time - start} seconds.")
 
