@@ -12,7 +12,7 @@ class MRAnalysis(MRJob):
         yield None, 1
 
     def reducer_count(self, _, values):
-        yield None, sum(values)
+        yield None, str(list(values))
 
 
 if __name__ == "__main__":

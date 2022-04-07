@@ -3,9 +3,7 @@
 from datasketch import MinHash, MinHashLSH
 from mrjob.job import MRJob
 from mrjob.step import MRStep
-from mrjob import protocol
 import ast
-import json
 
 
 class MRDataSketchLSH(MRJob):
@@ -42,7 +40,7 @@ class MRDataSketchLSH(MRJob):
             found.remove(key)
             if found:
                 similar[key] = found
-        with open("similar.txt", "w+") as output:
+        with open(f"similar_t{int(self.threshold * 100)}.txt", "w+") as output:
             for key, line in similar.items():
                 output.write(f"{key}\t{line}\n")
 
