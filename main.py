@@ -23,7 +23,6 @@ def main():
         runner.run()
     """
 
-    """
     preprostime = time.time()
     print(f"Preprocessing: {preprostime - start} seconds.")
 
@@ -49,7 +48,7 @@ def main():
     datasketch.find_similar(lsh)
     similar_time = time.time()
     print(f"Similarity: {similar_time - lshtime} seconds.")
-    """
+
     try:
         shutil.rmtree(f"output3_t{int(threshold * 100)}")
     except FileNotFoundError:
@@ -75,8 +74,8 @@ def main():
             similar = value
             print(f"Number of similar papers: {similar}.")
             print(f"Similarity: {similar / total}%.")
-    # print(f"Analysis: {time.time() - lshtime} seconds.")
-    # print(f"Total time: {similar_time - start} seconds.")
+    print(f"Analysis: {time.time() - lshtime} seconds.")
+    print(f"Total time: {similar_time - start} seconds.")
 
 
 if __name__ == "__main__":
