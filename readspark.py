@@ -9,6 +9,5 @@ sc = spark.sparkContext
 path = "preprocess"
 
 df = spark.read.text(path)
-df.selectExpr("split(value, '\t') as\
-Text_Data_In_Rows_Using_Text").show(4,False)
+df1 = spark.read.option("delimiter", '"\t"').text(path)
 df.show()
