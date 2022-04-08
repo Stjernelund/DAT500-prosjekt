@@ -3,7 +3,7 @@
 import MRAnalysis
 from MRPreProcess import MRPreProcess
 from DataSketchLSH import MRDataSketchLSH
-from MrNgram import MRNgram
+from MRNgram import MRNgram
 import time
 import shutil
 import sys
@@ -11,6 +11,7 @@ import sys
 
 def main():
     start = time.time()
+    """
     threshold = float(sys.argv[1])
     path = f"output_t{int(threshold * 100)}"
     if "t" in sys.argv[2].lower():
@@ -26,17 +27,20 @@ def main():
 
     preprostime = time.time()
     print(f"Preprocessing: {preprostime - start} seconds.")
-
-    try:
-        shutil.rmtree(f"{path}")
-    except FileNotFoundError:
-        pass
-    
+    """
     ngrams = MRNgram()
     with ngrams.make_runner() as runner:
         runner._input_paths = ["preprocess/part-*"]
         runner._output_dir = "ngrams"
         runner.run()
+        for key, value in ngrams.parse_output(runner.cat_output()):
+            print(f"ny: {key}\t{value}")
+
+    """
+    try:
+        shutil.rmtree(f"{path}")
+    except FileNotFoundError:
+        pass
 
     datasketch = MRDataSketchLSH()
     datasketch.init(threshold)
@@ -83,6 +87,8 @@ def main():
 
     print(f"Analysis: {time.time() - lshtime} seconds.")
     print(f"Total time: {similar_time - start} seconds.")
+
+    """
 
 
 if __name__ == "__main__":
