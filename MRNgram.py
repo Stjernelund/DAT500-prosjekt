@@ -11,26 +11,19 @@ class MRNgram(MRJob):
         return [
             MRStep(
                 mapper=self.mapper,
-                # combiner=self.combiner,
-                # reducer=self.reducer,
+                combiner=self.combiner,
             )
         ]
 
     def mapper(self, _, line):
         yield str(type(line)), None
-        # paper_id, line = line.split("\t")
-        # yield paper_id, line
-
-    def combiner(self, paper_id, line):
-        yield str(type(line)), None
-        """
+        paper_id, line = line.split("\t")
         words = line.split()
         ngrams = set(nltk.ngrams(words, 5))
         for word in ngrams:
             yield paper_id, word
-        """
 
-    def reducer(self, paper_id, words):
+    def combiner(self, paper_id, words):
         yield paper_id, list(words)
 
 
