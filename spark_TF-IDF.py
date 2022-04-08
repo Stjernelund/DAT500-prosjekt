@@ -33,3 +33,12 @@ tfidf = idf.transform(tf)
 # This feature can be used by passing the minDocFreq value to the IDF constructor.
 idfIgnore = IDF(minDocFreq=2).fit(tf)
 tfidfIgnore = idfIgnore.transform(tf)
+print("tfidf:")
+for each in tfidf.collect():
+    print(each)
+
+print("tfidfIgnore:")
+for each in tfidfIgnore.collect():
+    print(each)
+
+sc.stop()
