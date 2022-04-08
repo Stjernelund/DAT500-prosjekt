@@ -3,6 +3,7 @@
 import MRAnalysis
 from MRPreProcess import MRPreProcess
 from DataSketchLSH import MRDataSketchLSH
+from MrNgram import MRNgram
 import time
 import shutil
 import sys
@@ -30,11 +31,17 @@ def main():
         shutil.rmtree(f"{path}")
     except FileNotFoundError:
         pass
+    
+    ngrams = MRNgram()
+    with ngrams.make_runner() as runner:
+        runner._input_paths = ["preprocess/part-*"]
+        runner._output_dir = "ngrams"
+        runner.run()
 
     datasketch = MRDataSketchLSH()
     datasketch.init(threshold)
     with datasketch.make_runner() as runner:
-        runner._input_paths = ["preprocess/part-*"]
+        runner._input_paths = ["ngrams/part-*"]
         runner._output_dir = f"{path}/lsh"
         runner.run()
 
