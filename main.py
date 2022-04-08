@@ -28,15 +28,15 @@ def main():
     preprostime = time.time()
     print(f"Preprocessing: {preprostime - start} seconds.")
     """
+    if "t" in sys.argv[2].lower():
+        ngrams = MRNgram()
+        with ngrams.make_runner() as runner:
+            runner._input_paths = ["preprocess/part-*"]
+            runner._output_dir = "ngrams"
+            runner.run()
 
-    ngrams = MRNgram()
-    with ngrams.make_runner() as runner:
-        runner._input_paths = ["preprocess/part-*"]
-        runner._output_dir = "ngrams"
-        runner.run()
-        for key, value in ngrams.parse_output(runner.cat_output()):
-            print(f"ny: {key}\t{value}")
-
+    ngramtime = time.time()
+    print(f"Ngrams: {ngramtime - start} seconds.")
     """
     try:
         shutil.rmtree(f"{path}")
@@ -51,7 +51,7 @@ def main():
         runner.run()
 
     minhashtime = time.time()
-    print(f"Hashing: {minhashtime - preprostime} seconds.")
+    print(f"Hashing: {minhashtime - ngramtime} seconds.")
 
     lsh = datasketch.make_LSH()
     lshtime = time.time()
