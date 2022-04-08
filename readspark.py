@@ -1,12 +1,10 @@
 from mailbox import linesep
 from os import sep
 
-spark2 = spark
-import spark2.implicits._
-
-
 sc = spark.sparkContext
 
+val spark = this.spark
+import spark.implicits._
 # A text dataset is pointed to by path.
 # The path can be either a single text file or a directory of text files
 path = "preprocess"
