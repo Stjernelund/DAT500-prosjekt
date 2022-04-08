@@ -18,4 +18,4 @@ path = "preprocess"
 documents = sc.textFile(path).map(lambda line: line.split(" "))
 #documents.drop('age')
 
-documents.take(10)
+print(documents.take(10))
