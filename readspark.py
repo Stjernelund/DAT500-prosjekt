@@ -9,5 +9,5 @@ sc = spark.sparkContext
 path = "preprocess"
 
 df = spark.read.text(path)
-df1 = spark.read.option("delimiter", '"\t"').text(path)
-df.show()
+df.withColumn("paper_id", split(col("text"), "\\t").getItem(0)).withColumn("text", split(col("text"), "\\t").getItem(1)).show(false)
+#df.show()
