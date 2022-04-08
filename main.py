@@ -11,10 +11,13 @@ import sys
 
 def main():
     start = time.time()
-    """
+
+    # Run by using the following command: python3 main.py threshold_value true/false
     threshold = float(sys.argv[1])
     path = f"output_t{int(threshold * 100)}"
-    if "t" in sys.argv[2].lower():
+    preprocess = "t" in sys.argv[2].lower()
+    if preprocess:
+        # Remove the previous output directory
         try:
             shutil.rmtree("preprocess")
         except FileNotFoundError:
@@ -27,8 +30,8 @@ def main():
 
     preprostime = time.time()
     print(f"Preprocessing: {preprostime - start} seconds.")
-    """
-    if "t" in sys.argv[2].lower():
+
+    if preprocess:
         ngrams = MRNgram()
         with ngrams.make_runner() as runner:
             runner._input_paths = ["preprocess/part-*"]
@@ -37,7 +40,8 @@ def main():
 
     ngramtime = time.time()
     print(f"Ngrams: {ngramtime - start} seconds.")
-    """
+
+    # Remove the previous output directory
     try:
         shutil.rmtree(f"{path}")
     except FileNotFoundError:
@@ -88,8 +92,6 @@ def main():
 
     print(f"Analysis: {time.time() - lshtime} seconds.")
     print(f"Total time: {similar_time - start} seconds.")
-
-    """
 
 
 if __name__ == "__main__":
