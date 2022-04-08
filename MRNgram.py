@@ -33,7 +33,7 @@ class MRNgram(MRJob):
         """
 
         key, line = line.split("\t")
-        yield key, line
+        yield 1, 1
 
     def combiner(self, paper_id, words):
         ngrams = set(nltk.ngrams(words, 5))
