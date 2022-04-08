@@ -53,6 +53,8 @@ def main():
         runner._input_paths = ["ngrams/part-*"]
         runner._output_dir = f"{path}/lsh"
         runner.run()
+        for key, value in datasketch.parse_output(runner.cat_output()):
+            print(f"nu: {key}\t{value}")
 
     minhashtime = time.time()
     print(f"Hashing: {minhashtime - ngramtime} seconds.")
