@@ -17,8 +17,9 @@ class MRNgram(MRJob):
         ]
 
     def mapper(self, _, line):
-        paper_id, line = line.split("\t")
-        yield paper_id, line
+        yield str(type(line)), None
+        # paper_id, line = line.split("\t")
+        # yield paper_id, line
 
     def combiner(self, paper_id, line):
         yield str(type(line)), None
