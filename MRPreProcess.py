@@ -9,8 +9,7 @@ import nltk
 class MRPreProcess(MRJob):
     def steps(self):
         return [
-            MRStep(mapper_init=self.mapper_init, mapper=self.mapper_pre),
-            MRStep(mapper=self.mapper_ngram, reducer=self.reducer_ngram),
+            MRStep(mapper_init=self.mapper_init, mapper=self.mapper_pre)
         ]
 
     def mapper_init(self):
@@ -60,14 +59,14 @@ class MRPreProcess(MRJob):
             abs = "".join([i for i in line if i.isalnum() or i == " "]).lower()
             self.body.append(abs)
 
-    def mapper_ngram(self, paper_id, text):
-        splits = text.split()
-        ngrams = set(nltk.ngrams(splits, 2))
-        for word in ngrams:
-            yield paper_id, word
+    # def mapper_ngram(self, paper_id, text):
+    #     splits = text.split()
+    #     ngrams = set(nltk.ngrams(splits, 2))
+    #     for word in ngrams:
+    #         yield paper_id, word
 
-    def reducer_ngram(self, paper_id, words):
-        yield paper_id, list(words)
+    # def reducer_ngram(self, paper_id, words):
+    #     yield paper_id, list(words)
 
 
 if __name__ == "__main__":
