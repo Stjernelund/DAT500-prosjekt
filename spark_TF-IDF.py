@@ -19,7 +19,7 @@ documents = sc.textFile(path).map(lambda line: line.split(" "))
 
 
 hashingTF = HashingTF()
-tf = hashingTF.transform(document)
+tf = hashingTF.transform(documents)
 
 # While applying HashingTF only needs a single pass to the data, applying IDF needs two passes:
 # First to compute the IDF vector and second to scale the term frequencies by IDF.
