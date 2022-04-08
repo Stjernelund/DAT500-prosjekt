@@ -28,6 +28,7 @@ def main():
     preprostime = time.time()
     print(f"Preprocessing: {preprostime - start} seconds.")
     """
+
     ngrams = MRNgram()
     with ngrams.make_runner() as runner:
         runner._input_paths = ["preprocess/part-*"]
