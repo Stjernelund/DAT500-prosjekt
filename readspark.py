@@ -4,5 +4,5 @@ sc = spark.sparkContext
 # The path can be either a single text file or a directory of text files
 path = "preprocess"
 
-df1 = sc.read.text(path) 
+df1 = spark.read.text(path) 
 df1.show()
