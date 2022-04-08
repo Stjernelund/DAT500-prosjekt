@@ -11,12 +11,14 @@ class MRDataSketchLSH(MRJob):
     num_prem = 128
 
     def init(self, threshold):
+        """Used to set threshold"""
         self.threshold = threshold
 
     def steps(self):
         return [MRStep(mapper=self.mapper, reducer=self.reducer)]
 
     def mapper(self, _, line):
+        """MinHash each paper"""
         key, line = line.split("\t")
         m = MinHash(num_perm=self.num_prem)
         for d in ast.literal_eval(line):
@@ -28,12 +30,14 @@ class MRDataSketchLSH(MRJob):
         yield None, list(values)
 
     def make_LSH(self):
+        """Create LSH index from the MinHashes"""
         lsh = MinHashLSH(threshold=self.threshold, num_perm=self.num_prem)
         for key, m in self.mrjobs:
             lsh.insert(key, m)
         return lsh
 
     def find_similar(self, lsh):
+        """Query each paper against the others looking for similarities"""
         similar = {}
         for key, job in self.mrjobs:
             found = lsh.query(job)

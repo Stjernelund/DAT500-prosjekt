@@ -8,17 +8,15 @@ import nltk
 
 class MRPreProcess(MRJob):
     def steps(self):
-        return [
-            MRStep(mapper_init=self.mapper_init, mapper=self.mapper_pre)
-        ]
+        return [MRStep(mapper_init=self.mapper_init, mapper=self.mapper_pre)]
 
     def mapper_init(self):
         self.message_id = ""
         self.in_body = False
         self.body = []
         self.vocabulary = dict()
-        self.indices = list()
-        self.sparse_data = list()
+        self.indices = []
+        self.sparse_data = []
 
     def mapper_pre(self, _, line):
         line = line.strip()
@@ -58,15 +56,6 @@ class MRPreProcess(MRJob):
         elif line.find("<") == -1 and self.in_body:
             abs = "".join([i for i in line if i.isalnum() or i == " "]).lower()
             self.body.append(abs)
-
-    # def mapper_ngram(self, paper_id, text):
-    #     splits = text.split()
-    #     ngrams = set(nltk.ngrams(splits, 2))
-    #     for word in ngrams:
-    #         yield paper_id, word
-
-    # def reducer_ngram(self, paper_id, words):
-    #     yield paper_id, list(words)
 
 
 if __name__ == "__main__":
