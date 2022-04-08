@@ -2,6 +2,7 @@ from mailbox import linesep
 from os import sep
 from pyspark.sql.functions import split
 from pyspark.sql.functions import col
+import pyspark.sql.functions as f
 
 
 sc = spark.sparkContext
@@ -12,6 +13,7 @@ path = "preprocess"
 
 df = spark.read.text(path)
 #df.withColumn("paper_id", split(col("value"), "\\t").getItem(0)).withColumn("text", split(col("text"), "\\t").getItem(1)).show(false)
-df.withColumn("paper_id", split(col("value"), "\\t").getItem(0)).withColumn("text", split(col("value"), "\\t").getItem(1)).show()
+#df = df.withColumn("paper_id", split(col("value"), "\\t").getItem(0)).withColumn("text", split(col("value"), "\\t").getItem(1))
+df = df.select(f.split(df.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=["paper_id","text"])
 
 df.show()
