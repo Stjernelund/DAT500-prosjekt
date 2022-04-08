@@ -1,6 +1,8 @@
 from mailbox import linesep
 from os import sep
 from pyspark.sql.functions import split
+from pyspark.sql.functions import col
+
 
 sc = spark.sparkContext
 
@@ -10,4 +12,5 @@ path = "preprocess"
 
 df = spark.read.text(path)
 df.withColumn("paper_id", split(col("text"), "\\t").getItem(0)).withColumn("text", split(col("text"), "\\t").getItem(1)).show(false)
+
 df.show()
