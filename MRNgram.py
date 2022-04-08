@@ -1,11 +1,22 @@
 #! /usr/bin/python3
 
 from mrjob.job import MRJob
+from mrjob.step import MRStep
 import nltk
 import sys
 
 
 class MRNgram(MRJob):
+    def steps(self):
+        return [
+            MRStep(
+                mapper_init=self.mapper_init,
+                mapper=self.mapper,
+                combiner=self.combiner,
+                reducer=self.reducer,
+            )
+        ]
+
     def mapper_init(self):
         self.in_body = False
 
