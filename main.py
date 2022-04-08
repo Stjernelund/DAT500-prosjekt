@@ -34,6 +34,7 @@ def main():
         runner._output_dir = "ngrams"
         runner.run()
         for key, value in ngrams.parse_output(runner.cat_output()):
+            print("hmm")
             print(f"ny: {key}\t{value}")
 
     """
