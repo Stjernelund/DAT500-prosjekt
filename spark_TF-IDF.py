@@ -1,10 +1,15 @@
 from pyspark.mllib.feature import HashingTF, IDF
-
 # Load documents (one per line).
-documents = sc.textFile("data/mllib/kmeans_data.txt").map(lambda line: line.split(" "))
+sc = spark.sparkContext
+
+# A text dataset is pointed to by path.
+# The path can be either a single text file or a directory of text files
+path = "preprocess"
+
+df1 = spark.read.text(path) 
 
 hashingTF = HashingTF()
-tf = hashingTF.transform(documents)
+tf = hashingTF.transform(df1)
 
 # While applying HashingTF only needs a single pass to the data, applying IDF needs two passes:
 # First to compute the IDF vector and second to scale the term frequencies by IDF.
