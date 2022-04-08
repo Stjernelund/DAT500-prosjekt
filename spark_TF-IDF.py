@@ -12,7 +12,7 @@ sc = spark.sparkContext
 path = "preprocess"
 
 df1 = spark.read.text(path) 
-df1 = df1.select(f.split(df.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=["paper_id","text"])
+df1 = df1.select(f.split(df1.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=["paper_id","text"])
 hashingTF = HashingTF()
 tf = hashingTF.transform(df1)
 
