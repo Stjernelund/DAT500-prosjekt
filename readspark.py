@@ -12,10 +12,9 @@ sc = spark.sparkContext
 path = "preprocess"
 
 df = spark.read.text(path)
-df.withColumn("paper_id", split(col("value"), "\\t").getItem(0)).withColumn("text", split(col("text"), "\\t").getItem(1)).show(false)
+#df.withColumn("paper_id", split(col("value"), "\\t").getItem(0)).withColumn("text", split(col("text"), "\\t").getItem(1)).show(false)
 df = df.withColumn("paper_id", split(col("value"), "\\t").getItem(0)).withColumn("text", split(col("value"), "\\t").getItem(1))
-df = df.select(f.split(df.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=["paper_id","text"])
-df['text'] = df.select('text').map(lambda line: line.split(" "))
-
+df = df.select(f.split(df.value,"\\t")).rdd.flatMap(lambda x: x.split(" ")).toDF(schema=["paper_id","text"])
+#df['text'] = df.select('text').map(lambda line: line.split(" "))
 
 df.show()
