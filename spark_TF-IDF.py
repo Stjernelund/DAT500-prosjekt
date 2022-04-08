@@ -11,13 +11,15 @@ sc = spark.sparkContext
 # The path can be either a single text file or a directory of text files
 path = "preprocess"
 
-df1 = spark.read.text(path).map(lambda line: line.split(" "))
-df1 = df1.select(f.split(df1.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=["paper_id","text"])
+#df1 = spark.read.text(path).map(lambda line: line.split(" "))
+#df1 = df1.select(f.split(df1.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=["paper_id","text"])
 
-df1.show()
+#df1.show()
+documents = sc.textFile(path).map(lambda line: line.split(" "))
+
 
 hashingTF = HashingTF()
-tf = hashingTF.transform(df1)
+tf = hashingTF.transform(document)
 
 # While applying HashingTF only needs a single pass to the data, applying IDF needs two passes:
 # First to compute the IDF vector and second to scale the term frequencies by IDF.
