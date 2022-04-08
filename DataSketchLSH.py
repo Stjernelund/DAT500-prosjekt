@@ -23,9 +23,9 @@ class MRDataSketchLSH(MRJob):
 
     def mapper(self, _, line):
         """MinHash each paper"""
-        yield None, line
-        """
         key, line = line.split("\t")
+        yield key, line
+        """
         m = MinHash(num_perm=self.num_prem)
         for d in ast.literal_eval(line):
             m.update(str(d).encode("utf8"))

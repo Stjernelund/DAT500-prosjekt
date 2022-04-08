@@ -39,7 +39,7 @@ def main():
             runner.run()
 
     ngramtime = time.time()
-    print(f"Ngrams: {ngramtime - start} seconds.")
+    print(f"Ngrams: {ngramtime - preprostime} seconds.")
 
     # Remove the previous output directory
     try:
