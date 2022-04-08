@@ -1,6 +1,8 @@
 from mailbox import linesep
 from os import sep
-import spark.implicits._
+
+spark2 = spark
+import spark2.implicits._
 
 
 sc = spark.sparkContext
