@@ -21,6 +21,7 @@ class MRDataSketchLSH(MRJob):
         """MinHash each paper"""
         key, line = line.split("\t")
         m = MinHash(num_perm=self.num_prem)
+        print(line)
         for d in ast.literal_eval(line):
             m.update(str(d).encode("utf8"))
         self.mrjobs.append((key, m))
