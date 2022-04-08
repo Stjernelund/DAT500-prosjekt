@@ -12,7 +12,7 @@ class MRNgram(MRJob):
             MRStep(
                 mapper=self.mapper,
                 combiner=self.combiner,
-                reducer=self.reducer,
+                # reducer=self.reducer,
             )
         ]
 
