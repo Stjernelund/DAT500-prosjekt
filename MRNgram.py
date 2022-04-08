@@ -1,7 +1,7 @@
 #! /usr/bin/python3
 
 from mrjob.job import MRJob
-from MRStep import MRStep
+from mrjob.step import MRStep
 import nltk
 import sys
 
