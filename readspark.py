@@ -9,6 +9,5 @@ sc = spark.sparkContext
 path = "preprocess"
 
 #df1 = spark.read.text(path, sep = "\t") 
-#df1 = spark.read.option("delimiter", "\t").text(path)
-df1 = sc.textFile("foo.txt").map(_.split("\t")).toDF()
+df1 = spark.read.option("delimiter", "\\t").text(path)
 df1.show()
