@@ -21,7 +21,7 @@ class MRNgram(MRJob):
         yield paper_id, line
 
     def combiner(self, paper_id, line):
-        yield str(type(line)), line
+        yield str(type(line)), None
         """
         words = line.split()
         ngrams = set(nltk.ngrams(words, 5))
