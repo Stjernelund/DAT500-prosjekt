@@ -8,6 +8,6 @@ sc = spark.sparkContext
 # The path can be either a single text file or a directory of text files
 path = "preprocess"
 
-#df1 = spark.read.text(path, sep = "\t") 
-df1 = spark.read.option("lineSep", "\t").text(path)
+df1 = spark.read.text(path, linesep = "\t") 
+#df1 = spark.read.option("de", "\t").text(path)
 df1.show()
