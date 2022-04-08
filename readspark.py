@@ -9,7 +9,6 @@ sc = spark.sparkContext
 path = "preprocess"
 
 df = spark.read.text(path)
-#df['paper_id','value'] = df['value'].str.split('\t',expand=True)
-df['value'] = df['value'].str.split('\t').str[0] 
-#df1 = spark.read.option("de", "\t").text(path)
+df.selectExpr("split(value, '\t') as\
+Text_Data_In_Rows_Using_Text").show(4,False)
 df.show()
