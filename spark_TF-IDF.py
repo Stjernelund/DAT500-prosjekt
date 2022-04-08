@@ -1,3 +1,4 @@
+from mailbox import linesep
 from pyspark.mllib.feature import HashingTF, IDF
 # Load documents (one per line).
 sc = spark.sparkContext
@@ -6,7 +7,7 @@ sc = spark.sparkContext
 # The path can be either a single text file or a directory of text files
 path = "preprocess"
 
-df1 = spark.read.text(path) 
+df1 = spark.read.text(path, linesep = "\t") 
 
 hashingTF = HashingTF()
 tf = hashingTF.transform(df1)
