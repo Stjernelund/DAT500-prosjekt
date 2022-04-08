@@ -1,5 +1,9 @@
 from mailbox import linesep
 from pyspark.mllib.feature import HashingTF, IDF
+from pyspark.sql.functions import split
+from pyspark.sql.functions import col
+import pyspark.sql.functions as f
+
 # Load documents (one per line).
 sc = spark.sparkContext
 
@@ -7,8 +11,8 @@ sc = spark.sparkContext
 # The path can be either a single text file or a directory of text files
 path = "preprocess"
 
-df1 = spark.read.text(path, linesep = "\t") 
-
+df1 = spark.read.text(path) 
+df1 = df1.select(f.split(df.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=["paper_id","text"])
 hashingTF = HashingTF()
 tf = hashingTF.transform(df1)
 
