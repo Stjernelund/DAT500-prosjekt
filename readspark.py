@@ -17,7 +17,7 @@ path = "preprocess"
 #df = df.select(f.split(df.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=["paper_id","text"])
 documents = sc.textFile(path).map(lambda line: line.split(" ")[1:])
 
-documents[0][0] = documents[0][0].split("\\t")[1]
+#documents[0][0] = documents[0][0].split("\\t")[1]
 #documents.drop('age')
 
 print(documents.take(10))
