@@ -9,5 +9,5 @@ sc = spark.sparkContext
 path = "preprocess"
 
 #df1 = spark.read.text(path, sep = "\t") 
-df1 = spark.read.option("delimiter", "\\t").text(path)
+df1 = spark.read.option("lineSep", "\t").text(path)
 df1.show()
