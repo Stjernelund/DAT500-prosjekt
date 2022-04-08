@@ -12,8 +12,6 @@ class MRNgram(MRJob):
             MRStep(
                 mapper_init=self.mapper_init,
                 mapper=self.mapper,
-                combiner=self.combiner,
-                reducer=self.reducer,
             )
         ]
 
@@ -33,7 +31,7 @@ class MRNgram(MRJob):
         """
 
         key, line = line.split("\t")
-        yield 1, 1
+        yield key, line
 
     def combiner(self, paper_id, words):
         ngrams = set(nltk.ngrams(words, 5))
