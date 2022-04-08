@@ -3,6 +3,7 @@ from pyspark.mllib.feature import HashingTF, IDF
 from pyspark.sql.functions import split
 from pyspark.sql.functions import col
 import pyspark.sql.functions as f
+import nltk
 
 # Load documents (one per line).
 sc = spark.sparkContext
@@ -13,6 +14,10 @@ path = "preprocess"
 
 df1 = spark.read.text(path) 
 df1 = df1.select(f.split(df1.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=["paper_id","text"])
+df1['text'] = df1['text'].apply(nltk.word_tokenize)
+df1['paper_id'] = df1['paper_id'].apply(nltk.word_tokenize)
+
+
 hashingTF = HashingTF()
 tf = hashingTF.transform(df1)
 
