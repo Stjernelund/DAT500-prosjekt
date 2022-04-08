@@ -29,7 +29,9 @@ def main():
     print(f"Preprocessing: {preprostime - start} seconds.")
     """
     ngrams = MRNgram()
+    print("her?")
     with ngrams.make_runner() as runner:
+        print("kjør")
         runner._input_paths = ["preprocess/part-*"]
         runner._output_dir = "ngrams"
         runner.run()
