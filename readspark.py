@@ -8,6 +8,7 @@ sc = spark.sparkContext
 # The path can be either a single text file or a directory of text files
 path = "preprocess"
 
-df1 = spark.read.text(path, linesep = "\t") 
+df = spark.read.text(path)
+df['paper_id','value'] = df['value'].str.split('\t',expand=True) 
 #df1 = spark.read.option("de", "\t").text(path)
-df1.show()
+df.show()
