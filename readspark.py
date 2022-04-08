@@ -1,8 +1,6 @@
 from mailbox import linesep
 from os import sep
-import sparkObject.spark.implicits._
-import org.apache.spark.sql.functions.split
-
+import spark.implicits._
 
 
 sc = spark.sparkContext
