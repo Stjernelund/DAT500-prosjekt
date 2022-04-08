@@ -12,6 +12,8 @@ class MRNgram(MRJob):
             MRStep(
                 mapper_init=self.mapper_init,
                 mapper=self.mapper,
+                combiner=self.combiner,
+                reducer=self.reducer,
             )
         ]
 
@@ -19,17 +21,6 @@ class MRNgram(MRJob):
         self.in_body = False
 
     def mapper(self, _, line):
-        """
-        if line[0] == '"':
-            self.in_body = True if line[-1] == '"' else False
-            # splits = [x for x in line.split('"') if x != '' and x != '\n' and x != '\t']
-            splits = line.split('"')
-            if len(splits) > 1:
-                paper_id = splits[1]
-                for word in splits[3].split():
-                    yield paper_id, word
-        """
-
         key, line = line.split("\t")
         yield key, line
 
