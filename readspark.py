@@ -11,9 +11,11 @@ sc = spark.sparkContext
 # The path can be either a single text file or a directory of text files
 path = "preprocess"
 
-df = spark.read.text(path)
+#df = spark.read.text(path)
 #df.withColumn("paper_id", split(col("value"), "\\t").getItem(0)).withColumn("text", split(col("text"), "\\t").getItem(1)).show(false)
 #df = df.withColumn("paper_id", split(col("value"), "\\t").getItem(0)).withColumn("text", split(col("value"), "\\t").getItem(1))
-df = df.select(f.split(df.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=["paper_id","text"])
+#df = df.select(f.split(df.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=["paper_id","text"])
+documents = sc.textFile(path).map(lambda line: line.split(" "))
 
-df.show()
+
+documents.show()
