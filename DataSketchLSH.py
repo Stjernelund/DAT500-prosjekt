@@ -15,11 +15,7 @@ class MRDataSketchLSH(MRJob):
         self.threshold = threshold
 
     def steps(self):
-        return [
-            MRStep(
-                mapper=self.mapper,
-            )
-        ]
+        return [MRStep(mapper=self.mapper, reducer=self.reducer)]
 
     def mapper(self, _, line):
         """MinHash each paper"""
