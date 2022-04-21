@@ -42,8 +42,8 @@ if __name__ == "__main__":
         tokenizer=dummy_fun,
         preprocessor=dummy_fun,
         token_pattern=None) 
-    wordsData_pandas = ps.DataFrame(wordsData_pandas)
-    print(wordsData_pandas.columns)
+    #wordsData_pandas = ps.DataFrame(wordsData_pandas)
+    print(list(wordsData_pandas.columns))
     wordsData_pandas.columns = wordsData_pandas.columns.astype(str).str.strip()
     feature_matrix = tfidf.fit_transform(wordsData_pandas.words)
     sklearn_tfifdf = pd.DataFrame(feature_matrix.toarray(), columns=tfidf.get_feature_names())
