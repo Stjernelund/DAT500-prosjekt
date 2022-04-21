@@ -45,7 +45,6 @@ if __name__ == "__main__":
     paper_ids = [id.strip('"') for id in paper_ids]
 
     corpus = [[a.strip('"') for a in l] for l in corpus]
-    corpus.pop(-1)
     paper_ids = wordsData_pandas['paper_id'].to_numpy()
     def dummy_fun(doc):
         return doc
