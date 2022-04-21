@@ -7,9 +7,8 @@ if __name__ == "__main__":
     spark = SparkSession\
         .builder\
         .appName("TfIdfExample")\
-        .config("spark.memory.offHeap.size","10g")\
-        .getOrCreate()\
-        .config("spark.memory.offHeap.enabled","true")
+        .config("spark.driver.memory", "15g") \
+        .getOrCreate()
 
     path = "preprocess"
     df1 = spark.read.text(path)
