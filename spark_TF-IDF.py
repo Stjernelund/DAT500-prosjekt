@@ -26,7 +26,7 @@ if __name__ == "__main__":
     wordsData = tokenizer.transform(df1)
     vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
     wordsData = vectorizer.transform(wordsData)
-    wordsData_pandas = wordsData.toPandas()
+    wordsData_pandas = wordsData.select("*").toPandas()
 
     def dummy_fun(doc):
         return doc
