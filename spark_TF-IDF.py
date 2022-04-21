@@ -79,13 +79,13 @@ if __name__ == "__main__":
 
     try:
         wordsData_pandas.columns = wordsData_pandas.columns.astype(str).str.strip()
-        wordsData_pandas = wordsData_pandas[:100]
+        wordsData_pandas = wordsData_pandas.iloc[:100,:]
     except EOFError as x:
         print("stopper her")
     
     print("her")
     try:
-        arr = wordsData_pandas.iloc[:,1].values
+        arr = wordsData_pandas['words'].to_numpy()
         feature_matrix = tfidf.fit_transform(arr)
     except EOFError as x:
         print("sjette")
