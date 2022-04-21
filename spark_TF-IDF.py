@@ -1,9 +1,12 @@
-from mailbox import linesep
 from pyspark.ml.feature import HashingTF, IDF, Tokenizer
 import pyspark.sql.functions as f
+from pyspark.sql import SparkSession
 
 # Load documents (one per line).
-sc = spark.sparkContext
+spark = SparkSession\
+    .builder\
+    .appName("TfIdfExample")\
+    .getOrCreate()
 
 # A text dataset is pointed to by path.
 # The path can be either a single text file or a directory of text files
@@ -18,13 +21,11 @@ wordsData = tokenizer.transform(df1)
 hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures",numFeatures=20)
 featurizedData = hashingTF.transform(wordsData).show()
 
-#idf = IDF(inputCol="rawFeatures" , outputCol="features")
-#idfModel = idf.fit(featurizedData)
-#rescaledData = idfModel.transform(featurizedData)
-#rescaledData.select("paper_id","words", "features").show()
-# rescaledData.select("paper_id", "words","features").show()
-# rescaledData.
-
+idf = IDF(inputCol="rawFeatures" , outputCol="features")
+idfModel = idf.fit(featurizedData)
+rescaledData = idfModel.transform(featurizedData)
+rescaledData.select("paper_id", "words","features").show()
+spark.stop()
 #hashingTF = HashingTF(inputCol="text",outputCol="words")
 #tf = hashingTF.transform(df1)
 
