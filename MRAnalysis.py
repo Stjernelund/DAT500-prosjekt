@@ -10,7 +10,7 @@ class Total(MRJob):
         return [MRStep(reducer=self.reducer)]
 
     def reducer(self, _, list_papers):
-        yield None, type(list_papers)
+        yield None, list_papers
         # yield "Total:", len(list_papers)
 
 
