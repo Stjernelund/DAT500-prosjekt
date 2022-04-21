@@ -7,13 +7,11 @@ import ast
 
 class Total(MRJob):
     def steps(self):
-        return [MRStep(mapper=self.mapper, reducer=self.reducer)]
+        return [MRStep(reducer=self.reducer)]
 
-    def mapper(self, key, line):
-        yield None, line.count("\\")
-
-    def reducer(self, _, values):
-        yield "Total:", int(sum(values) / 2)  # because there are 2 slash per id
+    def reducer(self, _, list_papers):
+        list_papers = ast.literal_eval(list_papers)
+        yield "Total:", len(list_papers)
 
 
 class Similar(MRJob):
@@ -41,3 +39,4 @@ class SumSimilar(MRJob):
 if __name__ == "__main__":
     Total.run()
     Similar.run()
+    SumSimilar.run()
