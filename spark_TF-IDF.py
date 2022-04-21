@@ -63,7 +63,7 @@ if __name__ == "__main__":
         wordsData_pandas = wordsData_pandas[:100]
     except EOFError as x:
         print("stopper her")
-    print(wordsData.head(2))
+    print(wordsData_pandas.head(2))
     feature_matrix = tfidf.fit_transform(wordsData_pandas['words'].to_numpy())
     sklearn_tfifdf = pd.DataFrame(feature_matrix.toarray(), columns=tfidf.get_feature_names())
     spark_tfidf = pd.DataFrame([np.array(i) for i in wordsData_pandas.tfidf_features_dense], columns=vectorizer.vocabulary)
