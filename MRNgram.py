@@ -20,7 +20,7 @@ class MRNgram(MRJob):
         yield str(type(line)), None
         paper_id, line = line.split("\t")
         words = line.split()
-        ngrams = set(nltk.ngrams(words, 5))
+        ngrams = set(nltk.ngrams(words, 2))
         for word in ngrams:
             yield paper_id, word
 
