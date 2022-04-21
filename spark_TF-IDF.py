@@ -24,8 +24,10 @@ if __name__ == "__main__":
      
     tokenizer = Tokenizer().setInputCol("text").setOutputCol("words")
     wordsData = tokenizer.transform(df1)
+    vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
+    wordsData = vectorizer.transform(wordsData)
     wordsData_pandas = wordsData.toPandas()
-    
+
     def dummy_fun(doc):
         return doc
     
@@ -39,6 +41,7 @@ if __name__ == "__main__":
     sklearn_tfifdf = pd.DataFrame(feature_matrix.toarray(), columns=tfidf.get_feature_names())
     spark_tfidf = pd.DataFrame([np.array(i) for i in wordsData_pandas.tfidf_features_dense], columns=vectorizer.vocabulary)
 
+    spark_tfidf.head()
     #     # vectorize
     #     vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
     #     wordsData = vectorizer.transform(wordsData)
