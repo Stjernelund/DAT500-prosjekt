@@ -21,9 +21,9 @@ hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures")
 featurizedData = hashingTF.transform(wordsData).show()
 # # alternatively, CountVectorizer can also be used to get term frequency vectors
 
-# idf = IDF(inputCol="rawFeatures" , outputCol="features")
-# idfModel = idf.fit(featurizedData)
-# rescaledData = idfModel.transform(featurizedData)
+idf = IDF(inputCol="rawFeatures" , outputCol="features")
+idfModel = idf.fit(featurizedData)
+rescaledData = idfModel.transform(featurizedData).show()
 
 # rescaledData.select("paper_id", "words","features").show()
 # rescaledData.
