@@ -30,13 +30,17 @@ if __name__ == "__main__":
     def dummy_fun(doc):
         return doc
 
-    tfidfVectorizer=TfidfVectorizer(norm=None,analyzer='word',
+    tfidfVectorizer = TfidfVectorizer(norm=None,analyzer='word',
                                 tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None)
 
-    tf=tfidfVectorizer.fit_transform(df2)
-    tf_df=pd.DataFrame(tf.toarray(),columns= tfidfVectorizer.get_feature_names_out())
+    print("er her")
+    tf = tfidfVectorizer.fit_transform(df2)
+    print("2")
+    tf_df = pd.DataFrame(tf.toarray(),columns= tfidfVectorizer.get_feature_names_out())
+    print("3")
     tf_df.head()
-     
+    print("4")
+    spark.stop()
     # try:
     #     tokenizer = Tokenizer(inputCol="text", outputCol="words")
     #     wordsData = tokenizer.transform(df1)
