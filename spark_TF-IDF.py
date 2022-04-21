@@ -42,11 +42,13 @@ if __name__ == "__main__":
     paper_ids = wordsData_pandas['paper_id'].to_numpy()
     wordsData_pandas.set_index('paper_id')
     corpus = wordsData_pandas['words'].to_numpy()
-    
+    paper_ids = [id.strip('"') for id in paper_ids]
+    corpus = [sentence.strip('"') for sentence in corpus]
     #paper_ids = wordsData_pandas['paper_id'].to_numpy()
     def dummy_fun(doc):
         return doc
-    my_stop_words = text.ENGLISH_STOP_WORDS.union(['"'])
+    my_stop_words = text.ENGLISH_STOP_WORDS
+
 
     tfidfVectorizer = TfidfVectorizer(norm=None,analyzer='word',
                                 tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None,stop_words=my_stop_words)
