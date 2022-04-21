@@ -31,7 +31,7 @@ if __name__ == "__main__":
         idf = IDF(inputCol="rawFeatures", outputCol="features")
         idfModel = idf.fit(featurizedData)
         rescaledData = idfModel.transform(featurizedData)
-        rescaledData.select("paper_id", "words" ,"features").show(False) 
+        rescaledData.select("paper_id", "words" ,"features").head()
         spark.stop()
 
     except EOFError as x:
