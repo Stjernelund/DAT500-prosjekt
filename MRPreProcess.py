@@ -37,6 +37,7 @@ class MRPreProcess(MRJob):
                 title = "".join(
                     [i for i in title_temp if i.isalnum() or i == " "]
                 ).lower()
+                title += " "
                 self.body.append(title)
                 self.in_body = True
 
@@ -44,8 +45,9 @@ class MRPreProcess(MRJob):
             startIndex = line.find(">") + 1
             endIndex = line.find("<", startIndex)
             abs_temp = line[startIndex:endIndex]
-            abs = "".join([i for i in abs_temp if i.isalnum() or i == " "]).lower()
-            self.body.append(abs)
+            abs_fin = "".join([i for i in abs_temp if i.isalnum() or i == " "]).lower()
+            abs_fin += " "
+            self.body.append(abs_fin)
 
         elif line.find("</Abstract") != -1 and self.in_body:
             yield self.message_id, "".join(self.body).lower()
@@ -54,8 +56,9 @@ class MRPreProcess(MRJob):
             self.in_body = False
 
         elif line.find("<") == -1 and self.in_body:
-            abs = "".join([i for i in line if i.isalnum() or i == " "]).lower()
-            self.body.append(abs)
+            abs_fin = "".join([i for i in line if i.isalnum() or i == " "]).lower()
+            abs_fin += " "
+            self.body.append(abs_fin)
 
 
 if __name__ == "__main__":
