@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
     tf=tfidfVectorizer.fit_transform(df2)
     tf_df=pd.DataFrame(tf.toarray(),columns= tfidfVectorizer.get_feature_names_out())
-    tf_df
+    tf_df.head()
      
     # try:
     #     tokenizer = Tokenizer(inputCol="text", outputCol="words")
