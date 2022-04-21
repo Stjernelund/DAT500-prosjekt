@@ -16,6 +16,7 @@ if __name__ == "__main__":
         .appName("TfIdfExample")\
         .config("spark.memory.offHeap.enabled","true") \
         .config("spark.memory.offHeap.size","20g") \
+        .config("spark.driver.maxResultSize", "5g")\
         .getOrCreate()
 
     os.environ["PYARROW_IGNORE_TIMEZONE"] = "1"
