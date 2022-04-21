@@ -32,6 +32,10 @@ def main():
     print(f"Preprocessing: {preprostime - start} seconds.")
 
     if preprocess:
+        try:
+            shutil.rmtree("ngrams")
+        except FileNotFoundError:
+            pass
         ngrams = MRNgram()
         with ngrams.make_runner() as runner:
             runner._input_paths = ["preprocess/part-*"]
