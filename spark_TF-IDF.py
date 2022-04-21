@@ -1,8 +1,6 @@
 from mailbox import linesep
 from pyspark.ml.feature import HashingTF, IDF, Tokenizer
-from pyspark.sql.functions import split
-from pyspark.sql.functions import col
-import pyspark.sql.functions as f
+from pyspark.sql.functions import *
 
 # Load documents (one per line).
 sc = spark.sparkContext
@@ -17,7 +15,7 @@ df1 = df1.select(f.split(df1.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=
 tokenizer = Tokenizer(inputCol="text", outputCol="words")
 wordsData = tokenizer.transform(df1).show()
 
-#hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures",numFeatures=20)
+hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures",numFeatures=20)
 #featurizedData = hashingTF.transform(wordsData)
 # # alternatively, CountVectorizer can also be used to get term frequency vectors
 
