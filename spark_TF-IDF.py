@@ -44,6 +44,7 @@ if __name__ == "__main__":
         preprocessor=dummy_fun,
         token_pattern=None) 
     wordsData_pandas = ps.DataFrame(wordsData_pandas)
+    print(wordsData_pandas.columns)
     feature_matrix = tfidf.fit_transform(wordsData_pandas.words)
     sklearn_tfifdf = pd.DataFrame(feature_matrix.toarray(), columns=tfidf.get_feature_names())
     spark_tfidf = pd.DataFrame([np.array(i) for i in wordsData_pandas.tfidf_features_dense], columns=vectorizer.vocabulary)
