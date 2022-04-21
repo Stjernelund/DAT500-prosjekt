@@ -29,8 +29,6 @@ def main():
             runner._input_paths = ["papers.csv"]
             runner._output_dir = "preprocess"
             runner.run()
-            for key, value in preprocesser.parse_output(runner.cat_output()):
-                print(key, value)
 
     preprostime = time.time()
     print(f"Preprocessing: {preprostime - start} seconds.")

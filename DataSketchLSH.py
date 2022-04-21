@@ -26,9 +26,10 @@ class MRDataSketchLSH(MRJob):
         key, line = line.split("\t")
         key = key.strip('\\"')
         m = MinHash(num_perm=self.num_prem)
+        yield key, line
+        """
         for d in line:
             yield key, d
-        """
             m.update(str(d).encode("utf8"))
         self.mrjobs.append((key, m))
         yield None, key
