@@ -38,14 +38,14 @@ if __name__ == "__main__":
     wordsData = vectorizer.transform(wordsData) 
     wordsData_pandas = wordsData.to_pandas_on_spark(index_col = "paper_id").iloc[:10,:]
     corpus = wordsData_pandas['words'].to_numpy()
-    paper_ids = wordsData_pandas['paper_id'].to_numpy()
+    #paper_ids = wordsData_pandas['paper_id'].to_numpy()
     def dummy_fun(doc):
         return doc
     
     tfidfVectorizer = TfidfVectorizer(norm=None,analyzer='word',
                                 tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None)
     tf=tfidfVectorizer.fit_transform(corpus)
-    tf_df=pd.DataFrame(tf.toarray(),columns= tfidfVectorizer.get_feature_names_out(),index=paper_ids)
+    tf_df=pd.DataFrame(tf.toarray(), columns = tfidfVectorizer.get_feature_names_out())
     print(tf_df.head())
     spark.stop()
 
