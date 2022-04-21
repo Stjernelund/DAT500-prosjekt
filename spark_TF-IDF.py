@@ -36,8 +36,8 @@ if __name__ == "__main__":
         print("feil på andre")
 
         # dense the current response variable
-        def to_dense(in_vec):
-            return DenseVector(in_vec.toArray())
+    def to_dense(in_vec):
+        return DenseVector(in_vec.toArray())
 
     try:    
         to_dense_udf = f.udf(lambda x: to_dense(x), VectorUDT())
