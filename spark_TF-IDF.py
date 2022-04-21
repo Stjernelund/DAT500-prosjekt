@@ -16,11 +16,17 @@ if __name__ == "__main__":
     df1 = df1.withColumn("paper_id", f.split(f.col("value"), "\\t").getItem(0)).withColumn("text", f.split(f.col("value"), "\\t").getItem(1))
     df1 = df1.select(f.split(df1.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=["paper_id","text"])
 
-    tokenizer = Tokenizer(inputCol="text", outputCol="words")
-    wordsData = tokenizer.transform(df1)
-
-    hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures", numFeatures=20)
-    featurizedData = hashingTF.transform(wordsData)
+    try:
+        tokenizer = Tokenizer(inputCol="text", outputCol="words")
+        wordsData = tokenizer.transform(df1)
+    except EOFError as x:
+        print("failed first")
+    
+    try:
+        hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures", numFeatures=20)
+        featurizedData = hashingTF.transform(wordsData)
+    except EOFError as x:
+        print("failed second")
 
     try:
         idf = IDF(inputCol="rawFeatures", outputCol="features")
@@ -30,7 +36,7 @@ if __name__ == "__main__":
         spark.stop()
 
     except EOFError as x:
-        print("got here")
+        print("failed third")
     
     
 #hashingTF = HashingTF(inputCol="text",outputCol="words")
