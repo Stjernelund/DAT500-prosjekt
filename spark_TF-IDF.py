@@ -49,7 +49,9 @@ if __name__ == "__main__":
     print((rescaledData.count(), len(rescaledData.columns)))
     
     to_dense_udf = f.udf(lambda x: to_dense(x), VectorUDT())
-    wordsData = rescaledData.withColumn("tfidf_features_dense", to_dense_udf('features'))
 
+    print("2")
+    wordsData = rescaledData.withColumn("tfidf_features_dense", to_dense_udf('features'))
+    print("3")
     wordsData.show()
     spark.stop()
