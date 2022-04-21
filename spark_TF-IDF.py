@@ -14,11 +14,11 @@ df1 = spark.read.text(path)
 df1 = df1.withColumn("paper_id", split(col("value"), "\\t").getItem(0)).withColumn("text", split(col("value"), "\\t").getItem(1))
 df1 = df1.select(f.split(df1.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=["paper_id","text"])
 
-# tokenizer = Tokenizer(inputCol="text", outputCol="words")
-# wordsData = tokenizer.transform(df1)
+tokenizer = Tokenizer(inputCol="text", outputCol="words")
+wordsData = tokenizer.transform(df1)
 
-# hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures")
-# featurizedData = hashingTF.transform(wordsData).show()
+hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures")
+featurizedData = hashingTF.transform(wordsData).show()
 # # alternatively, CountVectorizer can also be used to get term frequency vectors
 
 # idf = IDF(inputCol="rawFeatures" , outputCol="features")
@@ -28,14 +28,14 @@ df1 = df1.select(f.split(df1.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=
 # rescaledData.select("paper_id", "words","features").show()
 # rescaledData.
 
-hashingTF = HashingTF(inputCol="text",outputCol="words")
-tf = hashingTF.transform(df1)
+#hashingTF = HashingTF(inputCol="text",outputCol="words")
+#tf = hashingTF.transform(df1)
 
-tf.cache()
-idf = IDF().fit(tf)
-tfidf = idf.transform(tf)
+#tf.cache()
+#idf = IDF().fit(tf)
+#tfidf = idf.transform(tf)
 
-tfidf.show()
+#tfidf.show()
 
 #idfIgnore = IDF(minDocFreq=2).fit(tf)
 #tfidfIgnore = idfIgnore.transform(tf)
