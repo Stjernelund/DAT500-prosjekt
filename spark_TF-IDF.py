@@ -32,62 +32,77 @@ if __name__ == "__main__":
     except EOFError as x:
         print("feil på lesing")
 
-    try: 
-        tokenizer = Tokenizer().setInputCol("text").setOutputCol("words")
-        wordsData = tokenizer.transform(df1)
-        vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
-        wordsData = vectorizer.transform(wordsData) 
-    except EOFError as x:
-        print("første")
-    print('1')
-    try:
-        idf = IDF(inputCol="vectorizer", outputCol="tfidf_features")
-        idf_model = idf.fit(wordsData)
-        wordsData = idf_model.transform(wordsData)
-    except EOFError as x:
-        print("andre")
-    print("2")
-
-    def to_dense(in_vec):
-        return DenseVector(in_vec.toArray())
-
-    try:
-        to_dense_udf = f.udf(lambda x: to_dense(x), VectorUDT())
-        wordsData = wordsData.withColumn("tfidf_features_dense", to_dense_udf('tfidf_features'))
-    except EOFError as x:
-        print("tredje")
-    
-    print("3")
-
-    try:
-        wordsData_pandas = wordsData.to_pandas_on_spark(index_col = "paper_id")
-    except EOFError as x:
-        print("fjerde")
-
-    print("4")
-
+    tokenizer = Tokenizer().setInputCol("text").setOutputCol("words")
+    wordsData = tokenizer.transform(df1)
+    vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
+    wordsData = vectorizer.transform(wordsData) 
+    wordsData_pandas = wordsData.to_pandas_on_spark(index_col = "paper_id")
+    corpus = wordsData_pandas['words'].to_numpy()
 
     def dummy_fun(doc):
         return doc
     
-    try:
-        tfidf = TfidfVectorizer(
-            analyzer='word',
-            tokenizer=dummy_fun,
-            preprocessor=dummy_fun,
-            token_pattern=None) 
-    except EOFError as x:
-        print("femte")
+    tfidfVectorizer = TfidfVectorizer(norm=None,analyzer='word',
+                                tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None)
+    tf=tfidfVectorizer.fit_transform(corpus)
+    tf_df=pd.DataFrame(tf.toarray(),columns= tfidfVectorizer.get_feature_names())
+    tf_df
+    spark.stop()
 
-    print("5")
+    # except EOFError as x:
+    #     print("første")
+    # print('1')
+    # try:
+    #     idf = IDF(inputCol="vectorizer", outputCol="tfidf_features")
+    #     idf_model = idf.fit(wordsData)
+    #     wordsData = idf_model.transform(wordsData)
+    # except EOFError as x:
+    #     print("andre")
+    # print("2")
 
-    try:
-        wordsData_pandas.columns = wordsData_pandas.columns.astype(str).str.strip()
-        wordsData_pandas = wordsData_pandas.iloc[:100,:]
-    except EOFError as x:
-        print("stopper her")
+    # def to_dense(in_vec):
+    #     return DenseVector(in_vec.toArray())
+
+    # try:
+    #     to_dense_udf = f.udf(lambda x: to_dense(x), VectorUDT())
+    #     wordsData = wordsData.withColumn("tfidf_features_dense", to_dense_udf('tfidf_features'))
+    # except EOFError as x:
+    #     print("tredje")
     
-    print(wordsData_pandas.head(2))
+    # print("3")
+
+    # try:
+    #     wordsData_pandas = wordsData.to_pandas_on_spark(index_col = "paper_id")
+    # except EOFError as x:
+    #     print("fjerde")
+
+    # print("4")
+
+
+    # def dummy_fun(doc):
+    #     return doc
+    
+    # try:
+    #     tfidf = TfidfVectorizer(
+    #         analyzer='word',
+    #         tokenizer=dummy_fun,
+    #         preprocessor=dummy_fun,
+    #         token_pattern=None) 
+    # except EOFError as x:
+    #     print("femte")
+
+    # print("5")
+
+    # try:
+    #     wordsData_pandas.columns = wordsData_pandas.columns.astype(str).str.strip()
+    #     wordsData_pandas = wordsData_pandas.iloc[:100,:]
+    # except EOFError as x:
+    #     print("stopper her")
+    
+    # print(wordsData_pandas.head(2))
+
+
+
     # print("her")
     # try:
     #     print(type(wordsData_pandas))
@@ -103,7 +118,8 @@ if __name__ == "__main__":
     # spark_tfidf = pd.DataFrame([np.array(i) for i in wordsData_pandas.tfidf_features_dense], columns=vectorizer.vocabulary)
 
 
-    spark.stop()
+
+
     # tfidfVectorizer = TfidfVectorizer(norm=None,analyzer='word',
     #                             tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None)
 
