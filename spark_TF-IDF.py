@@ -50,6 +50,7 @@ if __name__ == "__main__":
     try:
         to_dense_udf = f.udf(lambda x: to_dense(x), VectorUDT())
         wordsData = wordsData.withColumn("tfidf_features_dense", to_dense_udf('tfidf_features'))
+        print("mellomstopp")
         wordsData.show()
     except EOFError as x:
         print("tredje")
@@ -90,6 +91,7 @@ if __name__ == "__main__":
     except EOFError as x:
         print("sjette")
     print("6")
+
     sklearn_tfifdf = pd.DataFrame(feature_matrix.toarray(), columns=tfidf.get_feature_names())
     spark_tfidf = pd.DataFrame([np.array(i) for i in wordsData_pandas.tfidf_features_dense], columns=vectorizer.vocabulary)
 
