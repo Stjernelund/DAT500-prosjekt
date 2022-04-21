@@ -49,8 +49,9 @@ if __name__ == "__main__":
         wordsData = wordsData.withColumn("tfidf_features_dense", to_dense_udf('tfidf_features'))
     except EOFError as x:
         print("feil på siste")
-        
+
     print((wordsData.count(), len(wordsData.columns)))
+    wordsData.show()
     spark.stop()
 
     # except EOFError as x:
