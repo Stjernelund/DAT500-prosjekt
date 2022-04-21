@@ -22,13 +22,17 @@ if __name__ == "__main__":
     hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures", numFeatures=20)
     featurizedData = hashingTF.transform(wordsData)
 
-    idf = IDF(inputCol="rawFeatures", outputCol="features")
-    idfModel = idf.fit(featurizedData)
-    rescaledData = idfModel.transform(featurizedData)
-
-    rescaledData.select("paper_id", "features").show() 
-
-    spark.stop()
+    try:
+        idf = IDF(inputCol="rawFeatures", outputCol="features")
+        idfModel = idf.fit(featurizedData)
+        rescaledData = idfModel.transform(featurizedData)
+        rescaledData.select("paper_id", "features").show() 
+        spark.stop()
+        
+    except EOFError as x:
+   	    print(x)
+    
+    
 #hashingTF = HashingTF(inputCol="text",outputCol="words")
 #tf = hashingTF.transform(df1)
 
