@@ -34,9 +34,9 @@ if __name__ == "__main__":
     wordsData = vectorizer.transform(wordsData) 
 
 
-    idf = IDF(inputCol="rawFeatures", outputCol="features")
-    idfModel = idf.fit(wordsData)
-    rescaledData = idfModel.transform(wordsData)
+    idf = IDF(inputCol="vectorizer", outputCol="tfidf_features")
+    idf_model = idf.fit(wordsData)
+    rescaledData = idf_model.transform(wordsData)
 
     def to_dense(in_vec):
         return DenseVector(in_vec.toArray())
@@ -57,7 +57,7 @@ if __name__ == "__main__":
         tokenizer=dummy_fun,
         preprocessor=dummy_fun,
         token_pattern=None) 
-        
+
     wordsData_pandas.columns = wordsData_pandas.columns.astype(str).str.strip()
     wordsData_pandas = wordsData_pandas[:100]
     feature_matrix = tfidf.fit_transform(wordsData_pandas['words'].to_numpy())
