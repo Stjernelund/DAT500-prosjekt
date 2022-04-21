@@ -85,7 +85,7 @@ if __name__ == "__main__":
     
     print("her")
     try:
-        feature_matrix = tfidf.fit_transform(wordsData_pandas['words'])
+        feature_matrix = tfidf.fit_transform(wordsData_pandas)
     except EOFError as x:
         print("sjette")
     print("6")
