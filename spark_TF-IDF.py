@@ -5,6 +5,8 @@ from pyspark.ml.linalg import VectorUDT, DenseVector
 from sklearn.feature_extraction.text import TfidfVectorizer
 import pandas as pd
 import numpy as np
+import os
+
 
 if __name__ == "__main__":
     spark = SparkSession\
@@ -13,6 +15,8 @@ if __name__ == "__main__":
         .config("spark.memory.offHeap.enabled","true") \
         .config("spark.memory.offHeap.size","20g") \
         .getOrCreate()
+        
+    os.environ["PYARROW_IGNORE_TIMEZONE"] = "1"
     
     try:
         path = "preprocess"
