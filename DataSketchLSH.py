@@ -26,6 +26,7 @@ class MRDataSketchLSH(MRJob):
         key, line = line.split("\t")
         key = key.strip('\\"')
         m = MinHash(num_perm=self.num_prem)
+        line = ast.literal_eval(line)
         yield key, line
         """
         for d in line:
