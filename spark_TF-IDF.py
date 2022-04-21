@@ -36,7 +36,7 @@ if __name__ == "__main__":
 
     idf = IDF(inputCol="vectorizer", outputCol="tfidf_features")
     idf_model = idf.fit(wordsData)
-    rescaledData = idf_model.transform(wordsData)
+    wordsData = idf_model.transform(wordsData)
 
     def to_dense(in_vec):
         return DenseVector(in_vec.toArray())
