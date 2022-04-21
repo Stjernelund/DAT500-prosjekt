@@ -14,8 +14,8 @@ df1 = spark.read.text(path)
 df1 = df1.withColumn("paper_id", split(col("value"), "\\t").getItem(0)).withColumn("text", split(col("value"), "\\t").getItem(1))
 df1 = df1.select(f.split(df1.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=["paper_id","text"]).show()
 
-#tokenizer = Tokenizer(inputCol="text", outputCol="words")
-#wordsData = tokenizer.transform(df1)
+tokenizer = Tokenizer(inputCol="text", outputCol="words")
+wordsData = tokenizer.transform(df1).show()
 
 #hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures",numFeatures=20)
 #featurizedData = hashingTF.transform(wordsData)
