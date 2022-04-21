@@ -43,7 +43,8 @@ if __name__ == "__main__":
     wordsData_pandas.set_index('paper_id')
     corpus = wordsData_pandas['words'].to_numpy()
     paper_ids = [id.strip('"') for id in paper_ids]
-    corpus = [sentence.strip('"') for sentence in corpus]
+
+    corpus = [sentence[0].strip('"') for sentence in corpus]
     #paper_ids = wordsData_pandas['paper_id'].to_numpy()
     def dummy_fun(doc):
         return doc
