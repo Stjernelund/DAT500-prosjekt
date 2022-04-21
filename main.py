@@ -48,28 +48,29 @@ def main():
     print(f"Ngrams: {ngramtime - preprostime} seconds.")
 
     # Remove the previous output directory
-    try:
-        shutil.rmtree(f"{path}")
-    except FileNotFoundError:
-        pass
+    if preprocess:
+        try:
+            shutil.rmtree(f"{path}")
+        except FileNotFoundError:
+            pass
 
-    datasketch = MRDataSketchLSH()
-    datasketch.init(threshold)
-    with datasketch.make_runner() as runner:
-        runner._input_paths = ["ngrams/part-*"]
-        runner._output_dir = f"{path}/lsh"
-        runner.run()
+        datasketch = MRDataSketchLSH()
+        datasketch.init(threshold)
+        with datasketch.make_runner() as runner:
+            runner._input_paths = ["ngrams/part-*"]
+            runner._output_dir = f"{path}/lsh"
+            runner.run()
 
-    minhashtime = time.time()
-    print(f"Hashing: {minhashtime - ngramtime} seconds.")
+        minhashtime = time.time()
+        print(f"Hashing: {minhashtime - ngramtime} seconds.")
 
-    lsh = datasketch.make_LSH()
-    lshtime = time.time()
-    print(f"LSH: {lshtime - minhashtime} seconds.")
+        lsh = datasketch.make_LSH()
+        lshtime = time.time()
+        print(f"LSH: {lshtime - minhashtime} seconds.")
 
-    datasketch.find_similar(lsh)
-    similar_time = time.time()
-    print(f"Similarity: {similar_time - lshtime} seconds.")
+        datasketch.find_similar(lsh)
+        similar_time = time.time()
+        print(f"Similarity: {similar_time - lshtime} seconds.")
 
     MR_total = MRAnalysis.Total()
     with MR_total.make_runner() as runner:
