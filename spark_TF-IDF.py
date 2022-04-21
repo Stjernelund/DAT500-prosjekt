@@ -28,9 +28,10 @@ if __name__ == "__main__":
         rescaledData = idfModel.transform(featurizedData)
         rescaledData.select("paper_id", "features").show() 
         spark.stop()
-        
+
     except EOFError as x:
-   	    print(x)
+        print(x)
+        print("got here")
     
     
 #hashingTF = HashingTF(inputCol="text",outputCol="words")
