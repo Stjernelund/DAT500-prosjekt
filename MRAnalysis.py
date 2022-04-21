@@ -12,9 +12,7 @@ class Total(MRJob):
     def mapper(self, _, papers):
         _, papers = papers.split("\t")
         papers = ast.literal_eval(papers)
-        for val in papers:
-            yield None, val
-        # yield "Total:", len(papers)
+        yield "Total:", len(papers)
 
 
 class Similar(MRJob):
