@@ -21,37 +21,40 @@ if __name__ == "__main__":
         df1 = df1.select(f.split(df1.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=["paper_id","text"])
     except EOFError as x:
         print("feil på lesing")
+
+    df2 = df1.to_pandas_on_spark()
+    df2.head()
      
-    try:
-        tokenizer = Tokenizer(inputCol="text", outputCol="words")
-        wordsData = tokenizer.transform(df1)
-    except EOFError as x:
-        print("failed first")
+    # try:
+    #     tokenizer = Tokenizer(inputCol="text", outputCol="words")
+    #     wordsData = tokenizer.transform(df1)
+    # except EOFError as x:
+    #     print("failed first")
     
-    try:
-        hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures", numFeatures=100)
-        featurizedData = hashingTF.transform(wordsData)
-    except EOFError as x:
-        print("failed second")
+    # try:
+    #     hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures", numFeatures=100)
+    #     featurizedData = hashingTF.transform(wordsData)
+    # except EOFError as x:
+    #     print("failed second")
 
-    try:
-        idf = IDF(inputCol="rawFeatures", outputCol="features")
-        idfModel = idf.fit(featurizedData)
-        rescaledData = idfModel.transform(featurizedData)
+    # try:
+    #     idf = IDF(inputCol="rawFeatures", outputCol="features")
+    #     idfModel = idf.fit(featurizedData)
+    #     rescaledData = idfModel.transform(featurizedData)
 
-    except EOFError as x:
-        print("failed third")
+    # except EOFError as x:
+    #     print("failed third")
     
-    def to_dense(in_vec):
-        return DenseVector(in_vec.toArray())
+    # def to_dense(in_vec):
+    #     return DenseVector(in_vec.toArray())
 
-    print("i am here")
-    print((rescaledData.count(), len(rescaledData.columns)))
+    # print("i am here")
+    # print((rescaledData.count(), len(rescaledData.columns)))
     
-    to_dense_udf = f.udf(lambda x: to_dense(x), VectorUDT())
+    # to_dense_udf = f.udf(lambda x: to_dense(x), VectorUDT())
 
-    print("2")
-    wordsData = rescaledData.withColumn("tfidf_features_dense", to_dense_udf('features'))
-    print("3")
-    wordsData.show()
-    spark.stop()
+    # print("2")
+    # wordsData = rescaledData.withColumn("tfidf_features_dense", to_dense_udf('features'))
+    # print("3")
+    # wordsData.show()
+    # spark.stop()
