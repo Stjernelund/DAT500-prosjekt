@@ -11,7 +11,7 @@ if __name__ == "__main__":
         .builder\
         .appName("TfIdfExample")\
         .config("spark.memory.offHeap.enabled","true") \
-        .config("spark.memory.offHeap.size","10g") \
+        .config("spark.memory.offHeap.size","20g") \
         .getOrCreate()
     
     spark.conf.set("spark.sql.execution.arrow.enabled", "true")
@@ -29,6 +29,8 @@ if __name__ == "__main__":
     vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
     wordsData = vectorizer.transform(wordsData)
     wordsData_pandas = wordsData.toPandas()
+    
+    wordsData_pandas = wordsData_pandas[:100]
 
     def dummy_fun(doc):
         return doc
