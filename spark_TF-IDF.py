@@ -36,7 +36,7 @@ if __name__ == "__main__":
     wordsData = tokenizer.transform(df1)
     vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
     wordsData = vectorizer.transform(wordsData) 
-    wordsData_pandas = wordsData.to_pandas_on_spark(index_col = "paper_id")
+    wordsData_pandas = wordsData.to_pandas_on_spark(index_col = "paper_id").iloc[:10,:]
     corpus = wordsData_pandas['words'].to_numpy()
 
     def dummy_fun(doc):
