@@ -22,30 +22,30 @@ if __name__ == "__main__":
     except EOFError as x:
         print("feil på lesing")
      
-    tokenizer = Tokenizer().setInputCol("text").setOutputCol("words")
-    wordsData = tokenizer.transform(df1)
-    vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
-    wordsData = vectorizer.transform(wordsData)
+    # tokenizer = Tokenizer().setInputCol("text").setOutputCol("words")
+    # wordsData = tokenizer.transform(df1)
+    # vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
+    # wordsData = vectorizer.transform(wordsData)
 
-    print("er her")
-    wordsData_pandas = wordsData.toPandas()
-    print("er her 2")
-    wordsData_pandas = wordsData_pandas[:100]
+    # print("er her")
+    # wordsData_pandas = wordsData.toPandas()
+    # print("er her 2")
+    # wordsData_pandas = wordsData_pandas[:100]
 
-    def dummy_fun(doc):
-        return doc
+    # def dummy_fun(doc):
+    #     return doc
     
-    tfidf = TfidfVectorizer(
-        analyzer='word',
-        tokenizer=dummy_fun,
-        preprocessor=dummy_fun,
-        token_pattern=None)
+    # tfidf = TfidfVectorizer(
+    #     analyzer='word',
+    #     tokenizer=dummy_fun,
+    #     preprocessor=dummy_fun,
+    #     token_pattern=None)
 
-    feature_matrix = tfidf.fit_transform(wordsData_pandas.words)
-    sklearn_tfifdf = pd.DataFrame(feature_matrix.toarray(), columns=tfidf.get_feature_names())
-    spark_tfidf = pd.DataFrame([np.array(i) for i in wordsData_pandas.tfidf_features_dense], columns=vectorizer.vocabulary)
+    # feature_matrix = tfidf.fit_transform(wordsData_pandas.words)
+    # sklearn_tfifdf = pd.DataFrame(feature_matrix.toarray(), columns=tfidf.get_feature_names())
+    # spark_tfidf = pd.DataFrame([np.array(i) for i in wordsData_pandas.tfidf_features_dense], columns=vectorizer.vocabulary)
 
-    spark_tfidf.head()
+    # spark_tfidf.head()
     #     # vectorize
     #     vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
     #     wordsData = vectorizer.transform(wordsData)
@@ -79,34 +79,34 @@ if __name__ == "__main__":
 
     # except EOFError as x:
     #     print("failed reading")
-    # try:
-    #     tokenizer = Tokenizer(inputCol="text", outputCol="words")
-    #     wordsData = tokenizer.transform(df1)
-    # except EOFError as x:
-    #     print("failed first")
+    try:
+        tokenizer = Tokenizer(inputCol="text", outputCol="words")
+        wordsData = tokenizer.transform(df1)
+    except EOFError as x:
+        print("failed first")
     
-    # try:
-    #     hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures")
-    #     featurizedData = hashingTF.transform(wordsData)
-    # except EOFError as x:
-    #     print("failed second")
+    try:
+        hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures")
+        featurizedData = hashingTF.transform(wordsData)
+    except EOFError as x:
+        print("failed second")
 
-    # try:
-    #     idf = IDF(inputCol="rawFeatures", outputCol="features")
-    #     idfModel = idf.fit(featurizedData)
-    #     rescaledData = idfModel.transform(featurizedData)
+    try:
+        idf = IDF(inputCol="rawFeatures", outputCol="features")
+        idfModel = idf.fit(featurizedData)
+        rescaledData = idfModel.transform(featurizedData)
 
-    # except EOFError as x:
-    #     print("failed third")
+    except EOFError as x:
+        print("failed third")
     
-    # def to_dense(in_vec):
-    #     return DenseVector(in_vec.toArray())
+    def to_dense(in_vec):
+        return DenseVector(in_vec.toArray())
 
-    # print("i am here")
-    # print((rescaledData.count(), len(rescaledData.columns)))
+    print("i am here")
+    print((rescaledData.count(), len(rescaledData.columns)))
     
-    # to_dense_udf = f.udf(lambda x: to_dense(x), VectorUDT())
-    # wordsData = rescaledData.withColumn("tfidf_features_dense", to_dense_udf('features'))
+    to_dense_udf = f.udf(lambda x: to_dense(x), VectorUDT())
+    wordsData = rescaledData.withColumn("tfidf_features_dense", to_dense_udf('features'))
 
-    # wordsData.show()
-    # spark.stop()
+    wordsData.show()
+    spark.stop()
