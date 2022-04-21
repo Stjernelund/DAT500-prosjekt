@@ -13,7 +13,7 @@ df1 = df1.withColumn("paper_id", f.split(f.col("value"), "\\t").getItem(0)).with
 df1 = df1.select(f.split(df1.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=["paper_id","text"])
 
 tokenizer = Tokenizer(inputCol="text", outputCol="words")
-#wordsData = tokenizer.transform(df1).show()
+wordsData = tokenizer.transform(df1).show()
 
 #hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures",numFeatures=20)
 #featurizedData = hashingTF.transform(wordsData)
