@@ -1,6 +1,7 @@
 from pyspark.ml.feature import HashingTF, IDF, Tokenizer
 import pyspark.sql.functions as f
 from pyspark.sql import SparkSession
+from pyspark.ml.linalg import VectorUDT, DenseVector
 
 if __name__ == "__main__":
     spark = SparkSession\
@@ -37,8 +38,8 @@ if __name__ == "__main__":
     except EOFError as x:
         print("failed third")
     
-    # def to_dense(in_vec):
-    #     return DenseVector(in_vec.toArray())
+    def to_dense(in_vec):
+        return DenseVector(in_vec.toArray())
 
-    # to_dense_udf = udf(lambda x: to_dense(x), VectorUDT())
-    # wordsData = wordsData.withColumn("tfidf_features_dense", to_dense_udf('tfidf_features'))
+    to_dense_udf = f.udf(lambda x: to_dense(x), VectorUDT())
+    wordsData = wordsData.withColumn("tfidf_features_dense", to_dense_udf('tfidf_features'))
