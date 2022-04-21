@@ -17,7 +17,6 @@ wordsData = tokenizer.transform(df1)
 
 hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures",numFeatures=20)
 featurizedData = hashingTF.transform(wordsData).show()
-# alternatively, CountVectorizer can also be used to get term frequency vectors
 
 #idf = IDF(inputCol="rawFeatures" , outputCol="features")
 #idfModel = idf.fit(featurizedData)
