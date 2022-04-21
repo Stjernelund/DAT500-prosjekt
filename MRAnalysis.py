@@ -10,8 +10,9 @@ class Total(MRJob):
         return [MRStep(mapper=self.mapper)]
 
     def mapper(self, _, papers):
-        yield None, papers
-        # yield "Total:", len(papers)
+        _, papers = papers.split("\t")
+        papers = ast.literal_eval(papers)
+        yield "Total:", len(papers)
 
 
 class Similar(MRJob):
