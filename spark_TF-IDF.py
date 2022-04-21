@@ -32,8 +32,23 @@ if __name__ == "__main__":
     wordsData = tokenizer.transform(df1)
     vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
     wordsData = vectorizer.transform(wordsData) 
+
+
+    idf = IDF(inputCol="rawFeatures", outputCol="features")
+    idfModel = idf.fit(wordsData)
+    rescaledData = idfModel.transform(wordsData)
+
+    def to_dense(in_vec):
+        return DenseVector(in_vec.toArray())
+
+    to_dense_udf = f.udf(lambda x: to_dense(x), VectorUDT())
+    wordsData = wordsData.withColumn("tfidf_features_dense", to_dense_udf('tfidf_features'))
+
+
     wordsData_pandas = wordsData.to_pandas_on_spark(index_col = "paper_id")
-    wordsData_pandas.drop('text', axis=1)
+
+
+
     def dummy_fun(doc):
         return doc
     
@@ -42,20 +57,12 @@ if __name__ == "__main__":
         tokenizer=dummy_fun,
         preprocessor=dummy_fun,
         token_pattern=None) 
-    #wordsData_pandas = ps.DataFrame(wordsData_pandas)
-    print(list(wordsData_pandas.columns))
+        
     wordsData_pandas.columns = wordsData_pandas.columns.astype(str).str.strip()
     wordsData_pandas = wordsData_pandas[:100]
-
     feature_matrix = tfidf.fit_transform(wordsData_pandas['words'].to_numpy())
-    # sklearn_tfifdf = pd.DataFrame(feature_matrix.toarray(), columns=tfidf.get_feature_names())
-    # spark_tfidf = pd.DataFrame([np.array(i) for i in wordsData_pandas.tfidf_features_dense], columns=vectorizer.vocabulary)
-    tfidfVectorizer=TfidfVectorizer(norm=None,analyzer='word',
-                                tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None)
-
-    tf=tfidfVectorizer.fit_transform(feature_matrix)
-    tf_df=pd.DataFrame(tf.toarray(),columns= tfidfVectorizer.get_feature_names())
-    tf_df
+    sklearn_tfifdf = pd.DataFrame(feature_matrix.toarray(), columns=tfidf.get_feature_names())
+    spark_tfidf = pd.DataFrame([np.array(i) for i in wordsData_pandas.tfidf_features_dense], columns=vectorizer.vocabulary)
 
     # tfidfVectorizer = TfidfVectorizer(norm=None,analyzer='word',
     #                             tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None)
