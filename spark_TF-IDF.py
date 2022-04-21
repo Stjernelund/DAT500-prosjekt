@@ -11,11 +11,13 @@ if __name__ == "__main__":
 
     # A text dataset is pointed to by path.
     # The path can be either a single text file or a directory of text files
-    path = "preprocess"
-    df1 = spark.read.text(path)
-    df1 = df1.withColumn("paper_id", f.split(f.col("value"), "\\t").getItem(0)).withColumn("text", f.split(f.col("value"), "\\t").getItem(1))
-    df1 = df1.select(f.split(df1.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=["paper_id","text"])
-
+    try:
+        path = "preprocess"
+        df1 = spark.read.text(path)
+        df1 = df1.withColumn("paper_id", f.split(f.col("value"), "\\t").getItem(0)).withColumn("text", f.split(f.col("value"), "\\t").getItem(1))
+        df1 = df1.select(f.split(df1.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=["paper_id","text"])
+    except EOFError as x:
+        print("failed reading")
     try:
         tokenizer = Tokenizer(inputCol="text", outputCol="words")
         wordsData = tokenizer.transform(df1)
