@@ -18,13 +18,15 @@ df1 = df1.select(f.split(df1.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=
 tokenizer = Tokenizer(inputCol="text", outputCol="words")
 wordsData = tokenizer.transform(df1)
 
-hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures",numFeatures=20)
+hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures", numFeatures=20)
 featurizedData = hashingTF.transform(wordsData)
 
-idf = IDF(inputCol="rawFeatures" , outputCol="features")
+idf = IDF(inputCol="rawFeatures", outputCol="features")
 idfModel = idf.fit(featurizedData)
 rescaledData = idfModel.transform(featurizedData)
-rescaledData.select("paper_id","features").show()
+
+rescaledData.select("label", "features").show() 
+
 spark.stop()
 #hashingTF = HashingTF(inputCol="text",outputCol="words")
 #tf = hashingTF.transform(df1)
