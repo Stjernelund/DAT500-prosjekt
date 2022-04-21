@@ -26,11 +26,10 @@ if __name__ == "__main__":
         idf = IDF(inputCol="rawFeatures", outputCol="features")
         idfModel = idf.fit(featurizedData)
         rescaledData = idfModel.transform(featurizedData)
-        rescaledData.select("paper_id", "features").show() 
+        rescaledData.select("paper_id", "words" ,"features").show() 
         spark.stop()
 
     except EOFError as x:
-        print(x)
         print("got here")
     
     
