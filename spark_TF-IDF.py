@@ -65,3 +65,4 @@ to_dense_udf = f.udf(lambda x: to_dense(x), VectorUDT())
 
 # create dense vector
 wordsData = wordsData.withColumn("tfidf_features_dense", to_dense_udf('tfidf_features'))
+wordsData.show()
