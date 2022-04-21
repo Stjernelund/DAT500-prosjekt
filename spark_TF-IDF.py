@@ -7,6 +7,7 @@ if __name__ == "__main__":
     spark = SparkSession\
         .builder\
         .appName("TfIdfExample")\
+        .config("spark.executor.memory", "15g") \
         .config("spark.driver.memory", "15g") \
         .getOrCreate()
 
