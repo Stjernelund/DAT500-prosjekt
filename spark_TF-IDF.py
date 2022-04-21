@@ -23,7 +23,7 @@ if __name__ == "__main__":
         print("failed first")
     
     try:
-        hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures", numFeatures=20)
+        hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures")
         featurizedData = hashingTF.transform(wordsData)
     except EOFError as x:
         print("failed second")
