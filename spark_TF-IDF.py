@@ -44,19 +44,19 @@ if __name__ == "__main__":
     corpus = wordsData_pandas['words'].to_numpy()
     paper_ids = [id.strip('"') for id in paper_ids]
 
-    corpus = [sentence[0].strip('"') for sentence in corpus]
+    print(corpus)
     #paper_ids = wordsData_pandas['paper_id'].to_numpy()
-    def dummy_fun(doc):
-        return doc
-    my_stop_words = text.ENGLISH_STOP_WORDS
+    # def dummy_fun(doc):
+    #     return doc
+    # my_stop_words = text.ENGLISH_STOP_WORDS
 
 
-    tfidfVectorizer = TfidfVectorizer(norm=None,analyzer='word',
-                                tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None,stop_words=my_stop_words)
-    tf=tfidfVectorizer.fit_transform(corpus)
-    tf_df=pd.DataFrame(tf.toarray(), columns = tfidfVectorizer.get_feature_names_out(),index = paper_ids )
-    print(tf_df.head())
-    spark.stop()
+    # tfidfVectorizer = TfidfVectorizer(norm=None,analyzer='word',
+    #                             tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None,stop_words=my_stop_words)
+    # tf=tfidfVectorizer.fit_transform(corpus)
+    # tf_df=pd.DataFrame(tf.toarray(), columns = tfidfVectorizer.get_feature_names_out(),index = paper_ids )
+    # print(tf_df.head())
+    # spark.stop()
 
     # except EOFError as x:
     #     print("første")
