@@ -16,7 +16,7 @@ def main():
     threshold = float(sys.argv[1])
     path = f"output_t{int(threshold * 100)}"
     preprocess = "t" in sys.argv[2].lower()
-    if preprocess:
+    if preprocess and False:
         # Remove the previous output directory
         try:
             shutil.rmtree("preprocess")
