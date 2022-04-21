@@ -22,63 +22,6 @@ if __name__ == "__main__":
     except EOFError as x:
         print("feil på lesing")
      
-    # tokenizer = Tokenizer().setInputCol("text").setOutputCol("words")
-    # wordsData = tokenizer.transform(df1)
-    # vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
-    # wordsData = vectorizer.transform(wordsData)
-
-    # print("er her")
-    # wordsData_pandas = wordsData.toPandas()
-    # print("er her 2")
-    # wordsData_pandas = wordsData_pandas[:100]
-
-    # def dummy_fun(doc):
-    #     return doc
-    
-    # tfidf = TfidfVectorizer(
-    #     analyzer='word',
-    #     tokenizer=dummy_fun,
-    #     preprocessor=dummy_fun,
-    #     token_pattern=None)
-
-    # feature_matrix = tfidf.fit_transform(wordsData_pandas.words)
-    # sklearn_tfifdf = pd.DataFrame(feature_matrix.toarray(), columns=tfidf.get_feature_names())
-    # spark_tfidf = pd.DataFrame([np.array(i) for i in wordsData_pandas.tfidf_features_dense], columns=vectorizer.vocabulary)
-
-    # spark_tfidf.head()
-    #     # vectorize
-    #     vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
-    #     wordsData = vectorizer.transform(wordsData)
-
-    #     # calculate scores
-    #     idf = IDF(inputCol="vectorizer", outputCol="tfidf_features")
-    #     idf_model = idf.fit(wordsData)
-    #     wordsData = idf_model.transform(wordsData)
-    #     wordsData = wordsData.limit(20)
-    # except EOFError as x:
-    #     print("feil på andre")
-
-    #     # dense the current response variable
-    # def to_dense(in_vec):
-    #     return DenseVector(in_vec.toArray())
-
-    # try:    
-    #     to_dense_udf = f.udf(lambda x: to_dense(x), VectorUDT())
-    # except EOFError as x:
-    #     print("feil på to_dense")
-
-    #     # create dense vector
-    # try:
-    #     wordsData = wordsData.withColumn("tfidf_features_dense", to_dense_udf('tfidf_features'))
-    # except EOFError as x:
-    #     print("feil på siste")
-
-    # print((wordsData.count(), len(wordsData.columns)))
-    # wordsData.show()
-    # spark.stop()
-
-    # except EOFError as x:
-    #     print("failed reading")
     try:
         tokenizer = Tokenizer(inputCol="text", outputCol="words")
         wordsData = tokenizer.transform(df1)
@@ -86,7 +29,7 @@ if __name__ == "__main__":
         print("failed first")
     
     try:
-        hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures")
+        hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures", numFeatures=100)
         featurizedData = hashingTF.transform(wordsData)
     except EOFError as x:
         print("failed second")
