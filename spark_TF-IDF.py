@@ -28,7 +28,7 @@ if __name__ == "__main__":
 
     df1.show()
     df2 = df1.to_pandas_on_spark(index_col = "paper_id")
-    print(df2)
+    print(df2.head(2))
     def dummy_fun(doc):
         return doc
     tfidfVectorizer = TfidfVectorizer(norm=None,analyzer='word',
