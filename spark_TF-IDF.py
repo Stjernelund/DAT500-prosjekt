@@ -28,7 +28,7 @@ df1 = df1.select(f.split(df1.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=
 # rescaledData.select("paper_id", "words","features").show()
 # rescaledData.
 
-hashingTF = HashingTF()
+hashingTF = HashingTF(inputCol="text",outputCol="words")
 tf = hashingTF.transform(df1)
 
 tf.cache()
