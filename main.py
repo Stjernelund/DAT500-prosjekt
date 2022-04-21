@@ -5,12 +5,14 @@ from MRPreProcess import MRPreProcess
 from DataSketchLSH import MRDataSketchLSH
 from MRNgram import MRNgram
 import time
+from datetime import datetime
 import shutil
 import sys
 
 
 def main():
     start = time.time()
+    print("Started at:", datetime.now().strftime("%H:%M:%S"))
 
     # Run by using the following command: python3 main.py threshold_value true/false
     threshold = float(sys.argv[1])
