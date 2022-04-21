@@ -7,6 +7,7 @@ import pandas as pd
 import numpy as np
 import os
 import pyspark.pandas as ps
+from sklearn.feature_extraction import text
 
 
 
@@ -32,6 +33,7 @@ if __name__ == "__main__":
     except EOFError as x:
         print("feil på lesing")
 
+
     tokenizer = Tokenizer().setInputCol("text").setOutputCol("words")
     wordsData = tokenizer.transform(df1)
     vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
@@ -44,9 +46,10 @@ if __name__ == "__main__":
     #paper_ids = wordsData_pandas['paper_id'].to_numpy()
     def dummy_fun(doc):
         return doc
-    
+    my_stop_words = text.ENGLISH_STOP_WORDS.union(['"'])
+
     tfidfVectorizer = TfidfVectorizer(norm=None,analyzer='word',
-                                tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None)
+                                tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None,stop_words=my_stop_words)
     tf=tfidfVectorizer.fit_transform(corpus)
     tf_df=pd.DataFrame(tf.toarray(), columns = tfidfVectorizer.get_feature_names_out(),index = paper_ids )
     print(tf_df.head())
