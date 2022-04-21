@@ -24,7 +24,7 @@ if __name__ == "__main__":
     # calculate scores
     idf = IDF(inputCol="vectorizer", outputCol="tfidf_features")
     idf_model = idf.fit(wordsData)
-    wordsData = idf_model.transform(wordsData)
+    wordsData = idf_model.transform(wordsData).head(1000)
 
     # dense the current response variable
     def to_dense(in_vec):
