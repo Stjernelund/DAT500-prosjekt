@@ -32,7 +32,7 @@ if __name__ == "__main__":
         idf = IDF(inputCol="rawFeatures", outputCol="features")
         idfModel = idf.fit(featurizedData)
         rescaledData = idfModel.transform(featurizedData)
-        rescaledData.select("paper_id", "words" ,"features").show(20,False)
+        rescaledData.select("paper_id", "words" ,"features")
         spark.stop()
 
     except EOFError as x:
@@ -42,6 +42,6 @@ if __name__ == "__main__":
         return DenseVector(in_vec.toArray())
 
     to_dense_udf = f.udf(lambda x: to_dense(x), VectorUDT())
-    wordsData = wordsData.withColumn("tfidf_features_dense", to_dense_udf('tfidf_features'))
+    wordsData = featurizedData.withColumn("tfidf_features_dense", to_dense_udf('tfidf_features'))
 
     wordsData.show()
