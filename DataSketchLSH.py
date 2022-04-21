@@ -18,12 +18,14 @@ class MRDataSketchLSH(MRJob):
         return [
             MRStep(
                 mapper=self.mapper,
+                reducer=self.reducer,
             )
         ]  # reducer=self.reducer)]
 
     def mapper(self, _, line):
         """MinHash each paper"""
         key, line = line.split("\t")
+        key = key.strip('\\"')
         m = MinHash(num_perm=self.num_prem)
         for d in line:
             m.update(str(d).encode("utf8"))
