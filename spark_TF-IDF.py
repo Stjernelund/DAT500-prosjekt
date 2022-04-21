@@ -18,19 +18,32 @@ if __name__ == "__main__":
 
     os.environ["PYARROW_IGNORE_TIMEZONE"] = "1"
     
-    # try:
-    #     path = "preprocess"
-    #     df1 = spark.read.text(path)
-    #     df1 = df1.withColumn("paper_id", f.split(f.col("value"), "\\t").getItem(0)).withColumn("text", f.split(f.col("value"), "\\t").getItem(1))
-    #     df1 = df1.select(f.split(df1.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=["paper_id","text"])
-    # except EOFError as x:
-    #     print("feil på lesing")
+    try:
+        path = "preprocess"
+        df1 = spark.read.text(path)
+        df1 = df1.withColumn("paper_id", f.split(f.col("value"), "\\t").getItem(0)).withColumn("text", f.split(f.col("value"), "\\t").getItem(1))
+        df1 = df1.select(f.split(df1.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=["paper_id","text"])
+    except EOFError as x:
+        print("feil på lesing")
 
-    # df1.show()
-    # df2 = df1.to_pandas_on_spark(index_col = "paper_id")
-    # print(df2.head(2))
-    # def dummy_fun(doc):
-    #     return doc
+    tokenizer = Tokenizer().setInputCol("text").setOutputCol("words")
+    wordsData = tokenizer.transform(df1)
+    vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
+    wordsData = vectorizer.transform(wordsData) 
+    wordsData_pandas = wordsData.to_pandas_on_spark(index_col = "paper_id")
+    def dummy_fun(doc):
+        return doc
+    
+    tfidf = TfidfVectorizer(
+        analyzer='word',
+        tokenizer=dummy_fun,
+        preprocessor=dummy_fun,
+        token_pattern=None) 
+
+    feature_matrix = tfidf.fit_transform(wordsData_pandas.words)
+    sklearn_tfifdf = pd.DataFrame(feature_matrix.toarray(), columns=tfidf.get_feature_names())
+    spark_tfidf = pd.DataFrame([np.array(i) for i in wordsData_pandas.tfidf_features_dense], columns=vectorizer.vocabulary)
+
     # tfidfVectorizer = TfidfVectorizer(norm=None,analyzer='word',
     #                             tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None)
 
@@ -73,16 +86,3 @@ if __name__ == "__main__":
     # print("3")
     # wordsData.show()
     # spark.stop()
-    corpus = ["I heard about Spark","I wish Java could use case classes","Logistic regression models are neat"]
-    corpus = [sent.lower().split() for sent in corpus]
-
-    print(corpus)
-    def dummy_fun(doc):
-        return doc
-
-    tfidfVectorizer=TfidfVectorizer(norm=None,analyzer='word',
-                                    tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None)
-
-    tf=tfidfVectorizer.fit_transform(corpus)
-    tf_df=pd.DataFrame(tf.toarray(),columns= tfidfVectorizer.get_feature_names_out())
-    tf_df
