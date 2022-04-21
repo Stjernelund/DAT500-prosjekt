@@ -23,7 +23,7 @@ featurizedData = hashingTF.transform(wordsData)
 
 idf = IDF(inputCol="rawFeatures" , outputCol="features")
 idfModel = idf.fit(featurizedData)
-#rescaledData = idfModel.transform(featurizedData).show()
+rescaledData = idfModel.transform(featurizedData)
 rescaledData.select("label", "features").show()
 # rescaledData.select("paper_id", "words","features").show()
 # rescaledData.
