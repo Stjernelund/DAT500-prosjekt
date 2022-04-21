@@ -1,7 +1,7 @@
 #! /usr/bin/python3
 
 import MRAnalysis
-from MRPreProcess import MRPreProcess
+from MRPreProcess import MRPreProcess, MRNoNumerals
 from DataSketchLSH import MRDataSketchLSH
 from MRNgram import MRNgram
 import time
@@ -28,6 +28,16 @@ def main():
         with preprocesser.make_runner() as runner:
             runner._input_paths = ["papers.csv"]
             runner._output_dir = "preprocess"
+            runner.run()
+
+        try:
+            shutil.rmtree("preprocess_alpha")
+        except FileNotFoundError:
+            pass
+        no_numerals = MRNoNumerals()
+        with no_numerals.make_runner() as runner:
+            runner._input_paths = ["preprocess/part-*"]
+            runner._output_dir = "preprocess_alpha"
             runner.run()
 
     preprostime = time.time()

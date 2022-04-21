@@ -3,7 +3,6 @@
 import numpy as np
 from mrjob.job import MRJob
 from mrjob.step import MRStep
-import nltk
 
 
 class MRPreProcess(MRJob):
@@ -59,6 +58,19 @@ class MRPreProcess(MRJob):
             abs_fin = "".join([i for i in line if i.isalnum() or i == " "]).lower()
             abs_fin += " "
             self.body.append(abs_fin)
+
+
+class MRNoNumerals(MRJob):
+    def steps(self):
+        return [MRStep(mapper=self.mapper, reducer=self.reducer)]
+
+    def mapper(self, _, line):
+        line = " ".join(word for word in line.split() if word.isalpha())
+        yield None, line
+
+    def reducer(self, _, lines):
+        line = " ".join(lines)
+        yield None, line
 
 
 if __name__ == "__main__":
