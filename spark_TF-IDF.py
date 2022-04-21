@@ -19,7 +19,7 @@ tokenizer = Tokenizer(inputCol="text", outputCol="words")
 wordsData = tokenizer.transform(df1)
 
 hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures",numFeatures=20)
-featurizedData = hashingTF.transform(wordsData).show()
+featurizedData = hashingTF.transform(wordsData)
 
 idf = IDF(inputCol="rawFeatures" , outputCol="features")
 idfModel = idf.fit(featurizedData)
