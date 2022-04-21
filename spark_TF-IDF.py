@@ -23,7 +23,15 @@ if __name__ == "__main__":
         print("feil på lesing")
 
     df2 = df1.to_pandas_on_spark()
-    df2.head()
+    def dummy_fun(doc):
+        return doc
+
+    tfidfVectorizer=TfidfVectorizer(norm=None,analyzer='word',
+                                tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None)
+
+    tf=tfidfVectorizer.fit_transform(df2)
+    tf_df=pd.DataFrame(tf.toarray(),columns= tfidfVectorizer.get_feature_names())
+    tf_df
      
     # try:
     #     tokenizer = Tokenizer(inputCol="text", outputCol="words")
