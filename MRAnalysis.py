@@ -7,9 +7,9 @@ import ast
 
 class Total(MRJob):
     def steps(self):
-        return [MRStep(reducer=self.reducer)]
+        return [MRStep(mapper=self.mapper)]
 
-    def reducer(self, _, list_papers):
+    def mapper(self, _, list_papers):
         yield None, list_papers
         # yield "Total:", len(list_papers)
 
