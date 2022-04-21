@@ -26,10 +26,11 @@ if __name__ == "__main__":
     except EOFError as x:
         print("feil på lesing")
 
+    df1.show()
     df2 = df1.to_pandas_on_spark()
+    print(df2)
     def dummy_fun(doc):
         return doc
-
     tfidfVectorizer = TfidfVectorizer(norm=None,analyzer='word',
                                 tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None)
 
