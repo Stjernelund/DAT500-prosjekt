@@ -40,7 +40,7 @@ if __name__ == "__main__":
         return DenseVector(in_vec.toArray())
 
     to_dense_udf = f.udf(lambda x: to_dense(x), VectorUDT())
-    wordsData = featurizedData.withColumn("tfidf_features_dense", to_dense_udf('features'))
+    wordsData = rescaledData.withColumn("tfidf_features_dense", to_dense_udf('features'))
 
     wordsData.show()
     spark.stop()
