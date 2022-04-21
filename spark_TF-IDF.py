@@ -31,7 +31,6 @@ if __name__ == "__main__":
     vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
     wordsData = vectorizer.transform(wordsData) 
     wordsData_pandas = wordsData.to_pandas_on_spark(index_col = "paper_id")
-    wordsData_pandas.show()
     print(wordsData_pandas.head(2))
     def dummy_fun(doc):
         return doc
