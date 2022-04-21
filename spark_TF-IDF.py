@@ -87,19 +87,20 @@ if __name__ == "__main__":
     except EOFError as x:
         print("stopper her")
     
-    print("her")
-    try:
-        print(type(wordsData_pandas))
-        print(wordsData_pandas.shape)
-        print(wordsData_pandas.columns)
-        arr = wordsData_pandas['words'].to_numpy()
-        feature_matrix = tfidf.fit_transform(arr)
-    except EOFError as x:
-        print("sjette")
-    print("6")
+    print(wordsData_pandas.head(2))
+    # print("her")
+    # try:
+    #     print(type(wordsData_pandas))
+    #     print(wordsData_pandas.shape)
+    #     print(wordsData_pandas.columns)
+    #     arr = wordsData_pandas['words'].to_numpy()
+    #     feature_matrix = tfidf.fit_transform(arr)
+    # except EOFError as x:
+    #     print("sjette")
+    # print("6")
 
-    sklearn_tfifdf = pd.DataFrame(feature_matrix.toarray(), columns=tfidf.get_feature_names())
-    spark_tfidf = pd.DataFrame([np.array(i) for i in wordsData_pandas.tfidf_features_dense], columns=vectorizer.vocabulary)
+    # sklearn_tfifdf = pd.DataFrame(feature_matrix.toarray(), columns=tfidf.get_feature_names())
+    # spark_tfidf = pd.DataFrame([np.array(i) for i in wordsData_pandas.tfidf_features_dense], columns=vectorizer.vocabulary)
 
 
     spark.stop()
