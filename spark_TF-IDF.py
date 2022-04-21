@@ -37,9 +37,7 @@ if __name__ == "__main__":
     tf = tfidfVectorizer.fit_transform(df2)
     print("2")
     tf_df = pd.DataFrame(tf.toarray(),columns= tfidfVectorizer.get_feature_names_out())
-    print("3")
-    tf_df.head()
-    print("4")
+    print(tf_df)
     spark.stop()
     # try:
     #     tokenizer = Tokenizer(inputCol="text", outputCol="words")
