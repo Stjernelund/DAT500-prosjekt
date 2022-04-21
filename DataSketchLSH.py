@@ -8,7 +8,7 @@ import ast
 
 class MRDataSketchLSH(MRJob):
     mrjobs = []
-    num_prem = 16
+    num_prem = 1
 
     def init(self, threshold):
         """Used to set threshold"""

@@ -48,9 +48,7 @@ def main():
         pass
 
     datasketch = MRDataSketchLSH()
-    print("1")
     datasketch.init(threshold)
-    print("2")
     with datasketch.make_runner() as runner:
         runner._input_paths = ["ngrams/part-*"]
         runner._output_dir = f"{path}/lsh"
