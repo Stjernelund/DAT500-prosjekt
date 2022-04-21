@@ -39,6 +39,9 @@ if __name__ == "__main__":
     def to_dense(in_vec):
         return DenseVector(in_vec.toArray())
 
+    print("i am here")
+    print((rescaledData.count(), len(rescaledData.columns)))
+    
     to_dense_udf = f.udf(lambda x: to_dense(x), VectorUDT())
     wordsData = rescaledData.withColumn("tfidf_features_dense", to_dense_udf('features'))
 
