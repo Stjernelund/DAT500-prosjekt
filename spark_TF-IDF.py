@@ -13,6 +13,8 @@ if __name__ == "__main__":
         .config("spark.memory.offHeap.enabled","true") \
         .config("spark.memory.offHeap.size","10g") \
         .getOrCreate()
+    
+    spark.conf.set("spark.sql.execution.arrow.enabled", "true")
 
     try:
         path = "preprocess"
@@ -26,7 +28,7 @@ if __name__ == "__main__":
     wordsData = tokenizer.transform(df1)
     vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
     wordsData = vectorizer.transform(wordsData)
-    wordsData_pandas = wordsData.select("*").toPandas()
+    wordsData_pandas = wordsData.toPandas()
 
     def dummy_fun(doc):
         return doc
