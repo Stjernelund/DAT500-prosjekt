@@ -27,7 +27,7 @@ if __name__ == "__main__":
         print("feil på lesing")
 
     df1.show()
-    df2 = df1.to_pandas_on_spark()
+    df2 = df1.to_pandas_on_spark(index_col = "paper_id")
     print(df2)
     def dummy_fun(doc):
         return doc
