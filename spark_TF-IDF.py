@@ -36,7 +36,6 @@ if __name__ == "__main__":
 
     # create dense vector
     wordsData = wordsData.withColumn("tfidf_features_dense", to_dense_udf('tfidf_features'))
-    wordsData.show()
     spark.stop()
 
     # except EOFError as x:
