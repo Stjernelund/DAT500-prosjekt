@@ -27,9 +27,12 @@ class MRDataSketchLSH(MRJob):
         key = key.strip('\\"')
         m = MinHash(num_perm=self.num_prem)
         for d in line:
+            yield key, d
+        """
             m.update(str(d).encode("utf8"))
         self.mrjobs.append((key, m))
         yield None, key
+        """
 
     def reducer(self, _, values):
         yield None, list(values)
