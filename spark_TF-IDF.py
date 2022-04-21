@@ -28,8 +28,10 @@ if __name__ == "__main__":
     wordsData = tokenizer.transform(df1)
     vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
     wordsData = vectorizer.transform(wordsData)
+
+    print("er her")
     wordsData_pandas = wordsData.toPandas()
-    
+    print("er her 2")
     wordsData_pandas = wordsData_pandas[:100]
 
     def dummy_fun(doc):
