@@ -28,35 +28,55 @@ if __name__ == "__main__":
     except EOFError as x:
         print("feil på lesing")
 
-    tokenizer = Tokenizer().setInputCol("text").setOutputCol("words")
-    wordsData = tokenizer.transform(df1)
-    vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
-    wordsData = vectorizer.transform(wordsData) 
-
-
-    idf = IDF(inputCol="vectorizer", outputCol="tfidf_features")
-    idf_model = idf.fit(wordsData)
-    wordsData = idf_model.transform(wordsData)
+    try: 
+        tokenizer = Tokenizer().setInputCol("text").setOutputCol("words")
+        wordsData = tokenizer.transform(df1)
+        vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
+        wordsData = vectorizer.transform(wordsData) 
+    except EOFError as x:
+        print("første")
+    print('1')
+    try:
+        idf = IDF(inputCol="vectorizer", outputCol="tfidf_features")
+        idf_model = idf.fit(wordsData)
+        wordsData = idf_model.transform(wordsData)
+    except EOFError as x:
+        print("andre")
+    print("2")
 
     def to_dense(in_vec):
         return DenseVector(in_vec.toArray())
 
-    to_dense_udf = f.udf(lambda x: to_dense(x), VectorUDT())
-    wordsData = wordsData.withColumn("tfidf_features_dense", to_dense_udf('tfidf_features'))
+    try:
+        to_dense_udf = f.udf(lambda x: to_dense(x), VectorUDT())
+        wordsData = wordsData.withColumn("tfidf_features_dense", to_dense_udf('tfidf_features'))
+        wordsData.show()
+    except EOFError as x:
+        print("tredje")
+    
+    print("3")
 
+    try:
+        wordsData_pandas = wordsData.to_pandas_on_spark(index_col = "paper_id")
+    except EOFError as x:
+        print("fjerde")
 
-    wordsData_pandas = wordsData.to_pandas_on_spark(index_col = "paper_id")
-
+    print("4")
 
 
     def dummy_fun(doc):
         return doc
     
-    tfidf = TfidfVectorizer(
-        analyzer='word',
-        tokenizer=dummy_fun,
-        preprocessor=dummy_fun,
-        token_pattern=None) 
+    try:
+        tfidf = TfidfVectorizer(
+            analyzer='word',
+            tokenizer=dummy_fun,
+            preprocessor=dummy_fun,
+            token_pattern=None) 
+    except EOFError as x:
+        print("femte")
+
+    print("5")
 
     try:
         wordsData_pandas.columns = wordsData_pandas.columns.astype(str).str.strip()
@@ -65,7 +85,11 @@ if __name__ == "__main__":
         print("stopper her")
     
     print("her")
-    feature_matrix = tfidf.fit_transform(wordsData_pandas['words'].to_numpy())
+    try:
+        feature_matrix = tfidf.fit_transform(wordsData_pandas['words'].to_numpy())
+    except EOFError as x:
+        print("sjette")
+    print("6")
     sklearn_tfifdf = pd.DataFrame(feature_matrix.toarray(), columns=tfidf.get_feature_names())
     spark_tfidf = pd.DataFrame([np.array(i) for i in wordsData_pandas.tfidf_features_dense], columns=vectorizer.vocabulary)
 
