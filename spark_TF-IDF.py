@@ -6,6 +6,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import pandas as pd
 import numpy as np
 import os
+import pyspark.pandas as ps
+
 
 
 if __name__ == "__main__":
@@ -41,8 +43,8 @@ if __name__ == "__main__":
         tokenizer=dummy_fun,
         preprocessor=dummy_fun,
         token_pattern=None) 
-
-    feature_matrix = tfidf.fit_transform(wordsData_pandas.loc[:,"words"])
+    wordsData_pandas = ps.DataFrame(wordsData_pandas)
+    feature_matrix = tfidf.fit_transform(wordsData_pandas.words)
     sklearn_tfifdf = pd.DataFrame(feature_matrix.toarray(), columns=tfidf.get_feature_names())
     spark_tfidf = pd.DataFrame([np.array(i) for i in wordsData_pandas.tfidf_features_dense], columns=vectorizer.vocabulary)
 
