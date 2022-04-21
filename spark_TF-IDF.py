@@ -14,8 +14,6 @@ if __name__ == "__main__":
         .config("spark.memory.offHeap.size","20g") \
         .getOrCreate()
     
-    spark.conf.set("spark.sql.execution.arrow.enabled", "true")
-
     try:
         path = "preprocess"
         df1 = spark.read.text(path)
