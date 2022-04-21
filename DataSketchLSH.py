@@ -15,13 +15,17 @@ class MRDataSketchLSH(MRJob):
         self.threshold = threshold
 
     def steps(self):
-        return [MRStep(mapper=self.mapper, reducer=self.reducer)]
+        return [
+            MRStep(
+                mapper=self.mapper,
+            )
+        ]  # reducer=self.reducer)]
 
     def mapper(self, _, line):
         """MinHash each paper"""
         key, line = line.split("\t")
         m = MinHash(num_perm=self.num_prem)
-        for d in ast.literal_eval(line):
+        for d in line:
             m.update(str(d).encode("utf8"))
         self.mrjobs.append((key, m))
         yield None, key
