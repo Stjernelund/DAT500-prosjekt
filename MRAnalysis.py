@@ -10,8 +10,8 @@ class Total(MRJob):
         return [MRStep(reducer=self.reducer)]
 
     def reducer(self, _, list_papers):
-        list_papers = ast.literal_eval(list_papers)
-        yield "Total:", len(list_papers)
+        yield None, type(list_papers)
+        # yield "Total:", len(list_papers)
 
 
 class Similar(MRJob):
