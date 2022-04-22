@@ -19,8 +19,7 @@ if __name__ == "__main__":
     os.environ["PYARROW_IGNORE_TIMEZONE"] = "1"
     print(spark.sparkContext.getConf().getAll())
     print("next")
-    n_workers =  len([executor.host() for executor in sc.statusTracker().getExecutorInfos() ]) -1
-    print(f"workers: {n_workers}")
+    print(f"workers: {sc._conf.get('spark.executor.instances')}")
     try:
         path = "preprocess"
         df1 = spark.read.text(path)
