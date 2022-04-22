@@ -38,7 +38,7 @@ if __name__ == "__main__":
     wordsData = tokenizer.transform(df1)
     vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
     wordsData = vectorizer.transform(wordsData) 
-    wordsData_pandas = wordsData.to_pandas_on_spark().iloc[:10,:]
+    wordsData_pandas = wordsData.to_pandas_on_spark()
     paper_ids = wordsData_pandas['paper_id'].to_numpy()
     wordsData_pandas.set_index('paper_id')
     corpus = wordsData_pandas['words'].to_numpy()
@@ -56,6 +56,7 @@ if __name__ == "__main__":
     tf=tfidfVectorizer.fit_transform(corpus)
     tf_df=pd.DataFrame(tf.toarray(), columns = tfidfVectorizer.get_feature_names_out(),index = paper_ids )
     print(tf_df.head())
+    tf_df.write.csv("/spark_output/tf_dfcsv")
     spark.stop()
 
     # except EOFError as x:
