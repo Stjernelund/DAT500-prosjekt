@@ -56,7 +56,7 @@ class MRPreProcess(MRJob):
             self.body.append(abstract)
 
         # Check for end of Abstract
-        elif self.in_body and line.find("</Abstract") != -1:
+        if self.in_body and line.find("</Abstract") != -1:
             yield self.message_id, " ".join(self.body).lower()
             self.message_id = ""
             self.body = []
