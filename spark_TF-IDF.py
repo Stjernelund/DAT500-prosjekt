@@ -44,9 +44,9 @@ if __name__ == "__main__":
         return doc
     my_stop_words = text.ENGLISH_STOP_WORDS
 
-
+    my_stop_words = text.ENGLISH_STOP_WORDS
     tfidfVectorizer = TfidfVectorizer(norm=None,analyzer='word',
-                                tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None)
+                                tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None,stop_words=my_stop_words)
     tf=tfidfVectorizer.fit_transform(corpus)
     tf_df=pd.DataFrame(tf.toarray(), columns = tfidfVectorizer.get_feature_names_out(),index = paper_ids )
     print(tf_df.head())
