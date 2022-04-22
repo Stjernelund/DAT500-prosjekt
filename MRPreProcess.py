@@ -55,19 +55,18 @@ class MRPreProcess(MRJob):
             ).lower()
             self.body.append(abstract)
 
-        # Special cases
+        # Check for end of Abstract
+        elif self.in_body and line.find("</Abstract") != -1:
+            yield self.message_id, " ".join(self.body).lower()
+            self.message_id = ""
+            self.body = []
+            self.in_body = False
+
         """
         elif self.in_body and line.find("<") == -1:
             abstract = "".join([i for i in line if i.isalnum() or i == " "]).lower()
             self.body.append(abstract)
         """
-
-        # Check for end of Abstract
-        if self.in_body and line.find("</Abstract") != -1:
-            yield self.message_id, " ".join(self.body).lower()
-            self.message_id = ""
-            self.body = []
-            self.in_body = False
 
 
 class MRNoNumerals(MRJob):
