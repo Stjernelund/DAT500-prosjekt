@@ -12,7 +12,6 @@ from sklearn.feature_extraction import text
 if __name__ == "__main__":
     spark = SparkSession\
         .builder\
-        .master("spark://namenode:7077")\
         .getOrCreate()
 
     sc = spark.sparkContext
@@ -21,7 +20,7 @@ if __name__ == "__main__":
     print("next")
     print(f"workers: {sc._conf.get('spark.executor.instances')}")
     try:
-        path = "preprocess"
+        path = "preprocess_alpha"
         df1 = spark.read.text(path)
         df1 = df1.withColumn("paper_id", f.split(f.col("value"), "\\t").getItem(0)).withColumn("text", f.split(f.col("value"), "\\t").getItem(1))
         df1 = df1.select(f.split(df1.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=["paper_id","text"])
@@ -52,9 +51,10 @@ if __name__ == "__main__":
     tf_df=pd.DataFrame(tf.toarray(), columns = tfidfVectorizer.get_feature_names_out(),index = paper_ids )
     print(tf_df.head())
 
-    sparktf_df=spark.createDataFrame(tf_df) 
-    sparktf_df.write.csv("/home/DAT500-prosjekt/spark_output/tf_dfcsv")
+    #sparktf_df=spark.createDataFrame(tf_df) 
+    #sparktf_df.write.csv("/home/DAT500-prosjekt/spark_output/tf_dfcsv")
     #spark.sql.debug.maxToStringFields
+    tf_df.to_csv("/home/DAT500-prosjekt/spark_output/tf_dfcsv",index = False)
     spark.stop()
 
     # except EOFError as x:
