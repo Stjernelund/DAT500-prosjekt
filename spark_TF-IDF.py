@@ -13,10 +13,11 @@ if __name__ == "__main__":
     spark = SparkSession\
         .builder\
         .appName("TfIdfExample")\
+        .master("spark://namenode:7077")\
         .getOrCreate()
 
     os.environ["PYARROW_IGNORE_TIMEZONE"] = "1"
-    
+    print(spark.sparkContext.getConf().getAll())
     try:
         path = "preprocess"
         df1 = spark.read.text(path)
