@@ -56,7 +56,7 @@ if __name__ == "__main__":
     print(tf_df.head())
 
     sparktf_df=spark.createDataFrame(tf_df) 
-    sparktf_df.write.csv("/spark_output/tf_dfcsv")
+    sparktf_df.write.csv("/home/DAT500-prosjekt/spark_output/tf_dfcsv")
     spark.stop()
 
     # except EOFError as x:
