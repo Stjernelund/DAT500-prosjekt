@@ -54,7 +54,7 @@ if __name__ == "__main__":
     #sparktf_df=spark.createDataFrame(tf_df) 
     #sparktf_df.write.csv("/home/DAT500-prosjekt/spark_output/tf_dfcsv")
     #spark.sql.debug.maxToStringFields
-    tf_df.to_csv("/home/DAT500-prosjekt/spark_output/tf_dfcsv",index = True)
+    tf_df.to_csv("/home/DAT500-prosjekt/spark_output/tf_dfcsv",index = True,index_label='Index_name')
     spark.stop()
 
     # except EOFError as x:
