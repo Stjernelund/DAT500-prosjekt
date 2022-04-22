@@ -29,7 +29,7 @@ def main():
             runner._input_paths = ["papers.csv"]
             runner._output_dir = "preprocess"
             runner.run()
-
+    """
         try:
             shutil.rmtree("preprocess_alpha")
         except FileNotFoundError:
@@ -107,7 +107,8 @@ def main():
         runner.run()
 
     print(f"Analysis: {time.time() - lshtime} seconds.")
-    print(f"Total time: {similar_time - start} seconds.")
+    print(f"Total time: {time.time() - start} seconds.")
+    """
 
 
 if __name__ == "__main__":
