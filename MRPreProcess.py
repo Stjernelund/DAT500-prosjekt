@@ -77,12 +77,6 @@ class MRPreProcess(MRJob):
             self.body = []
             self.in_body = False
 
-        """
-        elif self.in_body and line.find("<") == -1:
-            abstract = "".join([i for i in line if i.isalnum() or i == " "]).lower()
-            self.body.append(abstract)
-        """
-
 
 class MRNoNumerals(MRJob):
     def steps(self):
