@@ -13,7 +13,6 @@ if __name__ == "__main__":
     spark = SparkSession\
         .builder\
         .appName("TfIdfExample")\
-        .master("local[*]")\
         .getOrCreate()
 
     os.environ["PYARROW_IGNORE_TIMEZONE"] = "1"
