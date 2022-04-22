@@ -1,12 +1,10 @@
 from pyspark.ml.feature import HashingTF, IDF, Tokenizer,CountVectorizer
 import pyspark.sql.functions as f
 from pyspark.sql import SparkSession
-from pyspark.ml.linalg import VectorUDT, DenseVector
 from sklearn.feature_extraction.text import TfidfVectorizer
 import pandas as pd
 import numpy as np
 import os
-import pyspark.pandas as ps
 from sklearn.feature_extraction import text
 
 
@@ -17,10 +15,10 @@ if __name__ == "__main__":
         .appName("TfIdfExample")\
         .master("local[*]")\
         .config("spark.memory.offHeap.enabled","true") \
-        .config("spark.memory.offHeap.size","20g") \
-        .config("spark.driver.maxResultSize", "5g")\
-        .config("spark.executor.memory", "70g")\
-        .config("spark.driver.memory", "50g")\
+        .config("spark.memory.offHeap.size","16g") \
+        .config("spark.driver.maxResultSize", "10g")\
+        .config("spark.executor.memory", "25g")\
+        .config("spark.driver.memory", "20g")\
         .getOrCreate()
 
     os.environ["PYARROW_IGNORE_TIMEZONE"] = "1"
@@ -56,7 +54,9 @@ if __name__ == "__main__":
     tf=tfidfVectorizer.fit_transform(corpus)
     tf_df=pd.DataFrame(tf.toarray(), columns = tfidfVectorizer.get_feature_names_out(),index = paper_ids )
     print(tf_df.head())
-    tf_df.write.csv("/spark_output/tf_dfcsv")
+
+    sparktf_df=spark.createDataFrame(tf_df) 
+    sparktf_df.write.csv("/spark_output/tf_dfcsv")
     spark.stop()
 
     # except EOFError as x:
