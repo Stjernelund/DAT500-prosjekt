@@ -13,51 +13,61 @@ class MRPreProcess(MRJob):
         self.message_id = ""
         self.in_body = False
         self.body = []
-        self.vocabulary = dict()
+        self.vocabulary = {}
         self.indices = []
         self.sparse_data = []
 
     def mapper(self, _, line):
         line = line.strip()
-        if line and line[0] == '"' and line[1].isdigit():
+
+        # Check for message ID
+        if line and line[0] == '"' and line[1].isdigit():  # Short circuits if empty
             split_indices = []
             can_split = True
-            for ind, c in enumerate(line):
-                if c == '"':
+            # Finds all commas outside of quotes, these are the indices to split on
+            for ind, char in enumerate(line):
+                if char == '"':
                     can_split = not can_split
-                if can_split and c == ",":
+                if can_split and char == ",":
                     split_indices.append(ind)
+
+            # The message id are the numbers before the first comma
             id_split = split_indices[0]
             message_id = line[0:id_split]
             message_id = "".join([i for i in message_id if i.isdigit()])
-            if message_id != "":
+
+            if message_id:
                 self.message_id = message_id
                 title_temp = line[split_indices[3] + 1 : split_indices[4]]
                 title = "".join(
                     [i for i in title_temp if i.isalnum() or i == " "]
                 ).lower()
-                title += " "
                 self.body.append(title)
                 self.in_body = True
 
-        elif line.find("<AbstractText") != -1 and self.in_body:
+        # Check for start of Abstract
+        elif self.in_body and line.find("<AbstractText") != -1:
             startIndex = line.find(">") + 1
             endIndex = line.find("<", startIndex)
-            abs_temp = line[startIndex:endIndex]
-            abs_fin = "".join([i for i in abs_temp if i.isalnum() or i == " "]).lower()
-            abs_fin += " "
-            self.body.append(abs_fin)
+            abstract_temp = line[startIndex:endIndex]
+            abstract = "".join(
+                [i for i in abstract_temp if i.isalnum() or i == " "]
+            ).lower()
+            self.body.append(abstract)
 
-        elif line.find("</Abstract") != -1 and self.in_body:
-            yield self.message_id, "".join(self.body).lower()
+        # Special cases
+        """
+        elif self.in_body and line.find("<") == -1:
+            abstract = "".join([i for i in line if i.isalnum() or i == " "]).lower()
+            self.body.append(abstract)
+        """
+
+        # Check for end of Abstract
+        if self.in_body and line.find("</Abstract") != -1:
+            yield self.message_id, " ".join(self.body).lower()
             self.message_id = ""
             self.body = []
             self.in_body = False
-
-        elif line.find("<") == -1 and self.in_body:
-            abs_fin = "".join([i for i in line if i.isalnum() or i == " "]).lower()
-            abs_fin += " "
-            self.body.append(abs_fin)
 
 
 class MRNoNumerals(MRJob):
