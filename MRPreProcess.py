@@ -1,6 +1,5 @@
 #! /usr/bin/python3
 
-import numpy as np
 from mrjob.job import MRJob
 from mrjob.step import MRStep
 
@@ -10,7 +9,7 @@ class MRPreProcess(MRJob):
         return [MRStep(mapper_init=self.mapper_init, mapper=self.mapper)]
 
     def mapper_init(self):
-        self.message_id = ""
+        self.message_id = None
         self.in_body = False
         self.body = []
         self.vocabulary = {}
@@ -43,13 +42,29 @@ class MRPreProcess(MRJob):
                     [i for i in title_temp if i.isalnum() or i == " "]
                 ).lower()
                 self.body.append(title)
-                self.in_body = True
+
+                if line.find("<AbstractText") != -1:
+                    start_index = line.find("<AbstractText")
+                    line = line[start_index:]
+                    start_index = line.find(">") + 1
+                    end_index = line.find("</Abstract")
+                    line = line[start_index:end_index]
+                    abstract = "".join(
+                        [i for i in line if i.isalnum() or i == " "]
+                    ).lower()
+                    self.body.append(abstract)
+                    yield self.message_id, " ".join(self.body)
+                    self.message_id = None
+                    self.body = []
+
+                else:
+                    self.in_body = True
 
         # Check for start of Abstract
         elif self.in_body and line.find("<AbstractText") != -1:
-            startIndex = line.find(">") + 1
-            endIndex = line.find("<", startIndex)
-            abstract_temp = line[startIndex:endIndex]
+            start_index = line.find(">") + 1
+            end_index = line.find("<", start_index)
+            abstract_temp = line[start_index:end_index]
             abstract = "".join(
                 [i for i in abstract_temp if i.isalnum() or i == " "]
             ).lower()
@@ -57,16 +72,10 @@ class MRPreProcess(MRJob):
 
         # Check for end of Abstract
         if self.in_body and line.find("</Abstract") != -1:
-            yield self.message_id, " ".join(self.body).lower()
-            self.message_id = ""
+            yield self.message_id, " ".join(self.body)
+            self.message_id = None
             self.body = []
             self.in_body = False
-
-        """
-        elif self.in_body and line.find("<") == -1:
-            abstract = "".join([i for i in line if i.isalnum() or i == " "]).lower()
-            self.body.append(abstract)
-        """
 
 
 class MRNoNumerals(MRJob):
@@ -74,6 +83,7 @@ class MRNoNumerals(MRJob):
         return [MRStep(mapper=self.mapper, reducer=self.reducer)]
 
     def mapper(self, _, line):
+
         line = " ".join(word for word in line.split() if word.isalpha() or "19" in word)
         yield None, line
 
