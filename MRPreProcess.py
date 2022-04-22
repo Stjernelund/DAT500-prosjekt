@@ -7,7 +7,7 @@ from mrjob.step import MRStep
 
 class MRPreProcess(MRJob):
     def steps(self):
-        return [MRStep(mapper_init=self.mapper_init, mapper=self.mapper_pre)]
+        return [MRStep(mapper_init=self.mapper_init, mapper=self.mapper)]
 
     def mapper_init(self):
         self.message_id = ""
@@ -17,7 +17,7 @@ class MRPreProcess(MRJob):
         self.indices = []
         self.sparse_data = []
 
-    def mapper_pre(self, _, line):
+    def mapper(self, _, line):
         line = line.strip()
         if line and line[0] == '"' and line[1].isdigit():
             split_indices = []
