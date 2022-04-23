@@ -48,7 +48,7 @@ class MRPreProcess(MRJob):
                     start_index = line.find("<AbstractText")
                     line = line[start_index:]
                     start_index = line.find(">") + 1
-                    end_index = line.rfind("</AbstractText")
+                    end_index = line.rfind("</AbstractText>")
                     line = line[start_index:end_index]
                     line = re.sub("<[^>]+>", "", line)
                     abstract = "".join(
@@ -73,7 +73,7 @@ class MRPreProcess(MRJob):
             self.body.append(abstract)
 
         # Check for end of Abstract
-        if self.in_body and line.find("</Abstract") != -1:
+        if self.in_body and line.find("</Abstract>") != -1:
             yield self.message_id, " ".join(self.body)
             self.message_id = None
             self.body = []
