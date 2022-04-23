@@ -2,6 +2,7 @@
 
 from mrjob.job import MRJob
 from mrjob.step import MRStep
+import re
 
 
 class MRPreProcess(MRJob):
@@ -47,8 +48,9 @@ class MRPreProcess(MRJob):
                     start_index = line.find("<AbstractText")
                     line = line[start_index:]
                     start_index = line.find(">") + 1
-                    end_index = line.find("</Abstract")
+                    end_index = line.rfind("</AbstractText")
                     line = line[start_index:end_index]
+                    line = re.sub("<[^>]+>", "", line)
                     abstract = "".join(
                         [i for i in line if i.isalnum() or i == " "]
                     ).lower()
@@ -60,7 +62,7 @@ class MRPreProcess(MRJob):
                 else:
                     self.in_body = True
 
-        # Check for start of Abstract
+        # Check for Abstract Text
         elif self.in_body and line.find("<AbstractText") != -1:
             start_index = line.find(">") + 1
             end_index = line.find("<", start_index)
