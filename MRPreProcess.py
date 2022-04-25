@@ -13,9 +13,6 @@ class MRPreProcess(MRJob):
         self.message_id = None
         self.in_body = False
         self.body = []
-        self.vocabulary = {}
-        self.indices = []
-        self.sparse_data = []
 
     def mapper(self, _, line):
         line = line.strip()
