@@ -82,7 +82,6 @@ class MRNoNumerals(MRJob):
         return [MRStep(mapper=self.mapper, reducer=self.reducer)]
 
     def mapper(self, _, line):
-
         line = " ".join(word for word in line.split() if word.isalpha() or "19" in word)
         yield None, line
 
