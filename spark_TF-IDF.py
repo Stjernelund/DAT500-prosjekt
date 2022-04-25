@@ -20,7 +20,7 @@ if __name__ == "__main__":
     print("next")
     print(f"workers: {sc._conf.get('spark.executor.instances')}")
     try:
-        path = "preprocess"
+        path = "preprocess_alpha"
         df1 = spark.read.text(path)
         df1 = df1.withColumn("paper_id", f.split(f.col("value"), "\\t").getItem(0)).withColumn("text", f.split(f.col("value"), "\\t").getItem(1))
         df1 = df1.select(f.split(df1.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=["paper_id","text"])
