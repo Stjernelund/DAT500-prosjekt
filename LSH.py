@@ -2,7 +2,7 @@
 
 from itertools import combinations
 import numpy as np
-import re 
+
 
 class LSH:
     buckets = []
@@ -25,9 +25,8 @@ class LSH:
 
     def add_hash(self, signature):
         subvecs = self.make_subvecs(signature)
-        remove = ["n", "u", "l", "\t"]
         for i, subvec in enumerate(subvecs):
-            subvec = np.array2string(subvec,separator=',')
+            subvec = np.array2string(subvec, separator=",")
             subvec = subvec.rstrip()
             if subvec not in self.buckets[i].keys():
                 self.buckets[i][subvec] = []

@@ -1,7 +1,7 @@
 #! /usr/bin/python3
 
 import MRAnalysis
-from MRPreProcess import MRPreProcess, MRNoNumerals
+from preprocess import MRPreProcess, MRNoNumerals
 from DataSketchLSH import MRDataSketchLSH
 from MRNgram import MRNgram
 import time
