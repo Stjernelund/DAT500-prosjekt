@@ -15,9 +15,10 @@ def main():
     print("Started at:", datetime.now().strftime("%H:%M:%S"))
 
     # Run by using the following command: python3 main.py threshold_value true/false
-    threshold = float(sys.argv[1])
+    threshold = float(sys.argv[2])
+    print(threshold)
     path = f"output_t{int(threshold * 100)}"
-    preprocess = "t" in sys.argv[2].lower()
+    preprocess = "t" in sys.argv[3].lower()
     if preprocess:
         # Remove the previous output directory
         try:
