@@ -15,9 +15,9 @@ def main():
     print("Started at:", datetime.now().strftime("%H:%M:%S"))
 
     # Run by using the following command: python3 main.py threshold_value true/false
-    threshold = float(sys.argv[1])
+    threshold = float(sys.argv[3])
     path = f"output_t{int(threshold * 100)}"
-    preprocess = "t" in sys.argv[2].lower()
+    preprocess = "t" in sys.argv[4].lower()
     if preprocess:
         # Remove the previous output directory
         try:
@@ -36,7 +36,7 @@ def main():
             pass
         no_numerals = MRNoNumerals()
         with no_numerals.make_runner() as runner:
-            runner._input_paths = ["preprocess/part-*"]
+            runner._input_paths = ["preprocess"]
             runner._output_dir = "preprocess_alpha"
             runner.run()
 
@@ -50,7 +50,7 @@ def main():
             pass
         ngrams = MRNgram()
         with ngrams.make_runner() as runner:
-            runner._input_paths = ["preprocess/part-*"]
+            runner._input_paths = ["preprocess"]
             runner._output_dir = "ngrams"
             runner.run()
 
@@ -66,7 +66,7 @@ def main():
     datasketch = MRDataSketchLSH()
     datasketch.init(threshold)
     with datasketch.make_runner() as runner:
-        runner._input_paths = ["ngrams/part-*"]
+        runner._input_paths = ["ngrams"]
         runner._output_dir = f"{path}/lsh"
         runner.run()
 
@@ -83,7 +83,7 @@ def main():
 
     MR_total = MRAnalysis.Total()
     with MR_total.make_runner() as runner:
-        runner._input_paths = [f"{path}/lsh/part-*"]
+        runner._input_paths = [f"{path}/lsh"]
         runner._output_dir = f"{path}/total"
         runner.run()
         for _, value in MR_total.parse_output(runner.cat_output()):
