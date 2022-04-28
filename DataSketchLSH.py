@@ -1,4 +1,5 @@
-#! /usr/bin/python3
+#!/usr/bin/python3
+# -*-coding:utf-8 -*
 
 from datasketch import MinHash, MinHashLSH
 from mrjob.job import MRJob
