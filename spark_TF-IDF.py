@@ -62,11 +62,10 @@ if __name__ == "__main__":
     columns = ["iteration", "mllib", "sklearn"]
     dataframe = spark.createDataFrame(data, columns)
     dataframe.show()
-    dataframe.coalesce(1).write.format('spark_times.csv').options(header='true').save('file:///home/ubuntu/DAT500-prosjekt')
     print(tf_df.tail(12))
     print(f"mlib_time {mllib_times}")
     print(f"sklearn_time {sklearn_times}")
 
-    
-    # tf_df.to_csv("hdfs://namenode:9000/preprocess",index = True,index_label='paper_id')
+    dataframe.coalesce(1).write.format('spark_times.csv').options(header='true').save('file:///home/ubuntu/DAT500-prosjekt/spark_output')
+    tf_df.to_csv('file:///home/ubuntu/DAT500-prosjekt/spark_output',index = True,index_label='paper_id')
     spark.stop()
