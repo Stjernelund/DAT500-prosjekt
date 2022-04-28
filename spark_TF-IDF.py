@@ -40,7 +40,7 @@ if __name__ == "__main__":
     idf_model = idf.fit(wordsData)
     idf_data = idf_model.transform(wordsData)
 
-    wordsData_pandas = wordsData.to_pandas_on_spark()
+    #wordsData_pandas = wordsData.to_pandas_on_spark()
     #wordsData_pandas['paper_id'].str.replace('"','')
     #wordsData_pandas['paper_id'] = pd.to_numeric(wordsData_pandas['paper_id'])
     #wordsData_pandas.set_index('paper_id')
@@ -54,16 +54,15 @@ if __name__ == "__main__":
     # paper_ids = [id.strip('"') for id in paper_ids]
 
     
-    def dummy_fun(doc):
-        return doc
-    my_stop_words = text.ENGLISH_STOP_WORDS
+    # def dummy_fun(doc):
+    #     return doc
+    # my_stop_words = text.ENGLISH_STOP_WORDS
 
-    tfidfVectorizer = TfidfVectorizer(norm=None,analyzer='word',
-        tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None,stop_words=my_stop_words)
-    tf=tfidfVectorizer.fit_transform(wordsData_pandas.words.to_numpy())
-    tf_df=pd.DataFrame(tf.toarray(), columns = tfidfVectorizer.get_feature_names_out())
-    print(len(wordsData_pandas.paper_id))
-    print(tf_df.tail(12))
+    # tfidfVectorizer = TfidfVectorizer(norm=None,analyzer='word',
+    #     tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None,stop_words=my_stop_words)
+    # tf=tfidfVectorizer.fit_transform(wordsData_pandas.words.to_numpy())
+    # tf_df=pd.DataFrame(tf.toarray(), columns = tfidfVectorizer.get_feature_names_out())
+    # print(tf_df.tail(12))
 
     # tf_df.to_csv("hdfs://namenode:9000/preprocess",index = True,index_label='paper_id')
     spark.stop()
