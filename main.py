@@ -34,8 +34,8 @@ def main():
         preprocesser = MRPreProcess()
         with preprocesser.make_runner() as runner:
             if run_hadoop:
-                runner._input_paths = ["hdfs://papers/papers.csv"]
-                runner._output_dir = "hdfs://preprocess/output2"
+                runner._input_paths = ["hdfs:///papers/papers.csv"]
+                runner._output_dir = "hdfs:///preprocess/output2"
             # run inline
             else:
                 runner._input_paths = ["papers.csv"]
