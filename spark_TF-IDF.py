@@ -14,6 +14,7 @@ if __name__ == "__main__":
     spark = SparkSession\
         .builder\
         .config('spark.executor.memory', '2g')\
+        .config('spark.sql.shuffle.partitions', '200')\
         .getOrCreate()
 
     sc = spark.sparkContext
