@@ -40,14 +40,16 @@ if __name__ == "__main__":
     idf_data = idf_model.transform(wordsData)
 
     wordsData_pandas = wordsData.to_pandas_on_spark()
-    paper_ids = wordsData_pandas['paper_id'].to_numpy()
-    # print("Size of the array: ",paper_ids.size)
-    # wordsData_pandas.set_index('paper_id')
-    # corpus = wordsData_pandas['words'].to_numpy()
+    wordsData_pandas.set_index('paper_id')
+
+    corpus = wordsData_pandas.words
+    corpus = corpus.tolist()
+    # corpus = [[word.strip('"') for word in sublist] for sublist in corpus]
+    # paper_ids = wordsData_pandas.paper_id
+    # paper_ids = paper_ids.tolist()
     # paper_ids = [id.strip('"') for id in paper_ids]
 
-    # corpus = [[word.strip('"') for word in sublist] for sublist in corpus]
-    # paper_ids = wordsData_pandas['paper_id'].to_numpy()
+    
     # def dummy_fun(doc):
     #     return doc
     # my_stop_words = text.ENGLISH_STOP_WORDS
@@ -59,5 +61,5 @@ if __name__ == "__main__":
     # tf_df=pd.DataFrame(tf.toarray(), columns = tfidfVectorizer.get_feature_names(),index = paper_ids )
     # print(tf_df.tail(12))
 
-    #tf_df.to_csv("hdfs://namenode:9000/preprocess",index = True,index_label='paper_id')
+    # tf_df.to_csv("hdfs://namenode:9000/preprocess",index = True,index_label='paper_id')
     spark.stop()
