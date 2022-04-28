@@ -37,7 +37,6 @@ if __name__ == "__main__":
     idf = IDF(inputCol="vectorizer", outputCol="tfidf_features")
     idf_model = idf.fit(wordsData)
     idf_data = idf_model.transform(wordsData)
-    idf_data.show()
 
     wordsData_pandas = wordsData.to_pandas_on_spark()
     paper_ids = wordsData_pandas['paper_id'].to_numpy()
@@ -58,5 +57,5 @@ if __name__ == "__main__":
     tf_df=pd.DataFrame(tf.toarray(), columns = tfidfVectorizer.get_feature_names(),index = paper_ids )
     print(tf_df.tail(12))
 
-    tf_df.to_csv("hdfs://namenode:9000/preprocess",index = True,index_label='paper_id')
+    #tf_df.to_csv("hdfs://namenode:9000/preprocess",index = True,index_label='paper_id')
     spark.stop()
