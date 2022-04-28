@@ -16,7 +16,7 @@ def main():
     start = time.time()
     print("Started at:", datetime.now().strftime("%H:%M:%S"))
 
-    # Run by using the following command: python3 main.py threshold_value true/false
+    # Run by using the following command: python3 main.py [-r hadoop] threshold_value true/false
     threshold = float(sys.argv[3])
     path = f"output_t{int(threshold * 100)}"
     preprocess = "t" in sys.argv[4].lower()
@@ -78,7 +78,7 @@ def main():
         ngrams = MRNgram()
         with ngrams.make_runner() as runner:
             if run_hadoop:
-                runner._input_paths = ["hdfs:///preprocess/output2"]
+                runner._input_paths = ["hdfs:///preprocess/output2/*"]
                 runner._output_dir = "hdfs:///ngrams/outputs"
             else:
                 runner._input_paths = ["preprocess/part-*"]
