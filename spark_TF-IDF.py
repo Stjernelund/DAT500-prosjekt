@@ -57,7 +57,7 @@ if __name__ == "__main__":
     tfidfVectorizer = TfidfVectorizer(norm=None,analyzer='word',
         tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None,stop_words=my_stop_words)
     tf=tfidfVectorizer.fit_transform(corpus)
-    tf_df=pd.DataFrame(tf.toarray(), columns = tfidfVectorizer.get_feature_names_out(),index = wordsData_pandas.index)
+    tf_df=pd.DataFrame(tf.toarray(), columns = tfidfVectorizer.get_feature_names_out(),index = wordsData_pandas.index.copy())
     
     print(tf_df.tail(12))
 
