@@ -48,23 +48,6 @@ def main():
     if preprocess:
         try:
             if run_hadoop:
-                pass
-            else:
-                shutil.rmtree("preprocess_alpha")
-        except FileNotFoundError:
-            pass
-        no_numerals = MRNoNumerals()
-        with no_numerals.make_runner() as runner:
-            runner._input_paths = [str(f"{hadoop_string}/preprocess/*")]
-            runner._output_dir = str(f"{hadoop_string}/preprocess_alpha")
-            runner.run()
-
-    prepro_alpha_stime = time.time()
-    print(f"Preprocessing_alpha: {prepro_alpha_stime - preprostime} seconds.")
-
-    if preprocess:
-        try:
-            if run_hadoop:
                 os.system("hdfs dfs -rm -r /ngrams")
             else:
                 shutil.rmtree("ngrams")
@@ -77,11 +60,14 @@ def main():
             runner.run()
 
     ngramtime = time.time()
-    print(f"Ngrams: {ngramtime - prepro_alpha_stime} seconds.")
+    print(f"Ngrams: {ngramtime - preprostime} seconds.")
 
     # Remove the previous output directory
     try:
-        shutil.rmtree(f"{path}")
+        if run_hadoop:
+            pass
+        else:
+            shutil.rmtree(f"{path}")
     except FileNotFoundError:
         pass
 

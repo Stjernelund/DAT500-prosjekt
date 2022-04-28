@@ -78,18 +78,5 @@ class MRPreProcess(MRJob):
             self.in_body = False
 
 
-class MRNoNumerals(MRJob):
-    def steps(self):
-        return [MRStep(mapper=self.mapper, reducer=self.reducer)]
-
-    def mapper(self, _, line):
-        line = " ".join(word for word in line.split() if word.isalpha() or "19" in word)
-        yield None, line
-
-    def reducer(self, _, lines):
-        line = " ".join(lines)
-        yield None, line
-
-
 if __name__ == "__main__":
     MRPreProcess.run()
