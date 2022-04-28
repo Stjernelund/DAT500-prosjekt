@@ -45,7 +45,10 @@ if __name__ == "__main__":
     #wordsData_pandas['paper_id'] = pd.to_numeric(wordsData_pandas['paper_id'])
     #wordsData_pandas.set_index('paper_id')
     #corpus = vectorizer.vocabulary
-    corpus = list(wordsData_pandas['words'])
+    #corpus = list(wordsData_pandas['words'])
+    corpus = list()
+    for val in wordsData_pandas['words']:
+        corpus.append(val)
     #corpus = corpus.tolist()
     #corpus = [[word.strip('"') for word in sublist] for sublist in corpus]
     # paper_ids = wordsData_pandas.paper_id
