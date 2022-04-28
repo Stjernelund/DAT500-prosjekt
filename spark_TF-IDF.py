@@ -41,6 +41,7 @@ if __name__ == "__main__":
 
     wordsData_pandas = wordsData.to_pandas_on_spark()
     paper_ids = wordsData_pandas['paper_id'].to_numpy()
+    print("Size of the array: ",paper_ids.size)
     wordsData_pandas.set_index('paper_id')
     corpus = wordsData_pandas['words'].to_numpy()
     paper_ids = [id.strip('"') for id in paper_ids]
