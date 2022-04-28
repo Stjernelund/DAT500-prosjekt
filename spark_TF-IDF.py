@@ -59,8 +59,8 @@ if __name__ == "__main__":
     tfidfVectorizer = TfidfVectorizer(norm=None,analyzer='word',
         tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None,stop_words=my_stop_words)
     tf=tfidfVectorizer.fit_transform(corpus)
-    tf_df=pd.DataFrame(tf.toarray(), columns = [wordsData_pandas.paper_id,tfidfVectorizer.get_feature_names_out()])
-    
+    tf_df=pd.DataFrame(tf.toarray(), columns = tfidfVectorizer.get_feature_names_out())
+    print(len(wordsData_pandas.paper_id))
     print(tf_df.tail(12))
 
     # tf_df.to_csv("hdfs://namenode:9000/preprocess",index = True,index_label='paper_id')
