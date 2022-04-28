@@ -8,6 +8,7 @@ import time
 from datetime import datetime
 import shutil
 import sys
+import os
 
 
 def main():
@@ -25,16 +26,16 @@ def main():
         # Remove the previous output directory
         try:
             if run_hadoop:
-                shutil.rmtree("hdfs://namenode:9000/preprocess")
+                os.system("hdfs dfs -rm -r /preprocess")
             else:
                 shutil.rmtree("preprocess")
-        except FileNotFoundError as e:
-            print(e)
+        except FileNotFoundError:
+            pass
         preprocesser = MRPreProcess()
         with preprocesser.make_runner() as runner:
             if run_hadoop:
-                runner._input_paths = ["hdfs://papers/papers.csv"]
-                runner._output_dir = "hdfs://preprocess/output2"
+                runner._input_paths = ["hdfs:///papers/papers.csv"]
+                runner._output_dir = "hdfs:///preprocess/output2"
             # run inline
             else:
                 runner._input_paths = ["papers.csv"]
@@ -45,7 +46,6 @@ def main():
     print(f"Preprocessing: {preprostime - start} seconds.")
 
     if preprocess:
-
         try:
             shutil.rmtree("preprocess_alpha")
         except FileNotFoundError:
