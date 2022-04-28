@@ -55,8 +55,8 @@ def main():
             pass
         no_numerals = MRNoNumerals()
         with no_numerals.make_runner() as runner:
-            runner._input_paths = [f"{hadoop_string}/preprocess/*"]
-            runner._output_dir = f"{hadoop_string}/preprocess_alpha"
+            runner._input_paths = [str(f"{hadoop_string}/preprocess/*")]
+            runner._output_dir = str(f"{hadoop_string}/preprocess_alpha")
             runner.run()
 
     prepro_alpha_stime = time.time()
@@ -72,12 +72,8 @@ def main():
             pass
         ngrams = MRNgram()
         with ngrams.make_runner() as runner:
-            if run_hadoop:
-                runner._input_paths = ["hdfs:///preprocess/*"]
-                runner._output_dir = "hdfs:///ngrams"
-            else:
-                runner._input_paths = ["preprocess/part-*"]
-                runner._output_dir = "ngrams"
+            runner._input_paths = [str(f"{hadoop_string}/preprocess/*")]
+            runner._output_dir = str(f"{hadoop_string}/ngrams")
             runner.run()
 
     ngramtime = time.time()
