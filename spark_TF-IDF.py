@@ -59,13 +59,13 @@ if __name__ == "__main__":
         sklearn_times.append(sklearn_time)
     
     data = [mllib_times,sklearn_times]
-    columns = ["iteration", "mllib", "sklearn"]
+    columns = ["mllib", "sklearn"]
     dataframe = spark.createDataFrame(data, columns)
     dataframe.show()
     print(tf_df.tail(12))
     print(f"mlib_time {mllib_times}")
     print(f"sklearn_time {sklearn_times}")
 
-    dataframe.coalesce(1).write.format('csv').options(header='true').save('file:///home/ubuntu/DAT500-prosjekt/spark_output')
-    tf_df.to_csv('file:///home/ubuntu/DAT500-prosjekt/spark_output',index = True,index_label='paper_id')
+    dataframe.coalesce(1).write.format('csv').options(header='true').save('file:///home/ubuntu/DAT500-prosjekt/time_output')
+    tf_df.to_csv('file:///home/ubuntu/DAT500-prosjekt/spark_output/tf-idf.csv',index = True,index_label='paper_id')
     spark.stop()
