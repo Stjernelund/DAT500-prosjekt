@@ -40,6 +40,8 @@ if __name__ == "__main__":
     idf_data = idf_model.transform(wordsData)
 
     wordsData_pandas = wordsData.to_pandas_on_spark()
+    wordsData_pandas['paper_id'].str.replace('"','')
+    wordsData_pandas['paper_id'] = pd.to_numeric(wordsData_pandas['paper_id'])
     wordsData_pandas.set_index('paper_id')
     corpus = vectorizer.vocabulary
     #corpus = wordsData_pandas.words
