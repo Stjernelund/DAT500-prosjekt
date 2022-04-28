@@ -25,7 +25,6 @@ if __name__ == "__main__":
     except EOFError as x:
         print("feil på lesing")
 
-    df1 = df1.limit(20)
     tokenizer = Tokenizer().setInputCol("text").setOutputCol("words")
     wordsData = tokenizer.transform(df1)
     vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
