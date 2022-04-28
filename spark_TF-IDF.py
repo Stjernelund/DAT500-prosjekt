@@ -15,7 +15,6 @@ if __name__ == "__main__":
     spark = SparkSession\
         .builder\
         .config('spark.executor.memory', '6g')\
-        .config('spark.sql.shuffle.partitions', '200')\
         .config("spark.memory.offHeap.enabled",True)\
         .config("spark.memory.offHeap.size","50g") \
         .getOrCreate()
@@ -29,41 +28,27 @@ if __name__ == "__main__":
         df1 = df1.select(f.split(df1.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=["paper_id","text"])
     except EOFError as x:
         print("feil på lesing")
-    
+    def dummy_fun(doc):
+        return doc
     tokenizer = Tokenizer().setInputCol("text").setOutputCol("words")
     wordsData = tokenizer.transform(df1)
     vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
     wordsData = vectorizer.transform(wordsData)
-
-
-    #Spark.ml.feature implementation of IDF
-    start = time.time()
-    idf = IDF(inputCol="vectorizer", outputCol="tfidf_features")
-    idf_model = idf.fit(wordsData)
-    idf_data = idf_model.transform(wordsData)
-    mlib = time.time() - start
-
-    #wordsData_pandas = wordsData.to_pandas_on_spark()
-    #wordsData_pandas['paper_id'].str.replace('"','')
-    #wordsData_pandas['paper_id'] = pd.to_numeric(wordsData_pandas['paper_id'])
-    #wordsData_pandas.set_index('paper_id')
-    #corpus = vectorizer.vocabulary
-    #corpus = list(wordsData_pandas['words'])
     corpus = wordsData.select('words').rdd.flatMap(lambda x: x).collect()
     paper_ids = wordsData.select('paper_id').rdd.flatMap(lambda x: x).collect()
-
-    #corpus = corpus.tolist()
-    #corpus = [[word.strip('"') for word in sublist] for sublist in corpus]
-    # paper_ids = wordsData_pandas.paper_id
-    # paper_ids = paper_ids.tolist()
     paper_ids = [id.strip('"') for id in paper_ids]
-
-    
-    def dummy_fun(doc):
-        return doc
     my_stop_words = text.ENGLISH_STOP_WORDS
-
+    mllib_times = []
     sklearn_times = []
+    #Spark.ml.feature implementation of IDF
+    for i in range(10):
+        start = time.time()
+        idf = IDF(inputCol="vectorizer", outputCol="tfidf_features")
+        idf_model = idf.fit(wordsData)
+        idf_data = idf_model.transform(wordsData)
+        mlib_time = time.time() - start
+        mllib_times.appen(mlib_time)
+    
     for i in range(10):
         start_s = time.time()
         tfidfVectorizer = TfidfVectorizer(norm=None,analyzer='word',
@@ -73,8 +58,15 @@ if __name__ == "__main__":
         sklearn_time = time.time() - start_s
         sklearn_times.append(sklearn_time)
     
+    data = [mllib_times,sklearn_times]
+    columns = ["iteration", "mllib", "sklearn"]
+    dataframe = spark.createDataFrame(data, columns)
+    dataframe.show()
+    dataframe.coalesce(1).write.format('spark_times.csv').options(header='true').save('file:///home/ubuntu/DAT500-prosjekt')
     print(tf_df.tail(12))
-    print(f"time {sklearn_times}")
+    print(f"mlib_time {mllib_times}")
+    print(f"sklearn_time {sklearn_times}")
 
+    
     # tf_df.to_csv("hdfs://namenode:9000/preprocess",index = True,index_label='paper_id')
     spark.stop()
