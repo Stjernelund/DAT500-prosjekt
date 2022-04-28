@@ -66,6 +66,6 @@ if __name__ == "__main__":
     print(f"mlib_time {mllib_times}")
     print(f"sklearn_time {sklearn_times}")
 
-    dataframe.coalesce(1).write.format('spark_times.csv').options(header='true').save('file:///home/ubuntu/DAT500-prosjekt/spark_output')
+    dataframe.coalesce(1).write.format('csv').options(header='true').save('file:///home/ubuntu/DAT500-prosjekt/spark_output')
     tf_df.to_csv('file:///home/ubuntu/DAT500-prosjekt/spark_output',index = True,index_label='paper_id')
     spark.stop()
