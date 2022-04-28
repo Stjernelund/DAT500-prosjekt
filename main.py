@@ -21,7 +21,7 @@ def main():
     path = f"output_t{int(threshold * 100)}"
     preprocess = "t" in sys.argv[4].lower()
     run_hadoop = "hadoop" in sys.argv[2].lower()
-    print(f"hadoop?: {run_hadoop}")
+    hadoop_string = "hdfs://" if run_hadoop else ""
 
     if preprocess:
         # Remove the previous output directory
@@ -36,11 +36,10 @@ def main():
         with preprocesser.make_runner() as runner:
             if run_hadoop:
                 runner._input_paths = ["hdfs:///papers/papers.csv"]
-                runner._output_dir = "hdfs:///preprocess"
-            # run inline
+            # Run inline
             else:
                 runner._input_paths = ["papers.csv"]
-                runner._output_dir = "preprocess"
+            runner._output_path = f"{hadoop_string}/preprocess"
             runner.run()
 
     preprostime = time.time()
@@ -56,12 +55,8 @@ def main():
             pass
         no_numerals = MRNoNumerals()
         with no_numerals.make_runner() as runner:
-            if run_hadoop:
-                runner._input_paths = ["hdfs:///preprocess/*"]
-                runner._output_dir = "hdfs:///preprocess_alpha"
-            else:
-                runner._input_paths = ["preprocess/part-*"]
-                runner._output_dir = "preprocess_alpha"
+            runner._input_paths = [f"{hadoop_string}/preprocess/*"]
+            runner._output_dir = f"{hadoop_string}/preprocess_alpha"
             runner.run()
 
     prepro_alpha_stime = time.time()
@@ -70,7 +65,7 @@ def main():
     if preprocess:
         try:
             if run_hadoop:
-                pass
+                os.system("hdfs dfs -rm -r /ngrams")
             else:
                 shutil.rmtree("ngrams")
         except FileNotFoundError:
