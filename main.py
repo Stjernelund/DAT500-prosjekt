@@ -28,8 +28,8 @@ def main():
                 shutil.rmtree("hdfs:///preprocess")
             else:
                 shutil.rmtree("preprocess")
-        except FileNotFoundError:
-            pass
+        except FileNotFoundError as e:
+            print(e)
         preprocesser = MRPreProcess()
         with preprocesser.make_runner() as runner:
             if run_hadoop:
