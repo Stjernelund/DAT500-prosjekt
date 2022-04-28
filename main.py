@@ -25,7 +25,7 @@ def main():
         # Remove the previous output directory
         try:
             if run_hadoop:
-                shutil.rmtree("hdfs://namenode:9000/preprocess/output2")
+                shutil.rmtree("hdfs://namenode:9000/preprocess")
             else:
                 shutil.rmtree("preprocess")
         except FileNotFoundError as e:
@@ -33,7 +33,7 @@ def main():
         preprocesser = MRPreProcess()
         with preprocesser.make_runner() as runner:
             if run_hadoop:
-                runner._input_paths = ["hdfs://preprocess/papers.csv"]
+                runner._input_paths = ["hdfs://papers/papers.csv"]
                 runner._output_dir = "hdfs://preprocess/output2"
             # run inline
             else:
