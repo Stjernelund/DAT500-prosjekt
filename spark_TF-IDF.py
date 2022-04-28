@@ -41,10 +41,11 @@ if __name__ == "__main__":
 
     wordsData_pandas = wordsData.to_pandas_on_spark()
     wordsData_pandas.set_index('paper_id')
-
-    corpus = wordsData_pandas.words
-    corpus = corpus.tolist()
-    # corpus = [[word.strip('"') for word in sublist] for sublist in corpus]
+    corpus = wordsData.vocabulary
+    print(corpus)
+    #corpus = wordsData_pandas.words
+    #corpus = corpus.tolist()
+    #corpus = [[word.strip('"') for word in sublist] for sublist in corpus]
     # paper_ids = wordsData_pandas.paper_id
     # paper_ids = paper_ids.tolist()
     # paper_ids = [id.strip('"') for id in paper_ids]
