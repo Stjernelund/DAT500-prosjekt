@@ -2,9 +2,11 @@
 # -*-coding:utf-8 -*
 
 from MRTotal import Total
-from preprocess import MRPreProcess
+from MRPreProcess import MRPreProcess
 from DataSketchLSH import MRDataSketchLSH
 from MRNgram import MRNgram
+from MRSimilar import Similar
+from MRSumSimilar import SumSimilar
 import time
 from datetime import datetime
 import shutil
@@ -102,7 +104,7 @@ def main():
             total = value
             print(f"Total number of papers: {total}.")
 
-    MR_similar = MRAnalysis.Similar()
+    MR_similar = Similar()
     with MR_similar.make_runner() as runner:
         if run_hadoop:
             runner._input_paths = [f"hdfs:///{path}/similar.txt"]
@@ -116,7 +118,7 @@ def main():
             print(f"Number of similar papers: {similar}.")
             print(f"Similarity: {similar / total * 100}%.")
 
-    sum_similar = MRAnalysis.SumSimilar()
+    sum_similar = SumSimilar()
     with sum_similar.make_runner() as runner:
         if run_hadoop:
             runner._input_paths = [f"hdfs:///{path}/similar.txt*"]
