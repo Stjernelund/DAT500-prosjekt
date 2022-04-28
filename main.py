@@ -26,19 +26,22 @@ def main():
             pass
         preprocesser = MRPreProcess()
         with preprocesser.make_runner() as runner:
-            runner._input_paths = ["papers.csv"]
-            runner._output_dir = "preprocess"
+            runner._input_paths = ["hdfs:///preprocess/papers.csv"]
+            runner._output_dir = "hdfs:///preprocess/output2"
+            #runner._output_dir = "preprocess"
             runner.run()
 
         try:
             shutil.rmtree("preprocess_alpha")
         except FileNotFoundError:
-            pass
+             pass
         no_numerals = MRNoNumerals()
         with no_numerals.make_runner() as runner:
-            runner._input_paths = ["preprocess"]
-            runner._output_dir = "preprocess_alpha"
-            runner.run()
+             runner._input_paths = ["hdfs:///preprocess/output2/part-*"]
+             runner._output_dir = "hdfs:///preprocess/output3"
+             #runner._input_paths = ["preprocess/part-*"]
+             #runner._output_dir = "preprocess_alpha"
+             runner.run()
 
     preprostime = time.time()
     print(f"Preprocessing: {preprostime - start} seconds.")
@@ -50,8 +53,10 @@ def main():
             pass
         ngrams = MRNgram()
         with ngrams.make_runner() as runner:
-            runner._input_paths = ["preprocess"]
-            runner._output_dir = "ngrams"
+            runner._input_paths = ["hdfs:///preprocess/output2/part-*"]
+            runner._output_dir = "hdfs:///ngrams/output2"
+            #runner._input_paths = ["preprocess/part-*"]
+            #runner._output_dir = "ngram/outputs"
             runner.run()
 
     ngramtime = time.time()
@@ -66,8 +71,8 @@ def main():
     datasketch = MRDataSketchLSH()
     datasketch.init(threshold)
     with datasketch.make_runner() as runner:
-        runner._input_paths = ["ngrams"]
-        runner._output_dir = f"{path}/lsh"
+        runner._input_paths = ["hdfs:///ngrams/output2/part-*"]
+        runner._output_dir = f"lsh"
         runner.run()
 
     minhashtime = time.time()
@@ -83,7 +88,7 @@ def main():
 
     MR_total = MRAnalysis.Total()
     with MR_total.make_runner() as runner:
-        runner._input_paths = [f"{path}/lsh"]
+        runner._input_paths = [f"{path}/lsh/part-*"]
         runner._output_dir = f"{path}/total"
         runner.run()
         for _, value in MR_total.parse_output(runner.cat_output()):

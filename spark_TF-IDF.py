@@ -9,6 +9,7 @@ from sklearn.feature_extraction import text
 
 
 
+
 if __name__ == "__main__":
     spark = SparkSession\
         .builder\
@@ -16,11 +17,8 @@ if __name__ == "__main__":
 
     sc = spark.sparkContext
     os.environ["PYARROW_IGNORE_TIMEZONE"] = "1"
-    print(spark.sparkContext.getConf().getAll())
-    print("next")
-    print(f"workers: {sc._conf.get('spark.executor.instances')}")
     try:
-        path ="/home/ubuntu/DAT500-prosjekt/preprocess"
+        path ="hdfs://namenode:9000/preprocess/output2/part-*"
         df1 = spark.read.text(path)
         df1 = df1.withColumn("paper_id", f.split(f.col("value"), "\\t").getItem(0)).withColumn("text", f.split(f.col("value"), "\\t").getItem(1))
         df1 = df1.select(f.split(df1.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=["paper_id","text"])
@@ -39,7 +37,7 @@ if __name__ == "__main__":
     idf_data = idf_model.transform(wordsData)
     idf_data.show()
 
-    wordsData_pandas = wordsData.to_pandas_on_spark().iloc[:100,:]
+    wordsData_pandas = wordsData.to_pandas_on_spark()
     paper_ids = wordsData_pandas['paper_id'].to_numpy()
     wordsData_pandas.set_index('paper_id')
     corpus = wordsData_pandas['words'].to_numpy()
@@ -58,6 +56,5 @@ if __name__ == "__main__":
     tf_df=pd.DataFrame(tf.toarray(), columns = tfidfVectorizer.get_feature_names(),index = paper_ids )
     print(tf_df.tail(12))
 
-    tf_df.to_csv("/home/ubuntu/DAT500-prosjekt/spark_output/tf_dfcsv",index = True,index_label='paper_id')
+    tf_df.to_csv("hdfs://namenode:9000/preprocess",index = True,index_label='paper_id')
     spark.stop()
-
