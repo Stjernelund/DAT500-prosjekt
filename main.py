@@ -55,8 +55,8 @@ def main():
             pass
         ngrams = MRNgram()
         with ngrams.make_runner() as runner:
-            runner._input_paths = [f"{hadoop_string}/preprocess/*"]
-            runner._output_dir = f"{hadoop_string}/ngrams"
+            runner._input_paths = ["hdfs:///preprocess/*"]
+            runner._output_dir = "hdfs:///ngrams"
             print(runner._input_paths)
             print(runner._output_dir)
             runner.run()
