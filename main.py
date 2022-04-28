@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*-coding:utf-8 -*
 
 import MRAnalysis
@@ -23,7 +23,7 @@ def main():
     run_hadoop = "hadoop" in sys.argv[2].lower()
     print(f"hadoop ?: {run_hadoop}")
 
-    if preprocess:
+    if preprocess and False:
         # Remove the previous output directory
         try:
             if run_hadoop:
