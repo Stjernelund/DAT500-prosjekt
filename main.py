@@ -54,7 +54,6 @@ def main():
         except FileNotFoundError:
             pass
         ngrams = MRNgram()
-        print(ngrams)
         with ngrams.make_runner() as runner:
             runner._input_paths = [f"{hadoop_string}/preprocess"]
             runner._output_dir = f"{hadoop_string}/ngrams"
@@ -75,12 +74,8 @@ def main():
     datasketch = MRDataSketchLSH()
     datasketch.init(threshold)
     with datasketch.make_runner() as runner:
-        if run_hadoop:
-            runner._input_paths = ["hdfs:///ngrams/*"]
-            runner._output_dir = f"hdfs:///{path}/lsh"
-        else:
-            runner._input_paths = ["ngrams/part-*"]
-            runner._output_dir = f"{path}/lsh"
+        runner._input_paths = [f"{hadoop_string}/ngrams/*"]
+        runner._output_dir = f"{hadoop_string}/{path}/lsh"
         runner.run()
 
     minhashtime = time.time()
