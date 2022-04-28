@@ -23,7 +23,7 @@ def main():
     run_hadoop = "hadoop" in sys.argv[2].lower()
     print(f"hadoop ?: {run_hadoop}")
 
-    if preprocess and False:
+    if preprocess:
         # Remove the previous output directory
         try:
             if run_hadoop:
@@ -69,7 +69,10 @@ def main():
 
     if preprocess:
         try:
-            shutil.rmtree("ngrams")
+            if run_hadoop:
+                pass
+            else:
+                shutil.rmtree("ngrams")
         except FileNotFoundError:
             pass
         ngrams = MRNgram()

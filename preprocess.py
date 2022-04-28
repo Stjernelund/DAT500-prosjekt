@@ -92,4 +92,4 @@ class MRNoNumerals(MRJob):
 
 
 if __name__ == "__main__":
-    MRPreProcess.run()
+    MRNoNumerals.run()
