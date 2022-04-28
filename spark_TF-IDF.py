@@ -47,7 +47,7 @@ if __name__ == "__main__":
         idf_model = idf.fit(wordsData)
         idf_data = idf_model.transform(wordsData)
         mlib_time = time.time() - start
-        mllib_times.appen(mlib_time)
+        mllib_times.append(mlib_time)
     
     for i in range(10):
         start_s = time.time()
