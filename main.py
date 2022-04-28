@@ -79,10 +79,10 @@ def main():
         with ngrams.make_runner() as runner:
             if run_hadoop:
                 runner._input_paths = ["hdfs:///preprocess/output2/*"]
-                runner._output_dir = "hdfs:///ngrams/outputs"
+                runner._output_dir = "hdfs:///ngrams"
             else:
                 runner._input_paths = ["preprocess/part-*"]
-                runner._output_dir = "ngrams/outputs"
+                runner._output_dir = "ngrams"
             runner.run()
 
     ngramtime = time.time()
@@ -98,9 +98,10 @@ def main():
     datasketch.init(threshold)
     with datasketch.make_runner() as runner:
         if run_hadoop:
-            runner._input_paths = ["hdfs:///ngrams/outputs"]
+            runner._input_paths = ["hdfs:///ngrams/*"]
+            runner._output_dir = f"hdfs:///{path}/lsh"
         else:
-            runner._input_paths = ["ngrams/outputs/part-*"]
+            runner._input_paths = ["ngrams/part-*"]
             runner._output_dir = f"{path}/lsh"
         runner.run()
 
@@ -117,9 +118,12 @@ def main():
 
     MR_total = MRAnalysis.Total()
     with MR_total.make_runner() as runner:
-        # inline
-        runner._input_paths = [f"{path}/lsh/part-*"]
-        runner._output_dir = f"{path}/total"
+        if run_hadoop:
+            runner._input_paths = [f"hdfs:///{path}/lsh/*"]
+            runner._output_dir = f"hdfs:///{path}/total"
+        else:
+            runner._input_paths = [f"{path}/lsh/part-*"]
+            runner._output_dir = f"{path}/total"
         runner.run()
         for _, value in MR_total.parse_output(runner.cat_output()):
             total = value
@@ -127,9 +131,12 @@ def main():
 
     MR_similar = MRAnalysis.Similar()
     with MR_similar.make_runner() as runner:
-        # inline
-        runner._input_paths = [f"{path}/similar.txt"]
-        runner._output_dir = f"{path}/similar_total"
+        if run_hadoop:
+            runner._input_paths = [f"hdfs:///{path}/similar.txt"]
+            runner._output_dir = f"hdfs:///{path}/similar_total"
+        else:
+            runner._input_paths = [f"{path}/similar.txt"]
+            runner._output_dir = f"{path}/similar_total"
         runner.run()
         for _, value in MR_similar.parse_output(runner.cat_output()):
             similar = value
@@ -138,9 +145,12 @@ def main():
 
     sum_similar = MRAnalysis.SumSimilar()
     with sum_similar.make_runner() as runner:
-        # inline
-        runner._input_paths = [f"{path}/similar.txt"]
-        runner._output_dir = f"{path}/similar_sum"
+        if run_hadoop:
+            runner._input_paths = [f"hdfs:///{path}/similar.txt*"]
+            runner._output_dir = f"hdfs:///{path}/similar_sum"
+        else:
+            runner._input_paths = [f"{path}/similar.txt"]
+            runner._output_dir = f"{path}/similar_sum"
         runner.run()
 
     print(f"Analysis: {time.time() - lshtime} seconds.")
