@@ -39,7 +39,7 @@ def main():
             # Run inline
             else:
                 runner._input_paths = ["papers.csv"]
-            runner._output_dir = f"{hadoop_string}/preprocess"
+            runner._output_dir = str(f"{hadoop_string}/preprocess")
             runner.run()
 
     preprostime = time.time()
