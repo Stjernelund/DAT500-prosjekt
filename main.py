@@ -46,7 +46,7 @@ def main():
     preprostime = time.time()
     print(f"Preprocessing: {preprostime - start} seconds.")
 
-    if preprocess:
+    if preprocess and False:
         try:
             if run_hadoop:
                 pass
@@ -75,8 +75,8 @@ def main():
         ngrams = MRNgram()
         with ngrams.make_runner() as runner:
             if run_hadoop:
-                runner._input_paths = ["hdfs:///preprocess/output2/part-*"]
-                runner._output_dir = "hdfs:///ngrams/output2"
+                runner._input_paths = ["hdfs:///preprocess/output2"]
+                runner._output_dir = "hdfs:///ngrams/outputs"
             else:
                 runner._input_paths = ["preprocess/part-*"]
                 runner._output_dir = "ngrams/outputs"
@@ -95,7 +95,7 @@ def main():
     datasketch.init(threshold)
     with datasketch.make_runner() as runner:
         if run_hadoop:
-            runner._input_paths = ["hdfs:///ngrams/output2/part-*"]
+            runner._input_paths = ["hdfs:///ngrams/outputs"]
         else:
             runner._input_paths = ["ngrams/outputs/part-*"]
             runner._output_dir = f"{path}/lsh"
