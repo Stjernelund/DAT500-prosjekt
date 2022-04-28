@@ -13,7 +13,7 @@ from sklearn.feature_extraction import text
 if __name__ == "__main__":
     spark = SparkSession\
         .builder\
-        .config('spark.executor.memory', '2g')\
+        .config('spark.executor.memory', '6g')\
         .config('spark.sql.shuffle.partitions', '200')\
         .getOrCreate()
 
