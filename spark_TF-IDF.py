@@ -33,7 +33,8 @@ if __name__ == "__main__":
     wordsData = tokenizer.transform(df1)
     vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
     wordsData = vectorizer.transform(wordsData)
-    wordsData.cache()
+
+
     #Spark.ml.feature implementation of IDF
     idf = IDF(inputCol="vectorizer", outputCol="tfidf_features")
     idf_model = idf.fit(wordsData)
@@ -43,8 +44,8 @@ if __name__ == "__main__":
     #wordsData_pandas['paper_id'].str.replace('"','')
     #wordsData_pandas['paper_id'] = pd.to_numeric(wordsData_pandas['paper_id'])
     #wordsData_pandas.set_index('paper_id')
-    corpus = vectorizer.vocabulary
-    #corpus = wordsData_pandas.words
+    #corpus = vectorizer.vocabulary
+    corpus = wordsData_pandas.words
     #corpus = corpus.tolist()
     corpus = [[word.strip('"') for word in sublist] for sublist in corpus]
     # paper_ids = wordsData_pandas.paper_id
