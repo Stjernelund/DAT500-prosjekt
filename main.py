@@ -27,10 +27,10 @@ def main():
         preprocesser = MRPreProcess()
         with preprocesser.make_runner() as runner:
             #hadoop
-            runner._input_paths = ["hdfs:///preprocess/papers.csv"]
-            runner._output_dir = "hdfs:///preprocess/output2"
+            #runner._input_paths = ["hdfs:///preprocess/papers.csv"]
+            #runner._output_dir = "hdfs:///preprocess/output2"
             #inline
-            runner._input_paths = ["hdfs:///preprocess/papers.csv"]
+            runner._input_paths = ["papers.csv"]
             runner._output_dir = "preprocess"
             runner.run()
     
@@ -86,8 +86,8 @@ def main():
         #hadoop
         #runner._input_paths = ["hdfs:///ngrams/output2/part-*"]
         #inline
-        runner._input_paths = ["ngrams/output/part-*"]
-        runner._output_dir = f"lsh"
+        runner._input_paths = ["ngrams/outputs/part-*"]
+        runner._output_dir = f"{path}/lsh"
         runner.run()
 
     minhashtime = time.time()
