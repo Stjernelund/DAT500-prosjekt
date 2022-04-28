@@ -14,7 +14,7 @@ if __name__ == "__main__":
     spark = SparkSession\
         .builder\
         .config('spark.executor.memory', '6g')\
-        .config('spark.sql.shuffle.partitions', '10000')\
+        .config('spark.sql.shuffle.partitions', '200')\
         .config("spark.memory.offHeap.enabled",True)\
         .config("spark.memory.offHeap.size","50g") \
         .getOrCreate()
@@ -40,24 +40,24 @@ if __name__ == "__main__":
     idf_data = idf_model.transform(wordsData)
 
     wordsData_pandas = wordsData.to_pandas_on_spark()
-    paper_ids = wordsData_pandas['paper_id'].to_numpy()
-    print("Size of the array: ",paper_ids.size)
-    wordsData_pandas.set_index('paper_id')
-    corpus = wordsData_pandas['words'].to_numpy()
-    paper_ids = [id.strip('"') for id in paper_ids]
+    # paper_ids = wordsData_pandas['paper_id'].to_numpy()
+    # print("Size of the array: ",paper_ids.size)
+    # wordsData_pandas.set_index('paper_id')
+    # corpus = wordsData_pandas['words'].to_numpy()
+    # paper_ids = [id.strip('"') for id in paper_ids]
 
-    corpus = [[word.strip('"') for word in sublist] for sublist in corpus]
-    paper_ids = wordsData_pandas['paper_id'].to_numpy()
-    def dummy_fun(doc):
-        return doc
-    my_stop_words = text.ENGLISH_STOP_WORDS
+    # corpus = [[word.strip('"') for word in sublist] for sublist in corpus]
+    # paper_ids = wordsData_pandas['paper_id'].to_numpy()
+    # def dummy_fun(doc):
+    #     return doc
+    # my_stop_words = text.ENGLISH_STOP_WORDS
 
-    my_stop_words = text.ENGLISH_STOP_WORDS
-    tfidfVectorizer = TfidfVectorizer(norm=None,analyzer='word',
-                                tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None,stop_words=my_stop_words)
-    tf=tfidfVectorizer.fit_transform(corpus)
-    tf_df=pd.DataFrame(tf.toarray(), columns = tfidfVectorizer.get_feature_names(),index = paper_ids )
-    print(tf_df.tail(12))
+    # my_stop_words = text.ENGLISH_STOP_WORDS
+    # tfidfVectorizer = TfidfVectorizer(norm=None,analyzer='word',
+    #                             tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None,stop_words=my_stop_words)
+    # tf=tfidfVectorizer.fit_transform(corpus)
+    # tf_df=pd.DataFrame(tf.toarray(), columns = tfidfVectorizer.get_feature_names(),index = paper_ids )
+    # print(tf_df.tail(12))
 
     #tf_df.to_csv("hdfs://namenode:9000/preprocess",index = True,index_label='paper_id')
     spark.stop()
