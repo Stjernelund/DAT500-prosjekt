@@ -54,11 +54,10 @@ def main():
         except FileNotFoundError:
             pass
         ngrams = MRNgram()
+        print(ngrams)
         with ngrams.make_runner() as runner:
-            runner._input_paths = ["hdfs:///preprocess/*"]
-            runner._output_dir = "hdfs:///ngrams"
-            print(runner._input_paths)
-            print(runner._output_dir)
+            runner._input_paths = [f"{hadoop_string}/preprocess/*"]
+            runner._output_dir = f"{hadoop_string}/ngrams"
             runner.run()
 
     ngramtime = time.time()
