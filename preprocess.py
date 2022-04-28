@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#!/usr/bin/python3
 
 from mrjob.job import MRJob
 from mrjob.step import MRStep
