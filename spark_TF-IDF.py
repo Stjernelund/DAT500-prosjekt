@@ -42,24 +42,23 @@ if __name__ == "__main__":
     wordsData_pandas = wordsData.to_pandas_on_spark()
     wordsData_pandas.set_index('paper_id')
     corpus = vectorizer.vocabulary
-    print(corpus)
     #corpus = wordsData_pandas.words
     #corpus = corpus.tolist()
-    #corpus = [[word.strip('"') for word in sublist] for sublist in corpus]
+    corpus = [[word.strip('"') for word in sublist] for sublist in corpus]
     # paper_ids = wordsData_pandas.paper_id
     # paper_ids = paper_ids.tolist()
     # paper_ids = [id.strip('"') for id in paper_ids]
 
     
-    # def dummy_fun(doc):
-    #     return doc
-    # my_stop_words = text.ENGLISH_STOP_WORDS
+    def dummy_fun(doc):
+        return doc
+    my_stop_words = text.ENGLISH_STOP_WORDS
 
-    # my_stop_words = text.ENGLISH_STOP_WORDS
-    # tfidfVectorizer = TfidfVectorizer(norm=None,analyzer='word',
-    #                             tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None,stop_words=my_stop_words)
-    # tf=tfidfVectorizer.fit_transform(corpus)
-    # tf_df=pd.DataFrame(tf.toarray(), columns = tfidfVectorizer.get_feature_names(),index = paper_ids )
+    tfidfVectorizer = TfidfVectorizer(norm=None,analyzer='word',
+        tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None,stop_words=my_stop_words)
+    tf=tfidfVectorizer.fit_transform(corpus)
+    tf_df=pd.DataFrame(tf.toarray(), columns = tfidfVectorizer.get_feature_names() )
+    #, index = wordsData_pandas.paper_ids
     # print(tf_df.tail(12))
 
     # tf_df.to_csv("hdfs://namenode:9000/preprocess",index = True,index_label='paper_id')
