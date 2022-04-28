@@ -36,7 +36,7 @@ def main():
         with preprocesser.make_runner() as runner:
             if run_hadoop:
                 runner._input_paths = ["hdfs:///papers/papers.csv"]
-                runner._output_dir = "hdfs:///preprocess/output2"
+                runner._output_dir = "hdfs:///preprocess"
             # run inline
             else:
                 runner._input_paths = ["papers.csv"]
@@ -57,8 +57,8 @@ def main():
         no_numerals = MRNoNumerals()
         with no_numerals.make_runner() as runner:
             if run_hadoop:
-                runner._input_paths = ["hdfs:///preprocess/output2/*"]
-                runner._output_dir = "hdfs:///preprocess/output3"
+                runner._input_paths = ["hdfs:///preprocess/*"]
+                runner._output_dir = "hdfs:///preprocess_alpha"
             else:
                 runner._input_paths = ["preprocess/part-*"]
                 runner._output_dir = "preprocess_alpha"
@@ -78,7 +78,7 @@ def main():
         ngrams = MRNgram()
         with ngrams.make_runner() as runner:
             if run_hadoop:
-                runner._input_paths = ["hdfs:///preprocess/output2/*"]
+                runner._input_paths = ["hdfs:///preprocess/*"]
                 runner._output_dir = "hdfs:///ngrams"
             else:
                 runner._input_paths = ["preprocess/part-*"]
