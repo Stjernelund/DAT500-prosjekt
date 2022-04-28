@@ -15,10 +15,12 @@ def main():
     print("Started at:", datetime.now().strftime("%H:%M:%S"))
 
     # Run by using the following command: python3 main.py threshold_value true/false
-    threshold = float(sys.argv[2])
-    print(threshold)
+    threshold = float(sys.argv[3])
     path = f"output_t{int(threshold * 100)}"
-    preprocess = "t" in sys.argv[3].lower()
+    preprocess = "t" in sys.argv[4].lower()
+    run_hadoop = "hadoop" in sys.argv[2].lower()
+    print(f"hadoop ?: {run_hadoop}")
+
     if preprocess:
         # Remove the previous output directory
         try:
@@ -27,9 +29,19 @@ def main():
             pass
         preprocesser = MRPreProcess()
         with preprocesser.make_runner() as runner:
-            runner._input_paths = ["papers.csv"]
-            runner._output_dir = "preprocess"
+            if run_hadoop:
+                runner._input_paths = ["hdfs:///preprocess/papers.csv"]
+                runner._output_dir = "hdfs:///preprocess/output2"
+            # run inline
+            else:
+                runner._input_paths = ["papers.csv"]
+                runner._output_dir = "preprocess"
             runner.run()
+
+    preprostime = time.time()
+    print(f"Preprocessing: {preprostime - start} seconds.")
+
+    if preprocess:
 
         try:
             shutil.rmtree("preprocess_alpha")
@@ -37,12 +49,16 @@ def main():
             pass
         no_numerals = MRNoNumerals()
         with no_numerals.make_runner() as runner:
-            runner._input_paths = ["preprocess/part-*"]
-            runner._output_dir = "preprocess_alpha"
+            if run_hadoop:
+                runner._input_paths = ["hdfs:///preprocess/output2/part-*"]
+                runner._output_dir = "hdfs:///preprocess/output3"
+            else:
+                runner._input_paths = ["preprocess/part-*"]
+                runner._output_dir = "preprocess_alpha"
             runner.run()
 
-    preprostime = time.time()
-    print(f"Preprocessing: {preprostime - start} seconds.")
+    prepro_alpha_stime = time.time()
+    print(f"Preprocessing_alpha: {prepro_alpha_stime - preprostime} seconds.")
 
     if preprocess:
         try:
@@ -51,12 +67,16 @@ def main():
             pass
         ngrams = MRNgram()
         with ngrams.make_runner() as runner:
-            runner._input_paths = ["preprocess/part-*"]
-            runner._output_dir = "ngrams"
+            if run_hadoop:
+                runner._input_paths = ["hdfs:///preprocess/output2/part-*"]
+                runner._output_dir = "hdfs:///ngrams/output2"
+            else:
+                runner._input_paths = ["preprocess/part-*"]
+                runner._output_dir = "ngrams/outputs"
             runner.run()
 
     ngramtime = time.time()
-    print(f"Ngrams: {ngramtime - preprostime} seconds.")
+    print(f"Ngrams: {ngramtime - prepro_alpha_stime} seconds.")
 
     # Remove the previous output directory
     try:
@@ -67,8 +87,11 @@ def main():
     datasketch = MRDataSketchLSH()
     datasketch.init(threshold)
     with datasketch.make_runner() as runner:
-        runner._input_paths = ["ngrams/part-*"]
-        runner._output_dir = f"{path}/lsh"
+        if run_hadoop:
+            runner._input_paths = ["hdfs:///ngrams/output2/part-*"]
+        else:
+            runner._input_paths = ["ngrams/outputs/part-*"]
+            runner._output_dir = f"{path}/lsh"
         runner.run()
 
     minhashtime = time.time()
@@ -84,6 +107,7 @@ def main():
 
     MR_total = MRAnalysis.Total()
     with MR_total.make_runner() as runner:
+        # inline
         runner._input_paths = [f"{path}/lsh/part-*"]
         runner._output_dir = f"{path}/total"
         runner.run()
@@ -93,6 +117,7 @@ def main():
 
     MR_similar = MRAnalysis.Similar()
     with MR_similar.make_runner() as runner:
+        # inline
         runner._input_paths = [f"{path}/similar.txt"]
         runner._output_dir = f"{path}/similar_total"
         runner.run()
@@ -103,6 +128,7 @@ def main():
 
     sum_similar = MRAnalysis.SumSimilar()
     with sum_similar.make_runner() as runner:
+        # inline
         runner._input_paths = [f"{path}/similar.txt"]
         runner._output_dir = f"{path}/similar_sum"
         runner.run()
