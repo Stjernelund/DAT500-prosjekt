@@ -8,6 +8,7 @@ import time
 from datetime import datetime
 import shutil
 import sys
+import os
 
 
 def main():
@@ -25,10 +26,10 @@ def main():
         # Remove the previous output directory
         try:
             if run_hadoop:
-                shutil.rmtree("hdfs://namenode:9000/preprocess")
+                os.system("hdfs dfs -rm -r /preprocess")
             else:
                 shutil.rmtree("preprocess")
-        except FileNotFoundError as e:
+        except Exception as e:
             print(e)
         preprocesser = MRPreProcess()
         with preprocesser.make_runner() as runner:
