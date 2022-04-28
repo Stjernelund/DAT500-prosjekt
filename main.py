@@ -23,7 +23,7 @@ def main():
     run_hadoop = "hadoop" in sys.argv[2].lower()
     print(f"hadoop ?: {run_hadoop}")
 
-    if preprocess:
+    if preprocess and False:
         # Remove the previous output directory
         try:
             if run_hadoop:
@@ -55,14 +55,10 @@ def main():
         except FileNotFoundError:
             pass
         no_numerals = MRNoNumerals()
-        print("hit?")
-        print(no_numerals)
         with no_numerals.make_runner() as runner:
             if run_hadoop:
                 runner._input_paths = ["hdfs:///preprocess/output2/"]
                 runner._output_dir = "hdfs:///preprocess/output3"
-                print(runner)
-                print(runner._input_paths)
             else:
                 runner._input_paths = ["preprocess/part-*"]
                 runner._output_dir = "preprocess_alpha"
