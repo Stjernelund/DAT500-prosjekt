@@ -25,7 +25,7 @@ def main():
         # Remove the previous output directory
         try:
             if run_hadoop:
-                shutil.rmtree("hdfs://preprocess")
+                shutil.rmtree("hdfs://namenode:9000/preprocess")
             else:
                 shutil.rmtree("preprocess")
         except FileNotFoundError as e:
