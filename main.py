@@ -29,8 +29,8 @@ def main():
                 os.system("hdfs dfs -rm -r /preprocess")
             else:
                 shutil.rmtree("preprocess")
-        except Exception as e:
-            print(e)
+        except FileNotFoundError:
+            pass
         preprocesser = MRPreProcess()
         with preprocesser.make_runner() as runner:
             if run_hadoop:
@@ -46,7 +46,6 @@ def main():
     print(f"Preprocessing: {preprostime - start} seconds.")
 
     if preprocess:
-
         try:
             shutil.rmtree("preprocess_alpha")
         except FileNotFoundError:
