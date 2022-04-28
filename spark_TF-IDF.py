@@ -1,4 +1,4 @@
-from pyspark.ml.feature import HashingTF, IDF, Tokenizer,CountVectorizer
+from pyspark.ml.feature import  IDF, Tokenizer,CountVectorizer
 import pyspark.sql.functions as f
 from pyspark.sql import SparkSession
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -13,6 +13,9 @@ from sklearn.feature_extraction import text
 if __name__ == "__main__":
     spark = SparkSession\
         .builder\
+        .config('spark.executor.memory', '3g')\
+        .config("spark.memory.offHeap.enabled",True)\
+        .config("spark.memory.offHeap.size","3g") \
         .getOrCreate()
 
     sc = spark.sparkContext
