@@ -47,11 +47,13 @@ if __name__ == "__main__":
     #corpus = vectorizer.vocabulary
     #corpus = list(wordsData_pandas['words'])
     corpus = wordsData.select('words').rdd.flatMap(lambda x: x).collect()
+    paper_ids = wordsData.select('paper_id').rdd.flatMap(lambda x: x).collect()
+
     #corpus = corpus.tolist()
     #corpus = [[word.strip('"') for word in sublist] for sublist in corpus]
     # paper_ids = wordsData_pandas.paper_id
     # paper_ids = paper_ids.tolist()
-    # paper_ids = [id.strip('"') for id in paper_ids]
+    paper_ids = [id.strip('"') for id in paper_ids]
 
     
     def dummy_fun(doc):
@@ -61,7 +63,7 @@ if __name__ == "__main__":
     tfidfVectorizer = TfidfVectorizer(norm=None,analyzer='word',
         tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None,stop_words=my_stop_words, min_df=0.1,max_features=500)
     tf=tfidfVectorizer.fit_transform(corpus)
-    tf_df=pd.DataFrame(tf.toarray(), columns = tfidfVectorizer.get_feature_names_out())
+    tf_df=pd.DataFrame(tf.toarray(), columns = tfidfVectorizer.get_feature_names_out(),index = paper_ids)
     print(tf_df.tail(12))
 
     # tf_df.to_csv("hdfs://namenode:9000/preprocess",index = True,index_label='paper_id')
