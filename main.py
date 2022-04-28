@@ -32,12 +32,12 @@ def main():
             if run_hadoop:
                 runner._input_paths = ["hdfs:///preprocess/papers.csv"]
                 runner._output_dir = "hdfs:///preprocess/output2"
-            #run inline
+            # run inline
             else:
                 runner._input_paths = ["papers.csv"]
                 runner._output_dir = "preprocess"
             runner.run()
-    
+
     preprostime = time.time()
     print(f"Preprocessing: {preprostime - start} seconds.")
 
@@ -46,7 +46,7 @@ def main():
         try:
             shutil.rmtree("preprocess_alpha")
         except FileNotFoundError:
-             pass
+            pass
         no_numerals = MRNoNumerals()
         with no_numerals.make_runner() as runner:
             if run_hadoop:
@@ -107,7 +107,7 @@ def main():
 
     MR_total = MRAnalysis.Total()
     with MR_total.make_runner() as runner:
-        #inline
+        # inline
         runner._input_paths = [f"{path}/lsh/part-*"]
         runner._output_dir = f"{path}/total"
         runner.run()
@@ -117,7 +117,7 @@ def main():
 
     MR_similar = MRAnalysis.Similar()
     with MR_similar.make_runner() as runner:
-        #inline
+        # inline
         runner._input_paths = [f"{path}/similar.txt"]
         runner._output_dir = f"{path}/similar_total"
         runner.run()
@@ -128,7 +128,7 @@ def main():
 
     sum_similar = MRAnalysis.SumSimilar()
     with sum_similar.make_runner() as runner:
-        #inline
+        # inline
         runner._input_paths = [f"{path}/similar.txt"]
         runner._output_dir = f"{path}/similar_sum"
         runner.run()
