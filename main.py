@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#!/usr/bin/python3
 
 import MRAnalysis
 from preprocess import MRPreProcess, MRNoNumerals
