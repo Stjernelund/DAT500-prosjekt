@@ -46,7 +46,7 @@ def main():
     preprostime = time.time()
     print(f"Preprocessing: {preprostime - start} seconds.")
 
-    if preprocess and False:
+    if preprocess:
         try:
             if run_hadoop:
                 pass
@@ -57,7 +57,7 @@ def main():
         no_numerals = MRNoNumerals()
         with no_numerals.make_runner() as runner:
             if run_hadoop:
-                runner._input_paths = ["hdfs:///preprocess/output2/part-00000"]
+                runner._input_paths = ["hdfs:///preprocess/output2/*"]
                 runner._output_dir = "hdfs:///preprocess/output3"
             else:
                 runner._input_paths = ["preprocess/part-*"]
