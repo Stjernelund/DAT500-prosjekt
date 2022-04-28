@@ -30,8 +30,7 @@ if __name__ == "__main__":
     tokenizer = Tokenizer().setInputCol("text").setOutputCol("words")
     wordsData = tokenizer.transform(df1)
     vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
-    wordsData = vectorizer.transform(wordsData)
-
+    wordsData = vectorizer.transform(wordsData).cache()
     #Spark.ml.feature implementation of IDF
     idf = IDF(inputCol="vectorizer", outputCol="tfidf_features")
     idf_model = idf.fit(wordsData)
