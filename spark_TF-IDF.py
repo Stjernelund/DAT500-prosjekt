@@ -13,9 +13,7 @@ from sklearn.feature_extraction import text
 if __name__ == "__main__":
     spark = SparkSession\
         .builder\
-        .config('spark.executor.memory', '3g')\
-        .config("spark.memory.offHeap.enabled",True)\
-        .config("spark.memory.offHeap.size","3g") \
+        .config('spark.executor.memory', '2.5g')\
         .getOrCreate()
 
     sc = spark.sparkContext
