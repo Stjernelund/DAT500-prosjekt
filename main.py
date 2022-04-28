@@ -47,7 +47,10 @@ def main():
 
     if preprocess:
         try:
-            shutil.rmtree("preprocess_alpha")
+            if run_hadoop:
+                pass
+            else:
+                shutil.rmtree("preprocess_alpha")
         except FileNotFoundError:
             pass
         no_numerals = MRNoNumerals()
