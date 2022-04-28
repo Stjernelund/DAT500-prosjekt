@@ -59,10 +59,10 @@ if __name__ == "__main__":
     my_stop_words = text.ENGLISH_STOP_WORDS
 
     tfidfVectorizer = TfidfVectorizer(norm=None,analyzer='word',
-        tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None,stop_words=my_stop_words)
+        tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None,stop_words=my_stop_words, min_df=0.1,max_features=500)
     tf=tfidfVectorizer.fit_transform(corpus)
-    #tf_df=pd.DataFrame(tf.toarray(), columns = tfidfVectorizer.get_feature_names_out())
-    print(tf.tail(12))
+    tf_df=pd.DataFrame(tf.toarray(), columns = tfidfVectorizer.get_feature_names_out())
+    print(tf_df.tail(12))
 
     # tf_df.to_csv("hdfs://namenode:9000/preprocess",index = True,index_label='paper_id')
     spark.stop()
