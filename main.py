@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*-coding:utf-8 -*
 
-import MRAnalysis
+from MRTotal import Total
 from preprocess import MRPreProcess
 from DataSketchLSH import MRDataSketchLSH
 from MRNgram import MRNgram
@@ -89,7 +89,7 @@ def main():
     similar_time = time.time()
     print(f"Similarity: {similar_time - lshtime} seconds.")
 
-    MR_total = MRAnalysis.Total()
+    MR_total = Total()
     with MR_total.make_runner() as runner:
         if run_hadoop:
             runner._input_paths = [f"hdfs:///{path}/lsh/*"]
