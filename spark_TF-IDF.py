@@ -16,7 +16,7 @@ if __name__ == "__main__":
         .config('spark.executor.memory', '6g')\
         .config('spark.sql.shuffle.partitions', '10000')\
         .config("spark.memory.offHeap.enabled",True)\
-        .config("spark.memory.offHeap.size","16g") \
+        .config("spark.memory.offHeap.size","50g") \
         .getOrCreate()
 
     sc = spark.sparkContext
