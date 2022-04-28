@@ -6,6 +6,7 @@ import pandas as pd
 import numpy as np
 import os
 from sklearn.feature_extraction import text
+import time
 
 
 
@@ -36,9 +37,11 @@ if __name__ == "__main__":
 
 
     #Spark.ml.feature implementation of IDF
+    start = time.time()
     idf = IDF(inputCol="vectorizer", outputCol="tfidf_features")
     idf_model = idf.fit(wordsData)
     idf_data = idf_model.transform(wordsData)
+    mlib = start - time.time()
 
     #wordsData_pandas = wordsData.to_pandas_on_spark()
     #wordsData_pandas['paper_id'].str.replace('"','')
@@ -60,11 +63,14 @@ if __name__ == "__main__":
         return doc
     my_stop_words = text.ENGLISH_STOP_WORDS
 
+    start_s = time.time()
     tfidfVectorizer = TfidfVectorizer(norm=None,analyzer='word',
         tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None,stop_words=my_stop_words, min_df=0.1,max_features=500)
     tf=tfidfVectorizer.fit_transform(corpus)
     tf_df=pd.DataFrame(tf.toarray(), columns = tfidfVectorizer.get_feature_names_out(),index = paper_ids)
+    sklearn = start_s - time.time()
     print(tf_df.tail(12))
+    print(f"1st time: {mlib}, 2nd time: {sklearn}")
 
     # tf_df.to_csv("hdfs://namenode:9000/preprocess",index = True,index_label='paper_id')
     spark.stop()
