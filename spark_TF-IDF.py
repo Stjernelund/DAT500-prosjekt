@@ -15,6 +15,8 @@ if __name__ == "__main__":
         .builder\
         .config('spark.executor.memory', '6g')\
         .config('spark.sql.shuffle.partitions', '10000')\
+        .config("spark.memory.offHeap.enabled",True)\
+        .config("spark.memory.offHeap.size","16g") \
         .getOrCreate()
 
     sc = spark.sparkContext
@@ -26,11 +28,12 @@ if __name__ == "__main__":
         df1 = df1.select(f.split(df1.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=["paper_id","text"])
     except EOFError as x:
         print("feil på lesing")
-
+    
     tokenizer = Tokenizer().setInputCol("text").setOutputCol("words")
     wordsData = tokenizer.transform(df1)
     vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
-    wordsData = vectorizer.transform(wordsData).cache()
+    wordsData = vectorizer.transform(wordsData)
+    wordsData.cache()
     #Spark.ml.feature implementation of IDF
     idf = IDF(inputCol="vectorizer", outputCol="tfidf_features")
     idf_model = idf.fit(wordsData)
