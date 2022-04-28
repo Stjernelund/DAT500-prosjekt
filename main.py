@@ -18,6 +18,9 @@ def main():
     threshold = float(sys.argv[3])
     path = f"output_t{int(threshold * 100)}"
     preprocess = "t" in sys.argv[4].lower()
+    run_hadoop = "hadoop" in sys.argv[2].lower()
+    print(f"hadoop ?: {run_hadoop}")
+
     if preprocess:
         # Remove the previous output directory
         try:
@@ -26,12 +29,13 @@ def main():
             pass
         preprocesser = MRPreProcess()
         with preprocesser.make_runner() as runner:
-            #hadoop
-            #runner._input_paths = ["hdfs:///preprocess/papers.csv"]
-            #runner._output_dir = "hdfs:///preprocess/output2"
-            #inline
-            runner._input_paths = ["papers.csv"]
-            runner._output_dir = "preprocess"
+            if run_hadoop:
+                runner._input_paths = ["hdfs:///preprocess/papers.csv"]
+                runner._output_dir = "hdfs:///preprocess/output2"
+            #run inline
+            else:
+                runner._input_paths = ["papers.csv"]
+                runner._output_dir = "preprocess"
             runner.run()
     
     preprostime = time.time()
@@ -45,16 +49,16 @@ def main():
              pass
         no_numerals = MRNoNumerals()
         with no_numerals.make_runner() as runner:
-            #Hadoop
-            #runner._input_paths = ["hdfs:///preprocess/output2/part-*"]
-            #runner._output_dir = "hdfs:///preprocess/output3"
-            #inline
-            runner._input_paths = ["preprocess/part-*"]
-            runner._output_dir = "preprocess_alpha"
+            if run_hadoop:
+                runner._input_paths = ["hdfs:///preprocess/output2/part-*"]
+                runner._output_dir = "hdfs:///preprocess/output3"
+            else:
+                runner._input_paths = ["preprocess/part-*"]
+                runner._output_dir = "preprocess_alpha"
             runner.run()
 
     prepro_alpha_stime = time.time()
-    print(f"Preprocessing: {prepro_alpha_stime - preprostime} seconds.")
+    print(f"Preprocessing_alpha: {prepro_alpha_stime - preprostime} seconds.")
 
     if preprocess:
         try:
@@ -63,12 +67,12 @@ def main():
             pass
         ngrams = MRNgram()
         with ngrams.make_runner() as runner:
-            #hadoop
-            #runner._input_paths = ["hdfs:///preprocess/output2/part-*"]
-            #runner._output_dir = "hdfs:///ngrams/output2"
-            #inline
-            runner._input_paths = ["preprocess/part-*"]
-            runner._output_dir = "ngrams/outputs"
+            if run_hadoop:
+                runner._input_paths = ["hdfs:///preprocess/output2/part-*"]
+                runner._output_dir = "hdfs:///ngrams/output2"
+            else:
+                runner._input_paths = ["preprocess/part-*"]
+                runner._output_dir = "ngrams/outputs"
             runner.run()
 
     ngramtime = time.time()
@@ -83,11 +87,11 @@ def main():
     datasketch = MRDataSketchLSH()
     datasketch.init(threshold)
     with datasketch.make_runner() as runner:
-        #hadoop
-        #runner._input_paths = ["hdfs:///ngrams/output2/part-*"]
-        #inline
-        runner._input_paths = ["ngrams/outputs/part-*"]
-        runner._output_dir = f"{path}/lsh"
+        if run_hadoop:
+            runner._input_paths = ["hdfs:///ngrams/output2/part-*"]
+        else:
+            runner._input_paths = ["ngrams/outputs/part-*"]
+            runner._output_dir = f"{path}/lsh"
         runner.run()
 
     minhashtime = time.time()
