@@ -2,7 +2,7 @@
 # -*-coding:utf-8 -*
 
 import MRAnalysis
-from preprocess import MRPreProcess, MRNoNumerals
+from preprocess import MRPreProcess
 from DataSketchLSH import MRDataSketchLSH
 from MRNgram import MRNgram
 import time
