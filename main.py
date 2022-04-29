@@ -13,6 +13,7 @@ import shutil
 import sys
 import os
 import nltk
+import datasketch as dsk
 
 
 def main():
@@ -26,7 +27,7 @@ def main():
     run_hadoop = "hadoop" in sys.argv[2].lower()
     hadoop_string = "hdfs://" if run_hadoop else ""
 
-    if preprocess and False:
+    if preprocess and True:
         # Remove the previous output directory
         try:
             if run_hadoop:
@@ -56,15 +57,13 @@ def main():
         ngrams = MRNgram()
         ngrams.set_nltk(nltk)
         with ngrams.make_runner() as runner:
-            runner._input_paths = [f"{hadoop_string}/bleh.txt"]
+            runner._input_paths = [f"{hadoop_string}/preprocess"]
             runner._output_dir = f"{hadoop_string}/ngrams"
             runner.run()
 
     ngramtime = time.time()
     print(f"Ngrams: {ngramtime - preprostime} seconds.")
 
-
-"""
     # Remove the previous output directory
     try:
         if run_hadoop:
@@ -75,9 +74,10 @@ def main():
         pass
 
     datasketch = MRDataSketchLSH()
+    datasketch.set_datasketch(dsk)
     datasketch.init(threshold)
     with datasketch.make_runner() as runner:
-        runner._input_paths = [f"{hadoop_string}/ngrams/*"]
+        runner._input_paths = [f"{hadoop_string}/ngrams"]
         runner._output_dir = f"{hadoop_string}/{path}/lsh"
         runner.run()
 
@@ -94,12 +94,8 @@ def main():
 
     MR_total = Total()
     with MR_total.make_runner() as runner:
-        if run_hadoop:
-            runner._input_paths = [f"hdfs:///{path}/lsh/*"]
-            runner._output_dir = f"hdfs:///{path}/total"
-        else:
-            runner._input_paths = [f"{path}/lsh/part-*"]
-            runner._output_dir = f"{path}/total"
+        runner._input_paths = [f"{hadoop_string}/{path}/lsh"]
+        runner._output_dir = f"{hadoop_string}/{path}/total"
         runner.run()
         for _, value in MR_total.parse_output(runner.cat_output()):
             total = value
@@ -107,12 +103,8 @@ def main():
 
     MR_similar = Similar()
     with MR_similar.make_runner() as runner:
-        if run_hadoop:
-            runner._input_paths = [f"hdfs:///{path}/similar.txt"]
-            runner._output_dir = f"hdfs:///{path}/similar_total"
-        else:
-            runner._input_paths = [f"{path}/similar.txt"]
-            runner._output_dir = f"{path}/similar_total"
+        runner._input_paths = [f"{hadoop_string}/{path}/similar.txt"]
+        runner._output_dir = f"{hadoop_string}/{path}/similar_total"
         runner.run()
         for _, value in MR_similar.parse_output(runner.cat_output()):
             similar = value
@@ -121,17 +113,13 @@ def main():
 
     sum_similar = SumSimilar()
     with sum_similar.make_runner() as runner:
-        if run_hadoop:
-            runner._input_paths = [f"hdfs:///{path}/similar.txt*"]
-            runner._output_dir = f"hdfs:///{path}/similar_sum"
-        else:
-            runner._input_paths = [f"{path}/similar.txt"]
-            runner._output_dir = f"{path}/similar_sum"
+        runner._input_paths = [f"{hadoop_string}/{path}/similar.txt*"]
+        runner._output_dir = f"{hadoop_string}/{path}/similar_sum"
         runner.run()
 
     print(f"Analysis: {time.time() - lshtime} seconds.")
     print(f"Total time: {time.time() - start} seconds.")
-"""
+
 
 if __name__ == "__main__":
     main()
