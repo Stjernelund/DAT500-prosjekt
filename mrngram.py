@@ -6,8 +6,6 @@ from mrjob.step import MRStep
 
 
 class MRNgram(MRJob):
-    nltk = None
-
     def steps(self):
         return [
             MRStep(
@@ -23,9 +21,6 @@ class MRNgram(MRJob):
         ngrams = set(self.nltk.ngrams(words, 5))
         for word in ngrams:
             yield paper_id, word
-
-    def set_nltk(self, nltk):
-        nltk = nltk
 
 
 if __name__ == "__main__":

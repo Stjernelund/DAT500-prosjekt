@@ -12,8 +12,6 @@ from datetime import datetime
 import shutil
 import sys
 import os
-import nltk
-import datasketch as dsk
 
 
 def main():
@@ -55,7 +53,6 @@ def main():
         except FileNotFoundError:
             pass
         ngrams = MRNgram()
-        ngrams.set_nltk(nltk)
         with ngrams.make_runner() as runner:
             runner._input_paths = [f"{hadoop_string}/preprocess"]
             runner._output_dir = f"{hadoop_string}/ngrams"
@@ -74,7 +71,6 @@ def main():
         pass
 
     datasketch = MRDataSketchLSH()
-    datasketch.set_datasketch(dsk)
     datasketch.init(threshold)
     with datasketch.make_runner() as runner:
         runner._input_paths = [f"{hadoop_string}/ngrams"]
