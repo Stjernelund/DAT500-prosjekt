@@ -32,7 +32,7 @@ def main():
                 os.system("hdfs dfs -rm -r /preprocess")
             else:
                 shutil.rmtree("preprocess")
-        except FileNotFoundError or NotADirectoryError:
+        except FileNotFoundError:
             pass
         preprocesser = MRPreProcess()
         with preprocesser.make_runner() as runner:
@@ -53,7 +53,7 @@ def main():
                 os.system("hdfs dfs -rm -r /ngrams")
             else:
                 shutil.rmtree("ngrams")
-        except FileNotFoundError or NotADirectoryError:
+        except FileNotFoundError:
             pass
         ngrams = MRNgram()
         with ngrams.make_runner() as runner:
