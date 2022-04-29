@@ -3,7 +3,7 @@
 
 from MRTotal import Total
 from MRPreProcess import MRPreProcess
-from DataSketchLSH import MRDataSketchLSH
+from MRDataSketchLSH import MRDataSketchLSH
 from MRNgram import MRNgram
 from MRSimilar import Similar
 from MRSumSimilar import SumSimilar
