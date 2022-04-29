@@ -38,7 +38,7 @@ def main():
         with preprocesser.make_runner() as runner:
             runner._input_paths = [f"{hadoop_string}papers.csv"]
             runner._input_paths = ["papers.csv"]
-            runner._output_dir = f"{hadoop_string}/preprocess"
+            runner._output_dir = f"{hadoop_string}preprocess"
             runner.run()
 
     preprostime = time.time()
@@ -54,8 +54,8 @@ def main():
             pass
         ngrams = MRNgram()
         with ngrams.make_runner() as runner:
-            runner._input_paths = [f"{hadoop_string}/preprocess/"]
-            runner._output_dir = f"{hadoop_string}/ngrams"
+            runner._input_paths = [f"{hadoop_string}preprocess"]
+            runner._output_dir = f"{hadoop_string}ngrams"
             runner.run()
 
     ngramtime = time.time()
