@@ -12,6 +12,7 @@ from datetime import datetime
 import shutil
 import sys
 import os
+import nltk
 
 
 def main():
