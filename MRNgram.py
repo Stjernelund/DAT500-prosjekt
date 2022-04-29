@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*-coding:utf-8 -*
 
 from mrjob.job import MRJob
@@ -11,7 +11,6 @@ class MRNgram(MRJob):
         return [
             MRStep(
                 mapper=self.mapper,
-                combiner=self.combiner,
             )
         ]
 
@@ -23,9 +22,6 @@ class MRNgram(MRJob):
         ngrams = set(nltk.ngrams(words, 5))
         for word in ngrams:
             yield paper_id, word
-
-    def combiner(self, paper_id, words):
-        yield paper_id, list(words)
 
 
 if __name__ == "__main__":
