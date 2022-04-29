@@ -7,13 +7,6 @@ import nltk
 
 
 class MRNgram(MRJob):
-    def steps(self):
-        return [
-            MRStep(
-                mapper=self.mapper,
-            )
-        ]
-
     def mapper(self, _, line):
         """Find ngrams on each paper"""
         paper_id, line = line.split("\t")
