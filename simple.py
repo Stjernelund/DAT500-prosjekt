@@ -1,8 +1,9 @@
-#!/usr/bin/env python3
+#!/home/ubuntu/.local/bin
 # -*-coding:utf-8 -*
 
 from mrjob.job import MRJob
 from mrjob.step import MRStep
+import nltk
 
 
 class MRCountLinesRight(MRJob):
@@ -17,8 +18,6 @@ class MRCountLinesRight(MRJob):
         ]
 
     def mapper_init(self):
-        import nltk
-
         self.num_lines = 0
 
     def mapper(self, _, line):
