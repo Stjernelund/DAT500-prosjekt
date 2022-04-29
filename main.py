@@ -25,7 +25,7 @@ def main():
     run_hadoop = "hadoop" in sys.argv[2].lower()
     hadoop_string = "hdfs://" if run_hadoop else ""
 
-    if preprocess:
+    if preprocess and False:
         # Remove the previous output directory
         try:
             if run_hadoop:
@@ -57,8 +57,8 @@ def main():
             pass
         ngrams = MRNgram()
         with ngrams.make_runner() as runner:
-            runner._input_paths = [f"{hadoop_string}/preprocess"]
-            runner._output_dir = f"{hadoop_string}/ngrams"
+            runner._input_paths = [f"hdfs:///preprocess/"]
+            runner._output_dir = f"hdfs:///ngrams"
             runner.run()
 
     ngramtime = time.time()
