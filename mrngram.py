@@ -3,20 +3,17 @@
 
 from mrjob.job import MRJob
 from mrjob.step import MRStep
-import main
 
 
 class MRNgram(MRJob):
+    nltk = None
+
     def steps(self):
         return [
             MRStep(
-                mapper_init=self.mapper_init,
                 mapper=self.mapper,
             )
         ]
-
-    def mapper_init(self):
-        pass
 
     def mapper(self, _, line):
         """Find ngrams on each paper"""
@@ -28,6 +25,9 @@ class MRNgram(MRJob):
         ngrams = set(nltk.ngrams(words, 5))
         for word in ngrams:
             yield paper_id, word
+
+    def set_nltk(self, nltk):
+        nltk = nltk
 
 
 if __name__ == "__main__":

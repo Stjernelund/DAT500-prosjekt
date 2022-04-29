@@ -54,6 +54,7 @@ def main():
         except FileNotFoundError:
             pass
         ngrams = MRNgram()
+        ngrams.set_nltk(nltk)
         with ngrams.make_runner() as runner:
             runner._input_paths = [f"{hadoop_string}/bleh.txt"]
             runner._output_dir = f"{hadoop_string}/ngrams"
