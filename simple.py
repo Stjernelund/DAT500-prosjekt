@@ -17,6 +17,8 @@ class MRCountLinesRight(MRJob):
         ]
 
     def mapper_init(self):
+        import nltk
+
         self.num_lines = 0
 
     def mapper(self, _, line):
