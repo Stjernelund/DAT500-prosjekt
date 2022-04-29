@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # -*-coding:utf-8 -*
 
-from MRTotal import Total
-from MRPreProcess import MRPreProcess
-from MRDataSketchLSH import MRDataSketchLSH
-from MRNgram import MRNgram
-from MRSimilar import Similar
-from MRSumSimilar import SumSimilar
+from mrtotal import Total
+from mrpreprocess import MRPreProcess
+from mrlsh import MRDataSketchLSH
+from mrngram import MRNgram
+from mrsimilar import Similar
+from mrsumsimilar import SumSimilar
 import time
 from datetime import datetime
 import shutil
