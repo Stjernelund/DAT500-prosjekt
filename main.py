@@ -25,7 +25,7 @@ def main():
     run_hadoop = "hadoop" in sys.argv[2].lower()
     hadoop_string = "hdfs://" if run_hadoop else ""
 
-    if preprocess and False:
+    if preprocess:
         # Remove the previous output directory
         try:
             if run_hadoop:
@@ -36,11 +36,8 @@ def main():
             pass
         preprocesser = MRPreProcess()
         with preprocesser.make_runner() as runner:
-            if run_hadoop:
-                runner._input_paths = ["hdfs:///papers/papers.csv"]
-            # Run inline
-            else:
-                runner._input_paths = ["papers.csv"]
+            runner._input_paths = [f"{hadoop_string}papers.csv"]
+            runner._input_paths = ["papers.csv"]
             runner._output_dir = f"{hadoop_string}/preprocess"
             runner.run()
 
