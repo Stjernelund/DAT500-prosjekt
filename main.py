@@ -57,8 +57,8 @@ def main():
             pass
         ngrams = MRNgram()
         with ngrams.make_runner() as runner:
-            runner._input_paths = [f"hdfs:///preprocess/"]
-            runner._output_dir = f"hdfs:///ngrams"
+            runner._input_paths = [f"{hadoop_string}/preprocess/"]
+            runner._output_dir = f"{hadoop_string}/ngrams"
             runner.run()
 
     ngramtime = time.time()

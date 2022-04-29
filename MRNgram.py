@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/ python
 # -*-coding:utf-8 -*
 
 from mrjob.job import MRJob
@@ -22,12 +22,6 @@ class MRNgram(MRJob):
         ngrams = set(nltk.ngrams(words, 5))
         for word in ngrams:
             yield paper_id, word
-
-    def combiner(self, paper_id, words):
-        yield paper_id, list(words)
-
-    def reducer(self, paper_id, words):
-        yield paper_id, list(words)
 
 
 if __name__ == "__main__":
