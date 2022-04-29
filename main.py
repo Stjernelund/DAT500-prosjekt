@@ -67,7 +67,7 @@ def main():
     # Remove the previous output directory
     try:
         if run_hadoop:
-            pass
+            os.system(f"hdfs dfs -rm -r /{path}")
         else:
             shutil.rmtree(f"{path}")
     except FileNotFoundError:
