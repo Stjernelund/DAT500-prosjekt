@@ -1,7 +1,18 @@
 from mrjob.job import MRJob
+from mrjob.step import MRStep
 
 
 class MRCountLinesRight(MRJob):
+    def steps(self):
+        return [
+            MRStep(
+                mapper_init=self.mapper_init,
+                mapper=self.mapper,
+                mapper_final=self.mapper_final,
+                reducer=self.reducer,
+            )
+        ]
+
     def mapper_init(self):
         self.num_lines = 0
 
