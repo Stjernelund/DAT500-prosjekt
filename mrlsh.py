@@ -22,7 +22,7 @@ class MRDataSketchLSH(MRJob):
         """MinHash each paper"""
         key, line = line.split("\t")
         key = key.strip('\\"')
-        m = datasketch.MinHash(num_perm=self.num_prem)
+        m = self.datasketch.MinHash(num_perm=self.num_prem)
         line = ast.literal_eval(line)
         for d in line:
             m.update(str(d).encode("utf8"))
@@ -34,7 +34,9 @@ class MRDataSketchLSH(MRJob):
 
     def make_LSH(self):
         """Create LSH index from the MinHashes"""
-        lsh = datasketch.MinHashLSH(threshold=self.threshold, num_perm=self.num_prem)
+        lsh = self.datasketch.MinHashLSH(
+            threshold=self.threshold, num_perm=self.num_prem
+        )
         for key, m in self.mrjobs:
             lsh.insert(key, m)
         return lsh
