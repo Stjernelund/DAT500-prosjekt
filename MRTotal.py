@@ -14,3 +14,7 @@ class Total(MRJob):
         _, papers = papers.split("\t")
         papers = ast.literal_eval(papers)
         yield "Total:", len(papers)
+
+
+if __name__ == "__main__":
+    Total.run()

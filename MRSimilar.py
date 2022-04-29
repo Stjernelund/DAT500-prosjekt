@@ -14,3 +14,7 @@ class Similar(MRJob):
 
     def reducer(self, key, values):
         yield "Similar:", sum(values)
+
+
+if __name__ == "__main__":
+    Similar.run()
