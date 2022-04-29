@@ -6,17 +6,6 @@ from mrjob.step import MRStep
 import ast
 
 
-class Similar(MRJob):
-    def steps(self):
-        return [MRStep(mapper=self.mapper, reducer=self.reducer)]
-
-    def mapper(self, key, line):
-        yield None, 1
-
-    def reducer(self, key, values):
-        yield "Similar:", sum(values)
-
-
 class SumSimilar(MRJob):
     def steps(self):
         return [MRStep(mapper=self.mapper)]
@@ -29,6 +18,4 @@ class SumSimilar(MRJob):
 
 
 if __name__ == "__main__":
-    Total.run()
-    Similar.run()
     SumSimilar.run()
