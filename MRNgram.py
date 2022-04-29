@@ -16,6 +16,7 @@ class MRNgram(MRJob):
 
     def mapper(self, _, line):
         """Find ngrams on each paper"""
+        raise Exception("Not implemented")
         paper_id, line = line.split("\t")
         paper_id = paper_id.strip('\\"')
         words = line.split()
