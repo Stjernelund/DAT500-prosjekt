@@ -10,7 +10,7 @@ import subprocess
 
 class DataSketchLSH(MRJob):
     num_prem = 128
-    self.mrjobs = []
+    mrjobs = []
 
     def init(self, threshold, mrjobs):
         """Used to set threshold"""
