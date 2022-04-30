@@ -23,7 +23,7 @@ def main():
     path = f"output_t{int(threshold * 100)}"
     preprocess = "t" in sys.argv[4].lower()
     run_hadoop = "hadoop" in sys.argv[2].lower()
-    hadoop_string = "hdfs://" if run_hadoop else f"{os.getcwd()}"
+    hadoop_string = "hdfs://" if run_hadoop else f""
 
     if preprocess:
         # Remove the previous output directory
