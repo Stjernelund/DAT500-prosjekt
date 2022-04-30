@@ -19,7 +19,10 @@ class DataSketchLSH(MRJob):
         return [MRStep(mapper=self.mapper)]
 
     def mapper(self, _, line):
-        self.mrjobs.append(1)
+        try:
+            self.mrjobs.append(1)
+        except Exception as e:
+            yield None, e
         if False:
             """MinHash each paper"""
             key, line = line.split("\t")
