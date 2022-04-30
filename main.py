@@ -61,8 +61,6 @@ def main():
     ngramtime = time.time()
     print(f"Ngrams: {ngramtime - preprostime} seconds.")
 
-
-"""
     # Remove the previous output directory
     try:
         if run_hadoop:
@@ -117,7 +115,6 @@ def main():
 
     print(f"Analysis: {time.time() - lshtime} seconds.")
     print(f"Total time: {time.time() - start} seconds.")
-"""
 
 
 if __name__ == "__main__":
