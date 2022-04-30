@@ -74,7 +74,6 @@ def main():
 
     datasketch = DataSketchLSH()
     datasketch.init(threshold)
-    print("hit=")
     print(datasketch.mrjobs)
     with datasketch.make_runner() as runner:
         runner._input_paths = [f"{hadoop_string}/ngrams"]
@@ -85,11 +84,10 @@ def main():
     print(f"Hashing: {minhashtime - ngramtime} seconds.")
 
     lsh, mrjobs = datasketch.make_LSH()
-    lshtime = time.time()
-    print(f"LSH: {lshtime - minhashtime} seconds.")
-
     print(lsh)
     print(mrjobs)
+    lshtime = time.time()
+    print(f"LSH: {lshtime - minhashtime} seconds.")
 
     find_similar = FindSimilar()
     find_similar.init(lsh, mrjobs)
