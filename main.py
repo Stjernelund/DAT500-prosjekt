@@ -85,6 +85,12 @@ def main():
     lshtime = time.time()
     print(f"LSH: {lshtime - minhashtime} seconds.")
 
+    if run_hadoop:
+        with open(
+            f"{hadoop_string}/output_t{int(threshold * 100)}/similar.txt",
+            "w+",
+        ) as _:
+            pass
     datasketch.find_similar(lsh, hadoop_string)
     similar_time = time.time()
     print(f"Similarity: {similar_time - lshtime} seconds.")
