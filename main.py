@@ -74,7 +74,6 @@ def main():
 
     datasketch = DataSketchLSH()
     datasketch.init(threshold)
-    print(datasketch.mrjobs)
     with datasketch.make_runner() as runner:
         runner._input_paths = [f"{hadoop_string}/ngrams"]
         runner._output_dir = f"{hadoop_string}/{path}/lsh"
