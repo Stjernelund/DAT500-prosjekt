@@ -45,7 +45,7 @@ class MRDataSketchLSH(MRJob):
             lsh.insert(key, m)
         return lsh
 
-    def find_similar(self, lsh):
+    def find_similar(self, lsh, hadoop_string):
         """Query each paper against the others looking for similarities"""
         similar = {}
         for key, job in self.mrjobs:
@@ -54,7 +54,7 @@ class MRDataSketchLSH(MRJob):
             if found:
                 similar[key] = found
         with open(
-            f"output_t{int(self.threshold * 100)}/similar.txt",
+            f"{hadoop_string}/output_t{int(self.threshold * 100)}/similar.txt",
             "w+",
         ) as output:
             for key, line in similar.items():

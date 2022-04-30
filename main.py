@@ -85,7 +85,7 @@ def main():
     lshtime = time.time()
     print(f"LSH: {lshtime - minhashtime} seconds.")
 
-    datasketch.find_similar(lsh)
+    datasketch.find_similar(lsh, hadoop_string)
     similar_time = time.time()
     print(f"Similarity: {similar_time - lshtime} seconds.")
 
