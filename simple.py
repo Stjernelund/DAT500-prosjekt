@@ -3,7 +3,7 @@
 
 from mrjob.job import MRJob
 from mrjob.step import MRStep
-import datasketch
+import nltk
 
 
 class MRCountLinesRight(MRJob):
