@@ -58,6 +58,8 @@ if __name__ == "__main__":
         sklearn_time = time.time() - start_s
         sklearn_times.append(sklearn_time)
 
+    mean = tf_df.mean(axis=0)
+    print(mean.nlargest())
     print(tf_df.tail(12))
     print(f"mlib_time {mllib_times}")
     print(f"sklearn_time {sklearn_times}")
