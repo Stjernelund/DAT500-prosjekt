@@ -16,6 +16,7 @@ class FindSimilar(MRJob):
     def mapper(self):
         """Query each paper against the others looking for similarities"""
         similar = {}
+        print(similar)
         for key, job in self.mrjobs:
             found = self.lsh.query(job)
             found.remove(key)
