@@ -25,7 +25,8 @@ class DataSketchLSH(MRJob):
         m = MinHash(num_perm=self.num_prem)
         line = ast.literal_eval(line)
         for d in line:
-            m.update("test".encode("utf8"))
+            text = "".join(d)
+            m.update(text.encode("utf8"))
 
         # lean_m = LeanMinHash(seed=m.seed, hashvalues=m.hashvalues)  # Saves memoryspace
         # self.mrjobs.append(1)
