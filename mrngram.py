@@ -8,9 +8,7 @@ import nltk
 
 class MRNgram(MRJob):
     def steps(self):
-        return [
-            MRStep(mapper=self.mapper, combiner=self.combiner, reducer=self.reducer)
-        ]
+        return [MRStep(mapper=self.mapper, reducer=self.reducer)]
 
     def mapper(self, _, line):
         """Find ngrams on each paper"""
@@ -20,9 +18,6 @@ class MRNgram(MRJob):
         ngrams = set(nltk.ngrams(words, 5))
         for word in ngrams:
             yield paper_id, word
-
-    def combiner(self, paper_id, words):
-        yield paper_id, list(words)
 
     def reducer(self, paper_id, words):
         yield paper_id, list(words)
