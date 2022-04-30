@@ -72,9 +72,9 @@ def main():
     except FileNotFoundError:
         pass
 
-    datasketch = DataSketchLSH()
-    datasketch.init(threshold)
-    with datasketch.make_runner() as runner:
+    ds = DataSketchLSH()
+    ds.init(threshold)
+    with ds.make_runner() as runner:
         runner._input_paths = [f"{hadoop_string}/ngrams"]
         runner._output_dir = f"{hadoop_string}/{path}/lsh"
         runner.run()
@@ -82,17 +82,17 @@ def main():
     minhashtime = time.time()
     print(f"Hashing: {minhashtime - ngramtime} seconds.")
 
-    print(datasketch.mrjobs)
+    print(ds.mrjobs)
 
-    lsh = datasketch.make_LSH()
+    lsh = ds.make_LSH()
     print(lsh)
-    print(datasketch.mrjobs)
+    print(ds.mrjobs)
 
     lshtime = time.time()
     print(f"LSH: {lshtime - minhashtime} seconds.")
 
     find_similar = FindSimilar()
-    find_similar.init(lsh, datasketch.mrjobs)
+    find_similar.init(lsh, ds.mrjobs)
     with find_similar.make_runner() as runner:
         runner._input_paths = [f"{hadoop_string}/{path}/lsh"]
         runner._output_dir = f"{hadoop_string}/{path}/similars"
