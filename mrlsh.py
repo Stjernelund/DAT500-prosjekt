@@ -35,12 +35,21 @@ class DataSketchLSH(MRJob):
     def reducer(self, _, values):
         yield None, list(values)
 
-    def make_minhash(self):
+    def make_minhash(self, hadoop_string, path):
         cat = subprocess.Popen(
-            ["hadoop", "fs", "-cat", "/path/to/myfile"], stdout=subprocess.PIPE
+            ["hdfs", "dfs", "-cat", f"{hadoop_string}/ngrams/part-00000"],
+            stdout=subprocess.PIPE,
         )
         for line in cat.stdout:
-            print(line)
+            m = MinHash(num_perm=self.num_prem)
+            line = ast.literal_eval(line)
+            for d in line:
+                text = "".join(d)
+                m.update(text.encode("utf8"))
+            lean_m = LeanMinHash(
+                seed=m.seed, hashvalues=m.hashvalues
+            )  # Saves memoryspace
+            self.mrjobs.append(lean_m)
 
     def make_LSH(self):
         """Create LSH index from the MinHashes"""
