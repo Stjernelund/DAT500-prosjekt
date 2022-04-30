@@ -29,7 +29,7 @@ class MRDataSketchLSH(MRJob):
         for d in line:
             m.update(str(d).encode("utf8"))
         lean_m = LeanMinHash(seed=m.seed, hashvalues=m.hashvalues)  # Saves memoryspace
-        self.mrjobs.append((key, m))
+        self.mrjobs.append((key, lean_m))
         yield None, key
 
     def combiner(self, _, values):
