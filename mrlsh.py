@@ -25,11 +25,11 @@ class DataSketchLSH(MRJob):
         m = MinHash(num_perm=self.num_prem)
         line = ast.literal_eval(line)
         for d in line:
-            pass
-            # m.update(str(d).encode("utf8"))
+            m.update(str(d).encode("utf8"))
+        yield key, str(m)
         # lean_m = LeanMinHash(seed=m.seed, hashvalues=m.hashvalues)  # Saves memoryspace
-        self.mrjobs.append(1)
-        yield None, str(self.mrjobs[0])
+        # self.mrjobs.append(1)
+        # yield None, str(self.mrjobs[0])
 
     def reducer(self, _, values):
         yield None, list(values)
