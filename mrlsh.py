@@ -31,7 +31,6 @@ class DataSketchLSH(MRJob):
             text = "".join(d)
             m.update(text.encode("utf8"))
         lean_m = LeanMinHash(seed=m.seed, hashvalues=m.hashvalues)  # Saves memoryspace
-        self.mrjobs.append((key, lean_m))
         self.mrjobs.append(1)
         yield None, str(self.mrjobs[0])
         # yield None, key
