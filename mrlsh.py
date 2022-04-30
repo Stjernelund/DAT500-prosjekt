@@ -46,6 +46,7 @@ class DataSketchLSH(MRJob):
         yield None, list(values)
 
     def make_LSH(self):
+        print("her")
         print(self.mrjobs)
         """Create LSH index from the MinHashes"""
         lsh = MinHashLSH(threshold=self.threshold, num_perm=self.num_prem)
