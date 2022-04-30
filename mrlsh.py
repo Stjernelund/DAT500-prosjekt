@@ -22,10 +22,10 @@ class DataSketchLSH(MRJob):
         """MinHash each paper"""
         key, line = line.split("\t")
         key = key.strip('\\"')
-        yield key, line
-        """
         m = MinHash(num_perm=self.num_prem)
         line = ast.literal_eval(line)
+        yield key, line
+        """
         self.mrjobs.append((key, m))
         for d in line:
             m.update(str(d).encode("utf8"))
