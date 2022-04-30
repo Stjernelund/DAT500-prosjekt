@@ -9,9 +9,7 @@ import nltk
 class MRNgram(MRJob):
     def steps(self):
         return [
-            MRStep(
-                mapper=self.mapper,
-            )
+            MRStep(mapper=self.mapper, combiner=self.combiner, reducer=self.reducer)
         ]
 
     def mapper(self, _, line):
