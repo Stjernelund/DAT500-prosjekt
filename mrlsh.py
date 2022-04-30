@@ -10,9 +10,6 @@ from datasketch import MinHash, MinHashLSH, LeanMinHash
 class DataSketchLSH(MRJob):
     num_prem = 128
 
-    def __init__(self, *args, **kwargs):
-        super(DataSketchLSH, self).__init__(*args, **kwargs)
-
     def init(self, threshold, mrjobs):
         """Used to set threshold"""
         self.threshold = threshold
@@ -21,7 +18,8 @@ class DataSketchLSH(MRJob):
     def steps(self):
         return [MRStep(mapper=self.mapper)]
 
-    def mapper(self, key, line):
+    def mapper(self, _, line):
+        self.mrjobs.append(1)
         if False:
             """MinHash each paper"""
             key, line = line.split("\t")
