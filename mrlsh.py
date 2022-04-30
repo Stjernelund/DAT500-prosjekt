@@ -9,16 +9,14 @@ from datasketch import MinHash, MinHashLSH, LeanMinHash
 
 class DataSketchLSH(MRJob):
     num_prem = 128
+    mrjobs = []
 
     def init(self, threshold):
         """Used to set threshold"""
-        self.mrjobs = []
         self.threshold = threshold
 
     def steps(self):
-        return [
-            MRStep(mapper=self.mapper, combiner=self.combiner, reducer=self.reducer)
-        ]
+        return [MRStep(mapper=self.mapper, reducer=self.reducer)]
 
     def mapper(self, _, line):
         """MinHash each paper"""
@@ -31,9 +29,6 @@ class DataSketchLSH(MRJob):
         lean_m = LeanMinHash(seed=m.seed, hashvalues=m.hashvalues)  # Saves memoryspace
         self.mrjobs.append((key, lean_m))
         yield None, key
-
-    def combiner(self, _, values):
-        yield None, list(values)
 
     def reducer(self, _, values):
         yield None, list(values)
