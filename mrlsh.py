@@ -24,7 +24,7 @@ class DataSketchLSH(MRJob):
         """MinHash each paper"""
         key, line = line.split("\t")
         key = key.strip('\\"')
-        if self.hadoop:
+        if not self.hadoop:
             m = MinHash(num_perm=self.num_prem)
             line = ast.literal_eval(line)
             for d in line:
