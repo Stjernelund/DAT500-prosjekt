@@ -42,10 +42,10 @@ if __name__ == "__main__":
     for i in range(10):
         start = time.time()
         vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
-        wordsData = vectorizer.transform(wordsData)
+        tf = vectorizer.transform(wordsData)
         idf = IDF(inputCol="vectorizer", outputCol="tfidf_features")
-        idf_model = idf.fit(wordsData)
-        idf_data = idf_model.transform(wordsData)
+        idf_model = idf.fit(tf)
+        idf_data = idf_model.transform(tf)
         mlib_time = time.time() - start
         mllib_times.append(mlib_time)
     
