@@ -46,6 +46,7 @@ class DataSketchLSH(MRJob):
             stdout=subprocess.PIPE,
         )
         for line in cat.stdout:
+            line = line.split("\t")
             m = MinHash(num_perm=self.num_prem)
             line = ast.literal_eval(line)
             for d in line:
