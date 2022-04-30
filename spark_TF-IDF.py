@@ -41,7 +41,7 @@ if __name__ == "__main__":
     #Spark.ml.feature implementation of IDF
     for i in range(10):
         start = time.time()
-        vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer',vocabSize=1000,maxDF=0.5).fit(wordsData)
+        vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer',vocabSize=1000).fit(wordsData)
         tf = vectorizer.transform(wordsData)
         idf = IDF(inputCol="vectorizer", outputCol="tfidf_features")
         idf_model = idf.fit(tf)
@@ -52,12 +52,13 @@ if __name__ == "__main__":
     for i in range(10):
         start_s = time.time()
         tfidfVectorizer = TfidfVectorizer(norm=None,analyzer='word',
-            tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None,stop_words=my_stop_words,max_features=1000,max_df=0.5)
+            tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None,stop_words=my_stop_words,max_features=1000)
         tf=tfidfVectorizer.fit_transform(corpus)
         tf_df=pd.DataFrame(tf.toarray(), columns = tfidfVectorizer.get_feature_names_out(),index = paper_ids)
         sklearn_time = time.time() - start_s
         sklearn_times.append(sklearn_time)
-
+    cols = [col for col in tf_df.columns if all(char.isdigit() for char in col)]
+    tf_df = tf_df.drop(cols,axis=1)
     mean = tf_df.mean(axis=0)
     print(mean.nlargest(20))
     print(tf_df.tail(12))
