@@ -59,6 +59,9 @@ if __name__ == "__main__":
         sklearn_times.append(sklearn_time)
 
     print(tf_df.tail(12))
+
+    print(f"lengden av mllib: {len(vectorizer.vocabulary)}")
+    print(f"lengden av sklearn: {len(tfidfVectorizer.get_feature_names_out)}")
     print(f"mlib_time {mllib_times}")
     print(f"sklearn_time {sklearn_times}")
 
