@@ -15,13 +15,6 @@ import sys
 import os
 
 
-class Holder:
-    mrjobs = []
-
-    def add_mrjob(self, mrjob):
-        self.mrjobs.append(mrjob)
-
-
 def main():
     start = time.time()
     print("Started at:", datetime.now().strftime("%H:%M:%S"))
@@ -80,22 +73,17 @@ def main():
         pass
 
     ds = DataSketchLSH()
-    mrjobs = Holder()
-    ds.init(threshold, mrjobs)
-    print("ok")
+    ds.init(threshold)
     with ds.make_runner() as runner:
         runner._input_paths = [f"{hadoop_string}/ngrams"]
         runner._output_dir = f"{hadoop_string}/{path}/lsh"
         runner.run()
 
+    ds.make_minhash()
     minhashtime = time.time()
     print(f"Hashing: {minhashtime - ngramtime} seconds.")
 
-    print(mrjobs)
-
     lsh = ds.make_LSH()
-    print(lsh)
-    print(mrjobs)
 
     lshtime = time.time()
     print(f"LSH: {lshtime - minhashtime} seconds.")

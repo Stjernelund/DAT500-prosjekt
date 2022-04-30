@@ -5,42 +5,44 @@ from mrjob.job import MRJob
 from mrjob.step import MRStep
 import ast
 from datasketch import MinHash, MinHashLSH, LeanMinHash
+import subprocess
 
 
 class DataSketchLSH(MRJob):
     num_prem = 128
+    self.mrjobs = []
 
     def init(self, threshold, mrjobs):
         """Used to set threshold"""
         self.threshold = threshold
-        self.mrjobs = mrjobs
 
     def steps(self):
         return [MRStep(mapper=self.mapper)]
 
     def mapper(self, _, line):
-        self.mrjobs.add_mrjob(line)
-        if False:
-            """MinHash each paper"""
-            key, line = line.split("\t")
-            key = key.strip('\\"')
-            m = MinHash(num_perm=self.num_prem)
-            line = ast.literal_eval(line)
-            for d in line:
-                text = "".join(d)
-                m.update(text.encode("utf8"))
-            lean_m = LeanMinHash(
-                seed=m.seed, hashvalues=m.hashvalues
-            )  # Saves memoryspace
-            self.mrjobs.append((key, lean_m))
-            yield None, key
+        """MinHash each paper"""
+        key, line = line.split("\t")
+        key = key.strip('\\"')
+        m = MinHash(num_perm=self.num_prem)
+        line = ast.literal_eval(line)
+        for d in line:
+            text = "".join(d)
+            m.update(text.encode("utf8"))
+        lean_m = LeanMinHash(seed=m.seed, hashvalues=m.hashvalues)  # Saves memoryspace
+        self.mrjobs.append((key, lean_m))
+        yield None, key
 
     def reducer(self, _, values):
         yield None, list(values)
 
+    def make_minhash(self):
+        cat = subprocess.Popen(
+            ["hadoop", "fs", "-cat", "/path/to/myfile"], stdout=subprocess.PIPE
+        )
+        for line in cat.stdout:
+            print(line)
+
     def make_LSH(self):
-        print("her")
-        print(self.mrjobs)
         """Create LSH index from the MinHashes"""
         lsh = MinHashLSH(threshold=self.threshold, num_perm=self.num_prem)
         for key, m in self.mrjobs:
