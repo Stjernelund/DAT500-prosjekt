@@ -17,7 +17,7 @@ class DataSketchLSH(MRJob):
     def init(self, threshold):
         """Used to set threshold"""
         self.threshold = threshold
-        self.mrjobs = 21
+        self.mrjobs.append(21)
 
     def steps(self):
         return [MRStep(mapper=self.mapper, reducer=self.reducer)]
