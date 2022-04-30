@@ -16,17 +16,17 @@ class DataSketchLSH(MRJob):
         self.mrjobs = []
 
     def steps(self):
-        return [MRStep(mapper=self.mapper, reducer=self.reducer)]
+        return [MRStep(mapper=self.mapper)]
 
     def mapper(self, _, line):
         """MinHash each paper"""
         key, line = line.split("\t")
+        yield key, line
+        """
         key = key.strip('\\"')
         m = MinHash(num_perm=self.num_prem)
         line = ast.literal_eval(line)
         self.mrjobs.append((key, m))
-        yield None, line
-        """
         for d in line:
             m.update(str(d).encode("utf8"))
         # lean_m = LeanMinHash(seed=m.seed, hashvalues=m.hashvalues)  # Saves memoryspace
