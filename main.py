@@ -73,7 +73,8 @@ def main():
         pass
 
     ds = DataSketchLSH()
-    ds.init(threshold)
+    mrjobs = []
+    ds.init(threshold, mrjobs)
     with ds.make_runner() as runner:
         runner._input_paths = [f"{hadoop_string}/ngrams"]
         runner._output_dir = f"{hadoop_string}/{path}/lsh"
@@ -82,11 +83,11 @@ def main():
     minhashtime = time.time()
     print(f"Hashing: {minhashtime - ngramtime} seconds.")
 
-    print(ds.mrjobs)
+    print(mrjobs)
 
     lsh = ds.make_LSH()
     print(lsh)
-    print(ds.mrjobs)
+    print(mrjobs)
 
     lshtime = time.time()
     print(f"LSH: {lshtime - minhashtime} seconds.")
