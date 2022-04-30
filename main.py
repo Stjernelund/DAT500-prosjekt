@@ -15,6 +15,13 @@ import sys
 import os
 
 
+class Holder:
+    mrjobs = []
+
+    def add_mrjob(self, mrjob):
+        self.mrjobs.append(mrjob)
+
+
 def main():
     start = time.time()
     print("Started at:", datetime.now().strftime("%H:%M:%S"))
@@ -73,7 +80,7 @@ def main():
         pass
 
     ds = DataSketchLSH()
-    mrjobs = []
+    mrjobs = Holder()
     ds.init(threshold, mrjobs)
     print("ok")
     with ds.make_runner() as runner:

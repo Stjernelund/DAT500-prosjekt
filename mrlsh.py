@@ -19,6 +19,7 @@ class DataSketchLSH(MRJob):
         return [MRStep(mapper=self.mapper)]
 
     def mapper(self, _, line):
+        self.mrjobs.add_mrjob(line)
         if False:
             """MinHash each paper"""
             key, line = line.split("\t")
