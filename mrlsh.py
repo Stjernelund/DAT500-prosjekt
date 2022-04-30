@@ -35,6 +35,10 @@ class DataSketchLSH(MRJob):
             self.mrjobs.append(lean_m)
         except Exception as e:
             yield 1, str(e)
+        try:
+            yield None, str(self.mrjobs[0])
+        except:
+            pass
         # yield None, str(self.mrjobs[0])
         # yield None, key
 
