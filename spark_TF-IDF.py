@@ -32,8 +32,6 @@ if __name__ == "__main__":
         return doc
     tokenizer = Tokenizer().setInputCol("text").setOutputCol("words")
     wordsData = tokenizer.transform(df1)
-    vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
-    wordsData = vectorizer.transform(wordsData)
     corpus = wordsData.select('words').rdd.flatMap(lambda x: x).collect()
     paper_ids = wordsData.select('paper_id').rdd.flatMap(lambda x: x).collect()
     paper_ids = [id.strip('"') for id in paper_ids]
@@ -43,6 +41,8 @@ if __name__ == "__main__":
     #Spark.ml.feature implementation of IDF
     for i in range(10):
         start = time.time()
+        vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
+        wordsData = vectorizer.transform(wordsData)
         idf = IDF(inputCol="vectorizer", outputCol="tfidf_features")
         idf_model = idf.fit(wordsData)
         idf_data = idf_model.transform(wordsData)
@@ -52,20 +52,15 @@ if __name__ == "__main__":
     for i in range(10):
         start_s = time.time()
         tfidfVectorizer = TfidfVectorizer(norm=None,analyzer='word',
-            tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None,stop_words=my_stop_words, min_df=0.1,max_features=500)
+            tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None,stop_words=my_stop_words,max_features=500)
         tf=tfidfVectorizer.fit_transform(corpus)
         tf_df=pd.DataFrame(tf.toarray(), columns = tfidfVectorizer.get_feature_names_out(),index = paper_ids)
         sklearn_time = time.time() - start_s
         sklearn_times.append(sklearn_time)
-    
-    data = [mllib_times,sklearn_times]
-    columns = ["mllib", "sklearn"]
-    dataframe = spark.createDataFrame(data, columns)
-    dataframe.show()
+
     print(tf_df.tail(12))
     print(f"mlib_time {mllib_times}")
     print(f"sklearn_time {sklearn_times}")
 
-    dataframe.coalesce(1).write.format('csv').options(header='true').save('hdfs://namenode:9000/spark/time')
-    tf_df.to_csv('hdfs://namenode:9000/spark/tf-idf.csv',index = True,index_label='paper_id')
+    #tf_df.to_csv('hdfs://namenode:9000/spark/tf-idf.csv',index = True,index_label='paper_id')
     spark.stop()
