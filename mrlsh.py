@@ -18,7 +18,7 @@ class DataSketchLSH(MRJob):
         self.hadoop = hadoop
 
     def steps(self):
-        return [MRStep(mapper=self.mapper)]
+        return [MRStep(mapper=self.mapper, reducer=self.reducer)]
 
     def mapper(self, _, line):
         """MinHash each paper"""
@@ -37,7 +37,8 @@ class DataSketchLSH(MRJob):
             yield None, key
 
     def reducer(self, _, values):
-        yield None, list(values)
+        if not self.hadoop:
+            yield None, list(values)
 
     def make_minhash(self, hadoop_string):
         cat = subprocess.Popen(
