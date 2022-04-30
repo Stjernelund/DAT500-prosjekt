@@ -7,7 +7,7 @@ import ast
 from datasketch import MinHash, MinHashLSH, LeanMinHash
 
 
-class MRDataSketchLSH(MRJob):
+class DataSketchLSH(MRJob):
     mrjobs = []
     num_prem = 128
 

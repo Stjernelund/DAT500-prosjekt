@@ -5,7 +5,7 @@ from mrjob.job import MRJob
 from mrjob.step import MRStep
 
 
-class MRFindSimilar(MRJob):
+class FindSimilar(MRJob):
     def steps(self):
         return [MRStep(mapper=self.mapper)]
 

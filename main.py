@@ -3,11 +3,11 @@
 
 from mrtotal import Total
 from mrpreprocess import MRPreProcess
-from mrlsh import MRDataSketchLSH
+from mrlsh import DataSketchLSH
 from mrngram import MRNgram
 from mrsimilar import Similar
 from mrsumsimilar import SumSimilar
-from mrfindsimilar import FindSimilar, MRFindSimilar
+from mrfindsimilar import FindSimilar
 import time
 from datetime import datetime
 import shutil
@@ -72,7 +72,7 @@ def main():
     except FileNotFoundError:
         pass
 
-    datasketch = MRDataSketchLSH()
+    datasketch = DataSketchLSH()
     datasketch.init(threshold)
     with datasketch.make_runner() as runner:
         runner._input_paths = [f"{hadoop_string}/ngrams"]
@@ -86,7 +86,7 @@ def main():
     lshtime = time.time()
     print(f"LSH: {lshtime - minhashtime} seconds.")
 
-    find_similar = MRFindSimilar()
+    find_similar = FindSimilar()
     with find_similar.make_runner() as runner:
         runner._input_paths = [f"{hadoop_string}/{path}/lsh"]
         runner._output_dir = f"{hadoop_string}/{path}/similars"
