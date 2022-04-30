@@ -34,6 +34,7 @@ def main():
                 shutil.rmtree("preprocess")
         except FileNotFoundError:
             pass
+        start = time.time()
         preprocesser = MRPreProcess()
         with preprocesser.make_runner() as runner:
             runner._input_paths = [f"{hadoop_string}/papers.csv"]
