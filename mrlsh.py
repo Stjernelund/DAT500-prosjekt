@@ -20,10 +20,10 @@ class DataSketchLSH(MRJob):
 
     def mapper(self, key, line):
         """MinHash each paper"""
-        # key, line = line.split("\t")
+        key, line = line.split("\t")
+        key = key.strip('\\"')
         yield key, line
         """
-        key = key.strip('\\"')
         m = MinHash(num_perm=self.num_prem)
         line = ast.literal_eval(line)
         self.mrjobs.append((key, m))
