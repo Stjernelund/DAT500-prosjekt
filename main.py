@@ -44,7 +44,6 @@ def main():
     preprostime = time.time()
     print(f"Preprocessing: {preprostime - start} seconds.")
 
-    """
     if preprocess:
         try:
             if run_hadoop:
@@ -62,6 +61,8 @@ def main():
     ngramtime = time.time()
     print(f"Ngrams: {ngramtime - preprostime} seconds.")
 
+
+"""
     # Remove the previous output directory
     try:
         if run_hadoop:
