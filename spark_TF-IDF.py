@@ -52,7 +52,7 @@ if __name__ == "__main__":
     for i in range(10):
         start_s = time.time()
         tfidfVectorizer = TfidfVectorizer(norm=None,analyzer='word',
-            tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None,stop_words=my_stop_words,max_features=1000)
+            tokenizer=dummy_fun,preprocessor=dummy_fun,token_pattern=None,stop_words=my_stop_words)
         tf=tfidfVectorizer.fit_transform(corpus)
         tf_df=pd.DataFrame(tf.toarray(), columns = tfidfVectorizer.get_feature_names_out(),index = paper_ids)
         sklearn_time = time.time() - start_s
