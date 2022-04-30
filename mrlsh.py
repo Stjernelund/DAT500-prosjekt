@@ -31,15 +31,8 @@ class DataSketchLSH(MRJob):
             text = "".join(d)
             m.update(text.encode("utf8"))
         lean_m = LeanMinHash(seed=m.seed, hashvalues=m.hashvalues)  # Saves memoryspace
-        try:
-            self.mrjobs.append((key, lean_m))
-        except Exception as e:
-            yield 1, str(e)
-        try:
-            yield None, str(self.mrjobs[0])
-        except:
-            pass
-        # yield None, str(self.mrjobs[0])
+        self.mrjobs.append((key, lean_m))
+        yield None, str(self.mrjobs[0])
         # yield None, key
 
     def reducer(self, _, values):
