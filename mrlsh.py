@@ -23,17 +23,18 @@ class DataSketchLSH(MRJob):
 
     def mapper(self, key, line):
         """MinHash each paper"""
-        key, line = line.split("\t")
-        key = key.strip('\\"')
-        m = MinHash(num_perm=self.num_prem)
-        line = ast.literal_eval(line)
-        for d in line:
-            text = "".join(d)
-            m.update(text.encode("utf8"))
-        lean_m = LeanMinHash(seed=m.seed, hashvalues=m.hashvalues)  # Saves memoryspace
         try:
-            self.mrjobs.append(1)
-            yield None, key
+            key, line = line.split("\t")
+            key = key.strip('\\"')
+            m = MinHash(num_perm=self.num_prem)
+            line = ast.literal_eval(line)
+            for d in line:
+                text = "".join(d)
+                m.update(text.encode("utf8"))
+            lean_m = LeanMinHash(
+                seed=m.seed, hashvalues=m.hashvalues
+            )  # Saves memoryspace
+            self.mrjobs.append((key, lean_m))
         except Exception as e:
             yield 1, e
 
