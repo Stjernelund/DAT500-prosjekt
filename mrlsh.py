@@ -22,9 +22,9 @@ class DataSketchLSH(MRJob):
 
     def mapper(self, _, line):
         """MinHash each paper"""
-        if not self.hadoop:
-            key, line = line.split("\t")
-            key = key.strip('\\"')
+        key, line = line.split("\t")
+        key = key.strip('\\"')
+        if self.hadoop:
             m = MinHash(num_perm=self.num_prem)
             line = ast.literal_eval(line)
             for d in line:
@@ -34,11 +34,10 @@ class DataSketchLSH(MRJob):
                 seed=m.seed, hashvalues=m.hashvalues
             )  # Saves memoryspace
             self.mrjobs.append((key, lean_m))
-            yield None, key
+        yield None, key
 
     def reducer(self, _, values):
-        if not self.hadoop:
-            yield None, list(values)
+        yield None, list(values)
 
     def make_minhash(self, hadoop_string):
         cat = subprocess.Popen(

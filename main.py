@@ -79,6 +79,8 @@ def main():
         runner._output_dir = f"{hadoop_string}/{path}/lsh"
         runner.run()
 
+    print("done")
+
     ds.make_minhash(hadoop_string)
     minhashtime = time.time()
     print(f"Hashing: {minhashtime - ngramtime} seconds.")
