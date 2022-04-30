@@ -22,7 +22,7 @@ if __name__ == "__main__":
     sc = spark.sparkContext
     os.environ["PYARROW_IGNORE_TIMEZONE"] = "1"
     try:
-        path ="hdfs://namenode:9000/preprocess/part-*"
+        path ="hdfs://namenode:9000/preprocess2/part-*"
         df1 = spark.read.text(path)
         df1 = df1.withColumn("paper_id", f.split(f.col("value"), "\\t").getItem(0)).withColumn("text", f.split(f.col("value"), "\\t").getItem(1))
         df1 = df1.select(f.split(df1.value,"\\t")).rdd.flatMap(lambda x: x).toDF(schema=["paper_id","text"])
