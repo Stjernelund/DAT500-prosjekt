@@ -25,8 +25,11 @@ class DataSketchLSH(MRJob):
         m = MinHash(num_perm=self.num_prem)
         line = ast.literal_eval(line)
         for d in line:
-            # m.update(str(d).encode("utf8"))
-            yield key, str(d)
+            try:
+                m.update(str(d).encode("utf8"))
+            except Exception as e:
+                yield None, str(e)
+
         # lean_m = LeanMinHash(seed=m.seed, hashvalues=m.hashvalues)  # Saves memoryspace
         # self.mrjobs.append(1)
         # yield None, str(self.mrjobs[0])
