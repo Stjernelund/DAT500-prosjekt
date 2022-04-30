@@ -41,7 +41,7 @@ if __name__ == "__main__":
     #Spark.ml.feature implementation of IDF
     for i in range(10):
         start = time.time()
-        vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer',vocabSize=1000).fit(wordsData)
+        vectorizer = CountVectorizer(inputCol='words', outputCol='vectorizer').fit(wordsData)
         wordsData = vectorizer.transform(wordsData)
         idf = IDF(inputCol="vectorizer", outputCol="tfidf_features")
         idf_model = idf.fit(wordsData)
