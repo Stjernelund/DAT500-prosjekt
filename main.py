@@ -85,15 +85,15 @@ def main():
 
     print(datasketch.mrjobs)
 
-    lsh, mrjobs = datasketch.make_LSH()
+    lsh = datasketch.make_LSH()
     print(lsh)
-    print(mrjobs)
+    print(datasketch.mrjobs)
 
     lshtime = time.time()
     print(f"LSH: {lshtime - minhashtime} seconds.")
 
     find_similar = FindSimilar()
-    find_similar.init(lsh, mrjobs)
+    find_similar.init(lsh, datasketch.mrjobs)
     with find_similar.make_runner() as runner:
         runner._input_paths = [f"{hadoop_string}/{path}/lsh"]
         runner._output_dir = f"{hadoop_string}/{path}/similars"

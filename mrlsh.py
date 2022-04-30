@@ -10,13 +10,10 @@ from datasketch import MinHash, MinHashLSH, LeanMinHash
 class DataSketchLSH(MRJob):
     num_prem = 128
 
-    def __init__(self):
-        super(DataSketchLSH, self).__init__()
-        self.mrjobs = []
-
     def init(self, threshold):
         """Used to set threshold"""
         self.threshold = threshold
+        self.mrjobs = []
 
     def steps(self):
         return [MRStep(mapper=self.mapper, reducer=self.reducer)]
@@ -41,7 +38,7 @@ class DataSketchLSH(MRJob):
         lsh = MinHashLSH(threshold=self.threshold, num_perm=self.num_prem)
         for key, m in self.mrjobs:
             lsh.insert(key, m)
-        return lsh, self.mrjobs
+        return lsh.get_counts()
 
     '''
     def find_similar(self, lsh, hadoop_string):
