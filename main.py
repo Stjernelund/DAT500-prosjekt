@@ -44,6 +44,7 @@ def main():
     preprostime = time.time()
     print(f"Preprocessing: {preprostime - start} seconds.")
 
+    """
     if preprocess:
         try:
             if run_hadoop:
@@ -115,6 +116,7 @@ def main():
 
     print(f"Analysis: {time.time() - lshtime} seconds.")
     print(f"Total time: {time.time() - start} seconds.")
+"""
 
 
 if __name__ == "__main__":
