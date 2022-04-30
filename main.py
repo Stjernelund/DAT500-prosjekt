@@ -87,6 +87,7 @@ def main():
     print(f"LSH: {lshtime - minhashtime} seconds.")
 
     find_similar = FindSimilar()
+    find_similar.init(lsh, mrjobs)
     with find_similar.make_runner() as runner:
         runner._input_paths = [f"{hadoop_string}/{path}/lsh"]
         runner._output_dir = f"{hadoop_string}/{path}/similars"
