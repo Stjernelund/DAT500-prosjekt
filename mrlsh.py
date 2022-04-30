@@ -24,7 +24,7 @@ class DataSketchLSH(MRJob):
         key = key.strip('\\"')
         m = MinHash(num_perm=self.num_prem)
         line = ast.literal_eval(line)
-        yield m, line
+        yield None, m
         """
         for d in line:
             yield m, d
