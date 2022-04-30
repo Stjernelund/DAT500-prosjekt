@@ -99,7 +99,7 @@ def main():
         runner.run()
 
     """
-    datasketch.find_similar(lsh, mrjobs)
+    ds.find_similar(lsh, mrjobs)
     similar_time = time.time()
     print(f"Similarity: {similar_time - lshtime} seconds.")
 
