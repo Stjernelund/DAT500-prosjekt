@@ -24,16 +24,17 @@ class DataSketchLSH(MRJob):
         """MinHash each paper"""
         key, line = line.split("\t")
         key = key.strip('\\"')
-        if not self.hadoop:
-            m = MinHash(num_perm=self.num_prem)
-            line = ast.literal_eval(line)
-            for d in line:
-                text = "".join(d)
-                m.update(text.encode("utf8"))
-            lean_m = LeanMinHash(
-                seed=m.seed, hashvalues=m.hashvalues
-            )  # Saves memoryspace
-            self.mrjobs.append((key, lean_m))
+        if False:
+            if not self.hadoop:
+                m = MinHash(num_perm=self.num_prem)
+                line = ast.literal_eval(line)
+                for d in line:
+                    text = "".join(d)
+                    m.update(text.encode("utf8"))
+                lean_m = LeanMinHash(
+                    seed=m.seed, hashvalues=m.hashvalues
+                )  # Saves memoryspace
+                self.mrjobs.append((key, lean_m))
         yield None, key
 
     def reducer(self, _, values):
