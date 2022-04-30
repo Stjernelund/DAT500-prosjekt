@@ -23,6 +23,12 @@ class MRNgram(MRJob):
         for word in ngrams:
             yield paper_id, word
 
+    def combiner(self, paper_id, words):
+        yield paper_id, list(words)
+
+    def reducer(self, paper_id, words):
+        yield paper_id, list(words)
+
 
 if __name__ == "__main__":
     MRNgram.run()
