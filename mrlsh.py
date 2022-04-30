@@ -43,8 +43,9 @@ class MRDataSketchLSH(MRJob):
         lsh = MinHashLSH(threshold=self.threshold, num_perm=self.num_prem)
         for key, m in self.mrjobs:
             lsh.insert(key, m)
-        return lsh
+        return lsh, self.mrjobs
 
+    '''
     def find_similar(self, lsh, hadoop_string):
         """Query each paper against the others looking for similarities"""
         similar = {}
@@ -59,6 +60,7 @@ class MRDataSketchLSH(MRJob):
         ) as output:
             for key, line in similar.items():
                 output.write(f"{key}\t{line}\n")
+    '''
 
 
 if __name__ == "__main__":

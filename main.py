@@ -7,6 +7,7 @@ from mrlsh import MRDataSketchLSH
 from mrngram import MRNgram
 from mrsimilar import Similar
 from mrsumsimilar import SumSimilar
+from mrfindsimilar import FindSimilar, MRFindSimilar
 import time
 from datetime import datetime
 import shutil
@@ -81,19 +82,21 @@ def main():
     minhashtime = time.time()
     print(f"Hashing: {minhashtime - ngramtime} seconds.")
 
-    lsh = datasketch.make_LSH()
+    lsh, mrjobs = datasketch.make_LSH()
     lshtime = time.time()
     print(f"LSH: {lshtime - minhashtime} seconds.")
 
-    if run_hadoop:
-        with open(
-            f"{hadoop_string}/output_t{int(threshold * 100)}/similar.txt",
-            "w+",
-        ) as _:
-            pass
-    datasketch.find_similar(lsh, hadoop_string)
+    find_similar = MRFindSimilar()
+    with find_similar.make_runner() as runner:
+        runner._input_paths = [f"{hadoop_string}/{path}/lsh"]
+        runner._output_dir = f"{hadoop_string}/{path}/similars"
+        runner.run()
+
+    """
+    datasketch.find_similar(lsh, mrjobs)
     similar_time = time.time()
     print(f"Similarity: {similar_time - lshtime} seconds.")
+    """
 
     MR_total = Total()
     with MR_total.make_runner() as runner:
@@ -106,7 +109,7 @@ def main():
 
     MR_similar = Similar()
     with MR_similar.make_runner() as runner:
-        runner._input_paths = [f"{hadoop_string}/{path}/similar.txt"]
+        runner._input_paths = [f"{hadoop_string}/{path}/similars"]
         runner._output_dir = f"{hadoop_string}/{path}/similar_total"
         runner.run()
         for _, value in MR_similar.parse_output(runner.cat_output()):
@@ -116,7 +119,7 @@ def main():
 
     sum_similar = SumSimilar()
     with sum_similar.make_runner() as runner:
-        runner._input_paths = [f"{hadoop_string}/{path}/similar.txt*"]
+        runner._input_paths = [f"{hadoop_string}/{path}/similars"]
         runner._output_dir = f"{hadoop_string}/{path}/similar_sum"
         runner.run()
 
