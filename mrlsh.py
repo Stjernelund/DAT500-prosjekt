@@ -8,11 +8,11 @@ from datasketch import MinHash, MinHashLSH, LeanMinHash
 
 
 class DataSketchLSH(MRJob):
-    mrjobs = []
     num_prem = 128
 
     def init(self, threshold):
         """Used to set threshold"""
+        self.mrjobs = []
         self.threshold = threshold
 
     def steps(self):
