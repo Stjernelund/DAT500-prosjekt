@@ -12,30 +12,34 @@ class DataSketchLSH(MRJob):
     num_prem = 128
     mrjobs = []
 
-    def init(self, threshold):
+    def init(self, threshold, hadoop):
         """Used to set threshold"""
         self.threshold = threshold
+        self.hadoop = hadoop
 
     def steps(self):
         return [MRStep(mapper=self.mapper)]
 
     def mapper(self, _, line):
         """MinHash each paper"""
-        key, line = line.split("\t")
-        key = key.strip('\\"')
-        m = MinHash(num_perm=self.num_prem)
-        line = ast.literal_eval(line)
-        for d in line:
-            text = "".join(d)
-            m.update(text.encode("utf8"))
-        lean_m = LeanMinHash(seed=m.seed, hashvalues=m.hashvalues)  # Saves memoryspace
-        self.mrjobs.append((key, lean_m))
-        yield None, key
+        if not self.hadoop:
+            key, line = line.split("\t")
+            key = key.strip('\\"')
+            m = MinHash(num_perm=self.num_prem)
+            line = ast.literal_eval(line)
+            for d in line:
+                text = "".join(d)
+                m.update(text.encode("utf8"))
+            lean_m = LeanMinHash(
+                seed=m.seed, hashvalues=m.hashvalues
+            )  # Saves memoryspace
+            self.mrjobs.append((key, lean_m))
+            yield None, key
 
     def reducer(self, _, values):
         yield None, list(values)
 
-    def make_minhash(self, hadoop_string, path):
+    def make_minhash(self, hadoop_string):
         cat = subprocess.Popen(
             ["hdfs", "dfs", "-cat", f"{hadoop_string}/ngrams/part-00000"],
             stdout=subprocess.PIPE,
@@ -58,7 +62,6 @@ class DataSketchLSH(MRJob):
             lsh.insert(key, m)
         return lsh.get_counts()
 
-    '''
     def find_similar(self, lsh, hadoop_string):
         """Query each paper against the others looking for similarities"""
         similar = {}
@@ -73,7 +76,6 @@ class DataSketchLSH(MRJob):
         ) as output:
             for key, line in similar.items():
                 output.write(f"{key}\t{line}\n")
-    '''
 
 
 if __name__ == "__main__":
