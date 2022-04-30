@@ -86,7 +86,9 @@ def main():
     lshtime = time.time()
     print(f"LSH: {lshtime - minhashtime} seconds.")
 
-    """
+    print(lsh)
+    print(mrjobs)
+
     find_similar = FindSimilar()
     find_similar.init(lsh, mrjobs)
     with find_similar.make_runner() as runner:
@@ -94,6 +96,7 @@ def main():
         runner._output_dir = f"{hadoop_string}/{path}/similars"
         runner.run()
 
+    """
     datasketch.find_similar(lsh, mrjobs)
     similar_time = time.time()
     print(f"Similarity: {similar_time - lshtime} seconds.")
