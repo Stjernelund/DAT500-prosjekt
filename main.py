@@ -82,7 +82,7 @@ def main():
     minhashtime = time.time()
     print(f"Hashing: {minhashtime - ngramtime} seconds.")
 
-    print(datasketch.mrjobs)
+    print(datasketch.get_mrjobs())
 
     lsh, mrjobs = datasketch.make_LSH()
     print(lsh)

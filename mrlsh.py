@@ -43,6 +43,9 @@ class DataSketchLSH(MRJob):
             lsh.insert(key, m)
         return lsh, self.mrjobs
 
+    def get_mrjobs(self):
+        return self.mrjobs
+
     '''
     def find_similar(self, lsh, hadoop_string):
         """Query each paper against the others looking for similarities"""
