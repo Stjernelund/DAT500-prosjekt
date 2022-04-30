@@ -87,6 +87,7 @@ def main():
     lsh, mrjobs = datasketch.make_LSH()
     print(lsh)
     print(mrjobs)
+
     lshtime = time.time()
     print(f"LSH: {lshtime - minhashtime} seconds.")
 

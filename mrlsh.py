@@ -9,7 +9,10 @@ from datasketch import MinHash, MinHashLSH, LeanMinHash
 
 class DataSketchLSH(MRJob):
     num_prem = 128
-    mrjobs = []
+
+    def __init__(self, *args, **kwargs):
+        super(DataSketchLSH, self).__init__(*args, **kwargs)
+        self.mrjobs = []
 
     def init(self, threshold):
         """Used to set threshold"""
