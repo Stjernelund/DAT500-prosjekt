@@ -22,8 +22,8 @@ class DataSketchLSH(MRJob):
         return [MRStep(mapper=self.mapper)]
 
     def mapper(self, key, line):
-        """MinHash each paper"""
-        try:
+        if False:
+            """MinHash each paper"""
             key, line = line.split("\t")
             key = key.strip('\\"')
             m = MinHash(num_perm=self.num_prem)
@@ -35,8 +35,7 @@ class DataSketchLSH(MRJob):
                 seed=m.seed, hashvalues=m.hashvalues
             )  # Saves memoryspace
             self.mrjobs.append((key, lean_m))
-        except Exception as e:
-            yield 1, e
+            yield None, key
 
     def reducer(self, _, values):
         yield None, list(values)
