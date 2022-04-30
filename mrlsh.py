@@ -24,6 +24,7 @@ class DataSketchLSH(MRJob):
         key = key.strip('\\"')
         m = MinHash(num_perm=self.num_prem)
         line = ast.literal_eval(line)
+        self.mrjobs.append((key, m))
         yield None, line
         """
         for d in line:
