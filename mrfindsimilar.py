@@ -22,4 +22,4 @@ class FindSimilar(MRJob):
 
 
 if __name__ == "__main__":
-    MRFindSimilar.run()
+    FindSimilar.run()
