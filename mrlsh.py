@@ -4,7 +4,7 @@
 from mrjob.job import MRJob
 from mrjob.step import MRStep
 import ast
-from datasketch import MinHash, MinHashLSH
+from datasketch import MinHash, MinHashLSH, LeanMinHash
 
 
 class MRDataSketchLSH(MRJob):
@@ -28,6 +28,7 @@ class MRDataSketchLSH(MRJob):
         line = ast.literal_eval(line)
         for d in line:
             m.update(str(d).encode("utf8"))
+        lean_m = LeanMinHash(seed=m.seed, hashvalues=m.hashvalues)  # Saves memoryspace
         self.mrjobs.append((key, m))
         yield None, key
 
