@@ -4,6 +4,7 @@
 from mrjob.job import MRJob
 from mrjob.step import MRStep
 import ast
+from datasketch import MinHash, MinHashLSH
 
 
 class MRDataSketchLSH(MRJob):
@@ -15,27 +16,30 @@ class MRDataSketchLSH(MRJob):
         self.threshold = threshold
 
     def steps(self):
-        return [MRStep(mapper=self.mapper, reducer=self.reducer)]
+        return [
+            MRStep(mapper=self.mapper, combiner=self.combiner, reducer=self.reducer)
+        ]
 
     def mapper(self, _, line):
         """MinHash each paper"""
         key, line = line.split("\t")
         key = key.strip('\\"')
-        m = self.datasketch.MinHash(num_perm=self.num_prem)
+        m = MinHash(num_perm=self.num_prem)
         line = ast.literal_eval(line)
         for d in line:
             m.update(str(d).encode("utf8"))
         self.mrjobs.append((key, m))
         yield None, key
 
+    def combiner(self, _, values):
+        yield None, list(values)
+
     def reducer(self, _, values):
         yield None, list(values)
 
     def make_LSH(self):
         """Create LSH index from the MinHashes"""
-        lsh = self.datasketch.MinHashLSH(
-            threshold=self.threshold, num_perm=self.num_prem
-        )
+        lsh = MinHashLSH(threshold=self.threshold, num_perm=self.num_prem)
         for key, m in self.mrjobs:
             lsh.insert(key, m)
         return lsh

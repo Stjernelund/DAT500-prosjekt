@@ -3,6 +3,7 @@
 
 from mrjob.job import MRJob
 from mrjob.step import MRStep
+import nltk
 
 
 class MRNgram(MRJob):
@@ -18,7 +19,7 @@ class MRNgram(MRJob):
         paper_id, line = line.split("\t")
         paper_id = paper_id.strip('\\"')
         words = line.split()
-        ngrams = set(self.nltk.ngrams(words, 5))
+        ngrams = set(nltk.ngrams(words, 5))
         for word in ngrams:
             yield paper_id, word
 
