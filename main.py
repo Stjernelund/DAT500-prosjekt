@@ -25,7 +25,7 @@ def main():
     run_hadoop = "hadoop" in sys.argv[2].lower()
     hadoop_string = "hdfs://" if run_hadoop else ""
 
-    if preprocess and True:
+    if preprocess:
         # Remove the previous output directory
         try:
             if run_hadoop:
