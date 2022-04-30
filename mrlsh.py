@@ -12,7 +12,7 @@ class DataSketchLSH(MRJob):
     num_prem = 128
     mrjobs = []
 
-    def init(self, threshold, mrjobs):
+    def init(self, threshold):
         """Used to set threshold"""
         self.threshold = threshold
 
