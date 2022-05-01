@@ -9,7 +9,7 @@ from datasketch import MinHash, MinHashLSH, LeanMinHash
 
 class DataSketchLSH(MRJob):
     num_prem = 128
-    threshold = 0.7
+    threshold = 0.6
 
     def steps(self):
         return [
