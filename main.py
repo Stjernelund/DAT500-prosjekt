@@ -73,23 +73,19 @@ def main():
         pass
 
     ds = DataSketchLSH()
-    ds.init(threshold, run_hadoop)
+    ds.init(threshold)
     with ds.make_runner() as runner:
         runner._input_paths = [f"{hadoop_string}/ngrams"]
         runner._output_dir = f"{hadoop_string}/{path}/lsh"
         runner.run()
 
-    print("done")
-
-    ds.make_minhash(hadoop_string)
     minhashtime = time.time()
     print(f"Hashing: {minhashtime - ngramtime} seconds.")
-
-    lsh = ds.make_LSH()
 
     lshtime = time.time()
     print(f"LSH: {lshtime - minhashtime} seconds.")
 
+    """
     find_similar = FindSimilar()
     find_similar.init(lsh, ds.mrjobs)
     with find_similar.make_runner() as runner:
@@ -97,7 +93,6 @@ def main():
         runner._output_dir = f"{hadoop_string}/{path}/similars"
         runner.run()
 
-    """
     ds.find_similar(lsh, mrjobs)
     similar_time = time.time()
     print(f"Similarity: {similar_time - lshtime} seconds.")
