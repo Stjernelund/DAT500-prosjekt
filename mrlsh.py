@@ -30,7 +30,7 @@ class DataSketchLSH(MRJob):
     def mapper(self, _, line):
         pid, line = line.split("\t")
         pid = pid.strip('\\"')
-        m = LeanMinHash(num_perm=self.num_prem)
+        m = MinHash(num_perm=self.num_prem)
         line = ast.literal_eval(line)
         for d in line:
             m.update(str(d).encode("utf8"))
