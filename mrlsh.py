@@ -18,7 +18,8 @@ class DataSketchLSH(MRJob):
         return [
             MRStep(
                 mapper_init=self.mapper_init,
-                mapper=self.reducer,
+                mapper=self.mapper,
+                reducer=self.reducer,
             )
         ]
 
