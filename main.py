@@ -20,9 +20,7 @@ def main():
     print("Started at:", datetime.now().strftime("%H:%M:%S"))
 
     # Run by using the following command: python3 main.py [-r hadoop] threshold_value true/false
-    threshold = float(sys.argv[3])
-    path = f"output_t{int(threshold * 100)}"
-    preprocess = "t" in sys.argv[4].lower()
+    preprocess = "t" in sys.argv[3].lower()
     run_hadoop = "hadoop" in sys.argv[2].lower()
     hadoop_string = "hdfs://" if run_hadoop else f""
 
@@ -73,7 +71,10 @@ def main():
         pass
 
     ds = DataSketchLSH()
-    ds.init(threshold)
+
+    threshold = ds.threshold
+    path = f"output_t{int(threshold * 100)}"
+
     with ds.make_runner() as runner:
         runner._input_paths = [f"{hadoop_string}/ngrams"]
         runner._output_dir = f"{hadoop_string}/{path}/lsh"

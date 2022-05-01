@@ -9,11 +9,7 @@ from datasketch import MinHash, MinHashLSH, LeanMinHash
 
 class DataSketchLSH(MRJob):
     num_prem = 128
-
-    def init(self, threshold):
-        """Used to set threshold"""
-        self.threshold = threshold
-        return self.threshold
+    threshold = 1.0
 
     def steps(self):
         return [
@@ -24,7 +20,6 @@ class DataSketchLSH(MRJob):
         ]
 
     def mapper_init(self):
-        # self.threshold = 1.0
         self.lsh = MinHashLSH(threshold=self.threshold, num_perm=self.num_prem)
 
     def mapper(self, _, line):
