@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*-coding:utf-8 -*
 
-from mrtotal import Total
 from mrpreprocess import MRPreProcess
 from mrlsh import DataSketchLSH
 from mrngram import MRNgram
@@ -80,12 +79,6 @@ def main():
 
     lshtime = time.time()
     print(f"LSH: {lshtime - ngramtime} seconds.")
-
-    MR_total = Total()
-    with MR_total.make_runner() as runner:
-        runner._input_paths = [f"{hadoop_string}/{path}/lsh"]
-        runner._output_dir = f"{hadoop_string}/{path}/total"
-        runner.run()
 
     MR_similar = Similar()
     with MR_similar.make_runner() as runner:
