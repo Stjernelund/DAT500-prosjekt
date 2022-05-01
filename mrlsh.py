@@ -29,20 +29,19 @@ class DataSketchLSH(MRJob):
         self.dict = {}
 
     def mapper(self, _, line):
-        yield None, None
-        if False:
-            try:
-                pid, line = line.split("\t")
-                pid = pid.strip('\\"')
-                m = MinHash(num_perm=self.num_prem)
-                line = ast.literal_eval(line)
-                for d in line:
-                    m.update(str(d).encode("utf8"))
-                self.lsh.insert(pid, m)
-                self.dict[pid] = m
-                yield None, None
-            except Exception as e:
-                yield None, e
+        try:
+            pid, line = line.split("\t")
+            pid = pid.strip('\\"')
+
+            """m = MinHash(num_perm=self.num_prem)
+            line = ast.literal_eval(line)
+            for d in line:
+                m.update(str(d).encode("utf8"))
+            self.lsh.insert(pid, m)
+            self.dict[pid] = m"""
+            yield None, None
+        except Exception as e:
+            yield None, e
 
     def mapper_final(self):
         try:
