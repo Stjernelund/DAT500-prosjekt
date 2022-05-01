@@ -79,11 +79,8 @@ def main():
         runner._output_dir = f"{hadoop_string}/{path}/lsh"
         runner.run()
 
-    minhashtime = time.time()
-    print(f"Hashing: {minhashtime - ngramtime} seconds.")
-
     lshtime = time.time()
-    print(f"LSH: {lshtime - minhashtime} seconds.")
+    print(f"LSH: {lshtime - ngramtime} seconds.")
 
     """
     find_similar = FindSimilar()

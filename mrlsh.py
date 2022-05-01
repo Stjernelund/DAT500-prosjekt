@@ -24,7 +24,7 @@ class DataSketchLSH(MRJob):
         ]
 
     def mapper_init(self):
-        self.threshold = 1.0
+        # self.threshold = 1.0
         self.lsh = MinHashLSH(threshold=self.threshold, num_perm=self.num_prem)
 
     def mapper(self, _, line):
