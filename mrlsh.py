@@ -36,8 +36,8 @@ class DataSketchLSH(MRJob):
             line = ast.literal_eval(line)
             for d in line:
                 m.update(str(d).encode("utf8"))
-            """self.lsh.insert(pid, m)
-            self.dict[pid] = m"""
+            self.lsh.insert(pid, m)
+            """self.dict[pid] = m"""
             yield None, None
         except Exception as e:
             yield None, e
