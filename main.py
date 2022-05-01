@@ -7,7 +7,6 @@ from mrlsh import DataSketchLSH
 from mrngram import MRNgram
 from mrsimilar import Similar
 from mrsumsimilar import SumSimilar
-from mrfindsimilar import FindSimilar
 import time
 from datetime import datetime
 import shutil
@@ -20,9 +19,10 @@ def main():
     print("Started at:", datetime.now().strftime("%H:%M:%S"))
 
     # Run by using the following command: python3 main.py [-r hadoop] threshold_value true/false
-    preprocess = "t" in sys.argv[3].lower()
+    threshold = float(sys.argv[3])
+    preprocess = "t" in sys.argv[4].lower()
     run_hadoop = "hadoop" in sys.argv[2].lower()
-    hadoop_string = "hdfs://" if run_hadoop else f"/local"
+    hadoop_string = "hdfs://" if run_hadoop else f"{os.getcwd()}/local"
 
     if preprocess:
         # Remove the previous output directory
@@ -62,8 +62,7 @@ def main():
     print(f"Ngrams: {ngramtime - preprostime} seconds.")
 
     ds = DataSketchLSH()
-
-    threshold = ds.threshold
+    ds.threshold = threshold
     path = f"output_t{int(threshold * 100)}"
 
     # Remove the previous output directory
@@ -82,16 +81,6 @@ def main():
 
     lshtime = time.time()
     print(f"LSH: {lshtime - ngramtime} seconds.")
-
-    find_similar = FindSimilar()
-    find_similar.init(lsh, ds.mrjobs)
-    with find_similar.make_runner() as runner:
-        runner._input_paths = [f"{hadoop_string}/{path}/lsh"]
-        runner._output_dir = f"{hadoop_string}/{path}/similars"
-        runner.run()
-
-    similar_time = time.time()
-    print(f"Similarity: {similar_time - lshtime} seconds.")
 
     MR_total = Total()
     with MR_total.make_runner() as runner:
