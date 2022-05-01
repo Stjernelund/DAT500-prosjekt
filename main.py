@@ -14,7 +14,6 @@ import os
 
 
 def main():
-    start = time.time()
     print("Started at:", datetime.now().strftime("%H:%M:%S"))
 
     # Run by using the following command: python3 main.py [-r hadoop] threshold_value true/false
@@ -22,6 +21,7 @@ def main():
     run_hadoop = "hadoop" in sys.argv[2].lower()
     hadoop_string = "hdfs://" if run_hadoop else f"{os.getcwd()}/local"
 
+    start = time.time()
     if preprocess:
         # Remove the previous output directory
         try:
@@ -31,7 +31,6 @@ def main():
                 shutil.rmtree("preprocess")
         except FileNotFoundError:
             pass
-        start = time.time()
         preprocesser = MRPreProcess()
         with preprocesser.make_runner() as runner:
             runner._input_paths = [f"{hadoop_string}/papers.csv"]
