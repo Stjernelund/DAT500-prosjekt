@@ -36,7 +36,7 @@ class DataSketchLSH(MRJob):
         similars.remove(pid)
         self.total += 1
         if similars:
-            yield pid + self.total, similars
+            yield str(self.total), None
 
 
 if __name__ == "__main__":
