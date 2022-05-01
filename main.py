@@ -86,9 +86,6 @@ def main():
         runner._input_paths = [f"{hadoop_string}/{path}/lsh"]
         runner._output_dir = f"{hadoop_string}/{path}/total"
         runner.run()
-        for _, value in MR_total.parse_output(runner.cat_output()):
-            total = value
-            print(f"Total number of papers: {total}.")
 
     MR_similar = Similar()
     with MR_similar.make_runner() as runner:
@@ -102,7 +99,7 @@ def main():
 
     sum_similar = SumSimilar()
     with sum_similar.make_runner() as runner:
-        runner._input_paths = [f"{hadoop_string}/{path}/similars"]
+        runner._input_paths = [f"{hadoop_string}/{path}/lsh"]
         runner._output_dir = f"{hadoop_string}/{path}/similar_sum"
         runner.run()
 
