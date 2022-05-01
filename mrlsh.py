@@ -27,7 +27,11 @@ class DataSketchLSH(MRJob):
         self.dict = {}
 
     def mapper(self, _, line):
-        yield None, None
+        try:
+            self.lsh = MinHashLSH(threshold=self.threshold, num_perm=self.num_prem)
+            yield None, None
+        except Exception as e:
+            yield None, e
         if False:
             try:
                 pid, line = line.split("\t")
