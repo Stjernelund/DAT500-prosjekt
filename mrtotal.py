@@ -11,9 +11,13 @@ class Total(MRJob):
         return [MRStep(mapper=self.mapper)]
 
     def mapper(self, _, papers):
-        _, papers = papers.split("\t")
-        papers = ast.literal_eval(papers)
-        yield "Total:", len(papers)
+        yield None, 1
+
+    def combiner(self, _, values):
+        yield None, sum(values)
+
+    def reducer(self, _, values):
+        yield "Total:", sum(values)
 
 
 if __name__ == "__main__":

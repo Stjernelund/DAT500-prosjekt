@@ -93,7 +93,7 @@ def main():
 
     MR_similar = Similar()
     with MR_similar.make_runner() as runner:
-        runner._input_paths = [f"{hadoop_string}/{path}/similars"]
+        runner._input_paths = [f"{hadoop_string}/{path}/lsh"]
         runner._output_dir = f"{hadoop_string}/{path}/similar_total"
         runner.run()
         for _, value in MR_similar.parse_output(runner.cat_output()):
