@@ -61,6 +61,11 @@ def main():
     ngramtime = time.time()
     print(f"Ngrams: {ngramtime - preprostime} seconds.")
 
+    ds = DataSketchLSH()
+
+    threshold = ds.threshold
+    path = f"output_t{int(threshold * 100)}"
+
     # Remove the previous output directory
     try:
         if run_hadoop:
@@ -69,11 +74,6 @@ def main():
             shutil.rmtree(f"{path}")
     except FileNotFoundError:
         pass
-
-    ds = DataSketchLSH()
-
-    threshold = ds.threshold
-    path = f"output_t{int(threshold * 100)}"
 
     with ds.make_runner() as runner:
         runner._input_paths = [f"{hadoop_string}/ngrams"]
