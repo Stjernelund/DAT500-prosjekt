@@ -20,6 +20,7 @@ class DataSketchLSH(MRJob):
             MRStep(
                 mapper_init=self.mapper_init,
                 mapper=self.mapper,
+                reducer=self.reducer,
             )
         ]
 
@@ -34,52 +35,16 @@ class DataSketchLSH(MRJob):
         line = ast.literal_eval(line)
         for d in line:
             m.update(str(d).encode("utf8"))
+        m = LeanMinHash(m)
         self.lsh.insert(pid, m)
         similars = self.lsh.query(m)
         similars.remove(pid)
         yield pid, similars
 
+    def reducer(self, key, line):
+        if line:
+            yield key, line
 
-'''
-    def make_minhash(self, hadoop_string):
-        cat = subprocess.Popen(
-            ["hdfs", "dfs", "-cat", f"{hadoop_string}/ngrams/part-00000"],
-            stdout=subprocess.PIPE,
-        )
-        for line in cat.stdout:
-            line = line.split("\t")
-            m = MinHash(num_perm=self.num_prem)
-            line = ast.literal_eval(line)
-            for d in line:
-                text = "".join(d)
-                m.update(text.encode("utf8"))
-            lean_m = LeanMinHash(
-                seed=m.seed, hashvalues=m.hashvalues
-            )  # Saves memoryspace
-            self.mrjobs.append(lean_m)
-
-    def make_LSH(self):
-        """Create LSH index from the MinHashes"""
-        lsh = MinHashLSH(threshold=self.threshold, num_perm=self.num_prem)
-        for pid, m in self.mrjobs:
-            lsh.insert(pid, m)
-        return lsh.get_counts()
-
-    def find_similar(self, lsh, hadoop_string):
-        """Query each paper against the others looking for similarities"""
-        similar = {}
-        for pid, job in self.mrjobs:
-            found = lsh.query(job)
-            found.remove(pid)
-            if found:
-                similar[pid] = found
-        with open(
-            f"{hadoop_string}/output_t{int(self.threshold * 100)}/similar.txt",
-            "w+",
-        ) as output:
-            for pid, line in similar.items():
-                output.write(f"{pid}\t{line}\n")
-'''
 
 if __name__ == "__main__":
     DataSketchLSH.run()
