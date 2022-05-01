@@ -9,7 +9,7 @@ from datasketch import MinHash, MinHashLSH, LeanMinHash
 
 class DataSketchLSH(MRJob):
     num_prem = 128
-    threshold = 1
+    threshold = 0.9
 
     def steps(self):
         return [
@@ -21,7 +21,6 @@ class DataSketchLSH(MRJob):
 
     def mapper_init(self):
         self.lsh = MinHashLSH(threshold=self.threshold, num_perm=self.num_prem)
-        self.total = 0
 
     def mapper(self, _, line):
         pid, line = line.split("\t")
@@ -34,11 +33,9 @@ class DataSketchLSH(MRJob):
         self.lsh.insert(pid, m)
         similars = self.lsh.query(m)
         similars.remove(pid)
-        self.total += 1
-        yield self.total, None
 
-        # if similars:
-        #   yield pid, similars
+        if similars:
+            yield pid, similars
 
 
 if __name__ == "__main__":
