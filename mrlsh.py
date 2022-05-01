@@ -13,6 +13,7 @@ class DataSketchLSH(MRJob):
     def init(self, threshold):
         """Used to set threshold"""
         self.threshold = threshold
+        return self.threshold
 
     def steps(self):
         return [
