@@ -29,7 +29,7 @@ class DataSketchLSH(MRJob):
     def mapper(self, _, line):
         try:
             # self.lsh = MinHashLSH(threshold=self.threshold, num_perm=self.num_prem)
-            yield None, self.num_prem
+            yield str(self.threshold), self.num_prem
         except Exception as e:
             yield None, e
         if False:
