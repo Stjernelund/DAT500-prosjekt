@@ -19,6 +19,7 @@ class DataSketchLSH(MRJob):
             MRStep(
                 mapper_init=self.mapper_init,
                 mapper=self.mapper,
+                mapper_final=self.mapper_final,
             )
         ]
 
@@ -39,10 +40,13 @@ class DataSketchLSH(MRJob):
         yield None, None
 
     def mapper_final(self):
-        for pid, m in self.dict:
-            similars = self.lsh.query(m)
-            similars.remove(pid)
-            yield pid, similars
+        try:
+            for pid, m in self.dict:
+                similars = self.lsh.query(m)
+                similars.remove(pid)
+                yield pid, similars
+        except Exception as e:
+            yield None, e
 
 
 '''
