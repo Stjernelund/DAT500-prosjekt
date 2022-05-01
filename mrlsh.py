@@ -17,6 +17,7 @@ class DataSketchLSH(MRJob):
     def steps(self):
         return [
             MRStep(
+                mapper_init=self.mapper_init,
                 mapper=self.mapper_minhash,
                 mapper=self.mapper_lsh,
                 mapper=self.mapper_similar,
