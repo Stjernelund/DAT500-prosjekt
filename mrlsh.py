@@ -18,16 +18,15 @@ class DataSketchLSH(MRJob):
         return [
             MRStep(
                 mapper_init=self.mapper_init,
-                mapper=self.mapper_minhash,
-                mapper=self.mapper_lsh,
-                mapper=self.mapper_similar,
+                mapper=self.reducer,
+                reducer=self.reducer,
             )
         ]
 
     def mapper_init(self):
         self.lsh = MinHashLSH(threshold=self.threshold, num_perm=self.num_prem)
 
-    def mapper_minhash(self, _, line):
+    def mapper(self, _, line):
         """MinHash each paper"""
         pid, line = line.split("\t")
         pid = pid.strip('\\"')
@@ -37,18 +36,12 @@ class DataSketchLSH(MRJob):
             m.update(str(d).encode("utf8"))
         yield pid, m.digest().tolist()
 
-    def mapper_lsh(self, _, line):
+    def reducer(self, _, line):
         pid, line = line.split("\t")
         pid = pid.strip('\\"')
         hashval = ast.literal_eval(line)
         m = LeanMinHash(hashvalues=hashval)
         self.lsh.insert(pid, m)
-        yield pid, hashval
-
-    def mapper_similar(self, _, line):
-        pid, line = line.split("\t")
-        pid = pid.strip('\\"')
-        hashval = ast.literal_eval(line)
         similars = self.lsh.query(hashval)
         similars.remove(pid)
         yield pid, similars
