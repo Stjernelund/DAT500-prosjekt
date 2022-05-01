@@ -20,7 +20,6 @@ class DataSketchLSH(MRJob):
             MRStep(
                 mapper_init=self.mapper_init,
                 mapper=self.mapper,
-                mapper_final=self.mapper_final,
             )
         ]
 
@@ -30,18 +29,20 @@ class DataSketchLSH(MRJob):
         self.dict = {}
 
     def mapper(self, _, line):
-        try:
-            pid, line = line.split("\t")
-            pid = pid.strip('\\"')
-            m = MinHash(num_perm=self.num_prem)
-            line = ast.literal_eval(line)
-            for d in line:
-                m.update(str(d).encode("utf8"))
-            self.lsh.insert(pid, m)
-            self.dict[pid] = m
-            yield None, None
-        except Exception as e:
-            yield None, e
+        yield None, None
+        if False:
+            try:
+                pid, line = line.split("\t")
+                pid = pid.strip('\\"')
+                m = MinHash(num_perm=self.num_prem)
+                line = ast.literal_eval(line)
+                for d in line:
+                    m.update(str(d).encode("utf8"))
+                self.lsh.insert(pid, m)
+                self.dict[pid] = m
+                yield None, None
+            except Exception as e:
+                yield None, e
 
     def mapper_final(self):
         try:

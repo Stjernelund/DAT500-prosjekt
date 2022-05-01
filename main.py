@@ -73,7 +73,7 @@ def main():
         pass
 
     ds = DataSketchLSH()
-    print(ds.init(threshold))
+    ds.init(threshold)
     with ds.make_runner() as runner:
         runner._input_paths = [f"{hadoop_string}/ngrams"]
         runner._output_dir = f"{hadoop_string}/{path}/lsh"
