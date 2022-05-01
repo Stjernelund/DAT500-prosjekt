@@ -20,7 +20,6 @@ class DataSketchLSH(MRJob):
             MRStep(
                 mapper_init=self.mapper_init,
                 mapper=self.mapper,
-                reducer=self.reducer,
             )
         ]
 
@@ -39,11 +38,8 @@ class DataSketchLSH(MRJob):
         self.lsh.insert(pid, m)
         similars = self.lsh.query(m)
         similars.remove(pid)
-        yield pid, similars
-
-    def reducer(self, key, line):
-        if line:
-            yield key, line
+        if similars:
+            yield pid, similars
 
 
 if __name__ == "__main__":
