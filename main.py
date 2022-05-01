@@ -22,7 +22,7 @@ def main():
     # Run by using the following command: python3 main.py [-r hadoop] threshold_value true/false
     preprocess = "t" in sys.argv[3].lower()
     run_hadoop = "hadoop" in sys.argv[2].lower()
-    hadoop_string = "hdfs://" if run_hadoop else f""
+    hadoop_string = "hdfs://" if run_hadoop else f"/local"
 
     if preprocess:
         # Remove the previous output directory
