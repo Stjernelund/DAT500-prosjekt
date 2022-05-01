@@ -22,7 +22,7 @@ def main():
     hadoop_string = "hdfs://" if run_hadoop else f"{os.getcwd()}/local"
 
     start = time.time()
-    if preprocess and False:
+    if preprocess:
         # Remove the previous output directory
         try:
             if run_hadoop:
