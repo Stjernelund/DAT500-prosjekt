@@ -37,7 +37,7 @@ class DataSketchLSH(MRJob):
             for d in line:
                 m.update(str(d).encode("utf8"))
             self.lsh.insert(pid, m)
-            self.dict[pid] = m
+            # self.dict[pid] = m
             yield pid, str(m)
         except Exception as e:
             yield None, e
