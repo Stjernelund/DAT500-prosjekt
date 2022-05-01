@@ -19,8 +19,7 @@ def main():
     print("Started at:", datetime.now().strftime("%H:%M:%S"))
 
     # Run by using the following command: python3 main.py [-r hadoop] threshold_value true/false
-    threshold = float(sys.argv[3])
-    preprocess = "t" in sys.argv[4].lower()
+    preprocess = "t" in sys.argv[3].lower()
     run_hadoop = "hadoop" in sys.argv[2].lower()
     hadoop_string = "hdfs://" if run_hadoop else f"{os.getcwd()}/local"
 
@@ -62,7 +61,7 @@ def main():
     print(f"Ngrams: {ngramtime - preprostime} seconds.")
 
     ds = DataSketchLSH()
-    ds.threshold = threshold
+    threshold = ds.threshold
     path = f"output_t{int(threshold * 100)}"
 
     # Remove the previous output directory
